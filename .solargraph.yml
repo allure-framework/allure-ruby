@@ -1,0 +1,15 @@
+---
+include:
+  - "**/*.rb"
+  - Rakefile
+exclude:
+  - "spec/**/*"
+require: []
+domains: []
+reporters:
+  - rubocop
+  - require_not_found
+plugins:
+  - runtime
+require_paths: []
+max_files: 5000

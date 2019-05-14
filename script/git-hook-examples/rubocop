@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# To use this, run:
+# ln -s $(realpath script/git-hook-examples/rubocop) .git/hooks/pre-commit
+
+DIFF=$(git diff --cached --name-only --diff-filter=MA)
+if [ ! -z "$DIFF" ]; then bundle exec rubocop $DIFF; fi

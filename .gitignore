@@ -1,0 +1,16 @@
+# Package Files #
+pkg
+*.gem
+
+# Editors
+.vscode
+.idea
+*.iml
+*.ipr
+*.iws
+
+# Artifacts
+.bundle
+.yardoc
+reports
+.allure
