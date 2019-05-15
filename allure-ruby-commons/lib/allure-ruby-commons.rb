@@ -5,7 +5,7 @@ require "require_all"
 require "uuid"
 require_rel "allure_ruby_commons/**/*rb"
 
-# Namespace for classes that handle allure report generation and different framework adapters
+# Namespace for classes that handle allure report generation and different framework adaptors
 module Allure
   class << self
     # Get thread specific allure lifecycle object

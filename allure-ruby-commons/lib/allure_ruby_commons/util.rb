@@ -14,7 +14,7 @@ module Allure
       # Download allure bin if appropriate version is not in path
       # @return [String] allure executable
       def allure_cli
-        return "allure" if Version::ALLURE == `allure --version`.chomp
+        return "allure" if ALLURE_CLI_VERSION == `allure --version`.chomp
 
         cli_dir = File.join(".allure", "allure-#{ALLURE_CLI_VERSION}")
         zip = File.join(".allure", "allure.zip")

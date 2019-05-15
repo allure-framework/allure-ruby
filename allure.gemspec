@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.name = "allure-ruby"
   s.version = version
-  s.summary = "Allure ruby commons and ruby testing framework adapters"
+  s.summary = "Allure ruby commons and ruby testing framework adaptors"
 
   s.required_ruby_version = ">= 2.5.0"
 

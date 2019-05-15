@@ -89,4 +89,4 @@ Allure.add_link("Custom Url", "http://www.github.com")
 ```
 
 ## How to generate report
-This adapter only generates json files containing information about tests. See [wiki section](https://docs.qameta.io/allure/#_reporting) on how to generate report.
+This adaptor only generates json files containing information about tests. See [wiki section](https://docs.qameta.io/allure/#_reporting) on how to generate report.
