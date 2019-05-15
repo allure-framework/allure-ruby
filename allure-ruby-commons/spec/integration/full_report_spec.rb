@@ -57,7 +57,7 @@ describe "allure-ruby-commons" do
     lifecycle.stop_test_container
   end
 
-  it "generate valid json", integration: true do
+  it "generate valid json", reporter: true do
     allure_cli = Allure::Util.allure_cli
     expect(`#{allure_cli} generate -c #{Allure::Config.results_directory} -o reports/allure-report`.chomp).to(
       eq("Report successfully generated to reports/allure-report"),
