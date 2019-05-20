@@ -5,7 +5,10 @@ pipeline {
   }
   stages {
     stage('Install') {
-      steps { sh 'bundle install' }
+      steps {
+        gem install bundler -v 2.0.1
+        sh 'bundle install' 
+      }
     }
     stage('Lint') {
       steps { sh 'bundle exec rake rubocop' }
