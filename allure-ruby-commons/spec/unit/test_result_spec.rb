@@ -41,10 +41,11 @@ describe "AllureLifecycle::TestCaseResult" do
       lifecycle.stop_test_case
     end
 
-    it "adds default host and thread label" do
+    it "adds default labels" do
       expect(@test_case.labels).to include(
         Allure::Label.new("thread", Thread.current.object_id),
         Allure::Label.new("host", Socket.gethostname),
+        Allure::Label.new("language", "ruby"),
       )
     end
   end

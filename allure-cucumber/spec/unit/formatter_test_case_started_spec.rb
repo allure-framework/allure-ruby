@@ -32,6 +32,7 @@ describe "CucumberFormatter.on_test_case_started" do
         expect(arg.labels).to include(
           result_utils.feature_label(feature),
           result_utils.story_label(scenario),
+          result_utils.framework_label("cucumber"),
         )
       end
     end
