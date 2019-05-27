@@ -72,6 +72,7 @@ module Allure
       # @return [Array<Allure::Label>]
       def labels(test_case)
         labels = []
+        labels << ResultUtils.framework_label("cucumber")
         labels << ResultUtils.feature_label(test_case.feature.name)
         labels << ResultUtils.package_label(test_case.feature.name)
         labels << ResultUtils.suite_label(test_case.feature.name)
