@@ -16,7 +16,7 @@ describe Allure::ResultUtils do
     raise error
   rescue => e
     status_details = Allure::ResultUtils.status_details(e)
-    expect(status_details[:message]).to eq("Error")
-    expect(status_details[:message]).not_to be_empty
+    expect(status_details.message).to eq("Error")
+    expect(status_details.message).not_to be_empty
   end
 end
