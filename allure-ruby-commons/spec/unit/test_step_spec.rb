@@ -20,10 +20,25 @@ describe "AllureLifecycle::TestStepResult" do
       end
     end
 
+    it "starts nested step" do
+      start_test_step(name: "Nested step name", descrption: "step description")
+      expect(@test_step.steps.last.name).to eq("Nested step name")
+    end
+
     it "updates test step" do
       lifecycle.update_test_step { |step| step.status = Allure::Status::SKIPPED }
 
       expect(@test_step.status).to eq(Allure::Status::SKIPPED)
+    end
+
+    it "updates nested step" do
+      start_test_step(name: "Nested step name", descrption: "step description")
+      lifecycle.update_test_step { |step| step.status = Allure::Status::SKIPPED }
+
+      aggregate_failures "steps should have correct status" do
+        expect(@test_step.steps.last.status).to eq(Allure::Status::SKIPPED)
+        expect(@test_step.status).to eq(Allure::Status::BROKEN) # default status for unfinished step
+      end
     end
 
     it "stops test step" do
@@ -31,6 +46,27 @@ describe "AllureLifecycle::TestStepResult" do
 
       aggregate_failures "Should update parameters" do
         expect(@test_step.stop).to be_a(Numeric)
+        expect(@test_step.stage).to eq(Allure::Stage::FINISHED)
+      end
+    end
+
+    it "stops nested step" do
+      start_test_step(name: "Nested step name", descrption: "step description")
+      lifecycle.stop_test_step
+
+      aggregate_failures "should have stopped only nested step" do
+        expect(@test_step.steps.last.stage).to eq(Allure::Stage::FINISHED)
+        expect(@test_step.stage).to eq(Allure::Stage::RUNNING)
+      end
+    end
+
+    it "stops parent step" do
+      start_test_step(name: "Nested step name", descrption: "step description")
+      lifecycle.stop_test_step
+      lifecycle.stop_test_step
+
+      aggregate_failures "should have stopped both step" do
+        expect(@test_step.steps.last.stage).to eq(Allure::Stage::FINISHED)
         expect(@test_step.stage).to eq(Allure::Stage::FINISHED)
       end
     end

@@ -81,5 +81,36 @@ describe Allure do
         expect(attachment.source).to include(".txt")
       end
     end
+
+    it "adds custom step" do
+      test_step = Allure.step(name: "Custom step", status: Allure::Status::FAILED)
+      expect(@test_case.steps.last).to eq(test_step)
+    end
+
+    it "runs custom step" do
+      Allure.run_step("Custom step") do
+        1 + 1
+      end
+      test_step = @test_case.steps.last
+      aggregate_failures "custom step should be handled correctly" do
+        expect(test_step.name).to eq("Custom step")
+        expect(test_step.status).to eq(Allure::Status::PASSED)
+        expect(test_step.stage).to eq(Allure::Stage::FINISHED)
+      end
+    end
+
+    it "correctly handles custom step failure" do
+      Allure.run_step("Custom step") do
+        raise StandardError.new("Error")
+      end
+    rescue
+      test_step = @test_case.steps.last
+      aggregate_failures "custom step should be handled correctly" do
+        expect(test_step.name).to eq("Custom step")
+        expect(test_step.status).to eq(Allure::Status::BROKEN)
+        expect(test_step.stage).to eq(Allure::Stage::FINISHED)
+        expect(test_step.status_details.message).to eq("Error")
+      end
+    end
   end
 end

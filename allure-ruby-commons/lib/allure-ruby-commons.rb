@@ -137,6 +137,32 @@ module Allure
     def add_attachment(name:, source:, type:, test_case: false)
       lifecycle.add_attachment(name: name, source: source, type: type, test_case: test_case)
     end
+
+    # Add step with provided name and optional status to current test step, fixture or test case
+    # @param [String] name
+    # @param [Symbol] status <Allure::Status>, <Allure::Status::PASSED> by default
+    # @return [void]
+    def step(name:, status: nil)
+      lifecycle.add_test_step(StepResult.new(name: name, status: status || Status::PASSED, stage: Stage::FINISHED))
+    end
+
+    # Run passed block as step with given name
+    # @param [String] name
+    # @yield [] step block
+    # @return [void]
+    def run_step(name)
+      lifecycle.start_test_step(StepResult.new(name: name, stage: Stage::RUNNING))
+      yield
+      lifecycle.update_test_step { |step| step.status = Status::PASSED }
+    rescue => e
+      lifecycle.update_test_step do |step|
+        step.status = ResultUtils.status(e)
+        step.status_details = ResultUtils.status_details(e)
+      end
+      raise(e)
+    ensure
+      lifecycle.stop_test_step
+    end
   end
 end
 # rubocop:enable Naming/FileName

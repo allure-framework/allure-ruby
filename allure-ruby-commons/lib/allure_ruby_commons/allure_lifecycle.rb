@@ -3,6 +3,10 @@
 module Allure
   # Main class for creating and writing allure results
   class AllureLifecycle
+    def initialize
+      @step_context = []
+    end
+
     # Start test result container
     # @param [Allure::TestResultContainer] test_result_container
     # @return [Allure::TestResultContainer]
@@ -42,6 +46,7 @@ module Allure
     # @param [Allure::TestResult] test_result
     # @return [Allure::TestResult]
     def start_test_case(test_result)
+      clear_step_context
       unless @current_test_result_container
         return logger.error("Could not start test case, test container is not started")
       end
@@ -75,6 +80,7 @@ module Allure
       @current_test_case.stage = Stage::FINISHED
       file_writer.write_test_result(@current_test_case)
       clear_current_test_case
+      clear_step_context
     end
 
     # Start test step and add to current test case
@@ -85,8 +91,8 @@ module Allure
 
       step_result.start = ResultUtils.timestamp
       step_result.stage = Stage::RUNNING
-      @current_test_case.steps.push(step_result)
-      @current_test_step = step_result
+      add_test_step(step_result)
+      step_result
     end
 
     # @example Update current test step
@@ -97,19 +103,19 @@ module Allure
     # @yieldreturn [void]
     # @return [void]
     def update_test_step
-      return logger.error("Could not update test step, no step is running") unless @current_test_step
+      return logger.error("Could not update test step, no step is running") unless current_test_step
 
-      yield(@current_test_step)
+      yield(current_test_step)
     end
 
     # Stop current test step
     # @return [void]
     def stop_test_step
-      return logger.error("Could not stop test step, no step is running") unless @current_test_step
+      return logger.error("Could not stop test step, no step is running") unless current_test_step
 
-      @current_test_step.stop = ResultUtils.timestamp
-      @current_test_step.stage = Stage::FINISHED
-      clear_current_test_step
+      current_test_step.stop = ResultUtils.timestamp
+      current_test_step.stage = Stage::FINISHED
+      clear_last_test_step
     end
 
     # Start prepare fixture
@@ -134,6 +140,7 @@ module Allure
     # @param [Allure::FixtureResult] fixture_result
     # @return [Allure::FixtureResult]
     def start_fixture(fixture_result)
+      clear_step_context
       unless @current_test_result_container
         logger.error("Could not start fixture, test container is not started")
         return false
@@ -162,6 +169,7 @@ module Allure
       @current_fixture.stop = ResultUtils.timestamp
       @current_fixture.stage = Stage::FINISHED
       clear_current_fixture
+      clear_step_context
     end
 
     # Add attachment to current test or step
@@ -199,6 +207,15 @@ module Allure
       file_writer.write_attachment(source, attachment)
     end
 
+    # Add step to current fixture|step|test case
+    # @param [Allure::StepResult] step_result
+    # @return [Allure::StepResult]
+    def add_test_step(step_result)
+      current_executable.steps.push(step_result)
+      @step_context.push(step_result)
+      step_result
+    end
+
     private
 
     def logger
@@ -210,7 +227,7 @@ module Allure
     end
 
     def current_executable
-      @current_test_step || @current_fixture || @current_test_case
+      current_test_step || @current_fixture || @current_test_case
     end
 
     def clear_current_test_container
@@ -221,8 +238,16 @@ module Allure
       @current_test_case = nil
     end
 
-    def clear_current_test_step
-      @current_test_step = nil
+    def current_test_step
+      @step_context.last
+    end
+
+    def clear_last_test_step
+      @step_context.pop
+    end
+
+    def clear_step_context
+      @step_context.clear
     end
 
     def clear_current_fixture

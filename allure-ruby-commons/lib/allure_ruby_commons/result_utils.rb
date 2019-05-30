@@ -127,7 +127,7 @@ module Allure
       # @param [Exception] exception
       # @return [Hash<Symbol, String>]
       def status_details(exception)
-        { message: exception.message, trace: exception.backtrace&.join("\n") }
+        StatusDetails.new(message: exception.message, trace: exception.backtrace&.join("\n"))
       end
 
       private
