@@ -19,7 +19,9 @@ pipeline {
     stage('Release') {
       when { expression { return params.RELEASE } }
       steps {
-        sh  'bundle exec rake release'
+        withCredentials([string(credentialsId: 'qameta-ci_rubygems', variable: 'GEM_HOST_API_KEY')]) {
+          sh  'bundle exec rake release'
+        }
       }
     }
   }
