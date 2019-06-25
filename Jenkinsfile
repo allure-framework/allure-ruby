@@ -19,7 +19,7 @@ pipeline {
     stage('Release') {
       when { expression { return params.RELEASE } }
       steps {
-        withCredentials([string(credentialsId: 'qameta-ci_rubygems', variable: 'GEM_HOST_API_KEY')]) {
+        configFileProvider([configFile(fileId: 'gem-credentials', targetLocation: '/root/.gem/credentials')]) {
           sh  'bundle exec rake release'
         }
       }
