@@ -19,8 +19,8 @@ pipeline {
     stage('Release') {
       when { expression { return params.RELEASE } }
       steps {
-        configFileProvider([configFile(fileId: 'gem-credentials', targetLocation: '/root/.gem/credentials')]) {
-          sh 'chmod 0600 /root/.gem/credentials'
+        configFileProvider([configFile(fileId: 'gem-credentials', variable: 'CREDENTIALS')]) {
+          sh 'mkdir -p ~/.gem && mv $CREDENTIALS ~/.gem/credentials && chmod 0600 ~/.gem/credentials'
           sh 'bundle exec rake release'
         }
       }
