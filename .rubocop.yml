@@ -564,11 +564,6 @@ Lint/ShadowingOuterLocalVariable:
 Lint/StringConversionInInterpolation:
   Enabled: true
 
-Lint/Syntax:
-  Description: 'Checks syntax error'
-  Enabled: true
-  VersionAdded: '0.9'
-
 Lint/UnderscorePrefixedVariableName:
   Enabled: true
 
