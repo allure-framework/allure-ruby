@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.version = version
   s.summary = "Allure cucumber ruby adaptor"
   s.description = "Cucumber adaptor to generate rich allure test reports"
+  s.homepage = "https://github.com/allure-framework/allure-ruby"
 
   s.required_ruby_version = ">= 2.5.0"
 
@@ -15,7 +16,6 @@ Gem::Specification.new do |s|
 
   s.author = "Andrejs Cunskis"
   s.email = "andrejs.cunskis@gmail.com"
-  s.homepage = "http://allure.qatools.ru"
 
   s.files = Dir["README.md", "lib/**/*"]
   s.require_path = "lib"
