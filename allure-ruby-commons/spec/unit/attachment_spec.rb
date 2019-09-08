@@ -55,6 +55,23 @@ describe "Lifecycle:Attachments" do
     end
   end
 
+  it "adds file attachment to test" do
+    expect(file_writer).to receive(:write_attachment).with(kind_of(File), duck_type(:name, :source, :type))
+
+    lifecycle.add_attachment(
+      name: "Test xlsx attachment",
+      source: File.new(File.join(Dir.pwd, "spec", "fixtures", "blank.xlsx")),
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    attachment = @test_case.attachments.last
+
+    aggregate_failures "Attachment should be added" do
+      expect(attachment.name).to eq("Test xlsx attachment")
+      expect(attachment.type).to eq("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+      expect(attachment.source).to include(".xlsx")
+    end
+  end
+
   it "adds attachment to test explicitly" do
     expect(file_writer).to receive(:write_attachment).with("string attachment", duck_type(:name, :source, :type))
 

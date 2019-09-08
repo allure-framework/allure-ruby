@@ -37,7 +37,7 @@ describe Allure::FileWriter do
       type: Allure::ContentType::PNG,
       source: "#{UUID.generate}-attachment.png",
     )
-    source = File.new(File.join(Dir.pwd, "spec", "images", "ruby-logo.png"))
+    source = File.new(File.join(Dir.pwd, "spec", "fixtures", "ruby-logo.png"))
     attachment_file = File.join(Allure::Config.results_directory, attachment.source)
     file_writer.write_attachment(source, attachment)
 
