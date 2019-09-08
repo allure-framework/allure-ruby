@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Allure
+  # Allure model status detail object
   class StatusDetails < JSONable
     # @param [Boolean] known
     # @param [Boolean] muted

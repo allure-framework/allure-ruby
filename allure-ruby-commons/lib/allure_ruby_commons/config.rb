@@ -3,8 +3,11 @@
 require "logger"
 
 module Allure
+  # Allure configuration class
   class Config
+    # @return [String] default allure results directory
     DEFAULT_RESULTS_DIRECTORY = "reports/allure-results"
+    # @return [String] default loggin level
     DEFAULT_LOGGING_LEVEL = Logger::INFO
 
     class << self

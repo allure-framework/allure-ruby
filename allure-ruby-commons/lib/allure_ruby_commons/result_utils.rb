@@ -3,6 +3,7 @@
 require "socket"
 
 module Allure
+  # Variouse helper methods
   module ResultUtils
     ISSUE_LINK_TYPE = "issue"
     TMS_LINK_TYPE = "tms"

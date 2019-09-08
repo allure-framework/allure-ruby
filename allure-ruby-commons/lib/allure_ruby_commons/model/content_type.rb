@@ -3,6 +3,7 @@
 require "mime/types"
 
 module Allure
+  # Commonly used mime type definitions
   class ContentType
     TXT = "text/plain"
     XML = "application/xml"
@@ -16,6 +17,9 @@ module Allure
     WEBM = "video/webm"
     JPG = "image/jpeg"
 
+    # Get file extension from mime type
+    # @param [String] content_type mime type
+    # @return [String] file extension
     def self.to_extension(content_type)
       MIME::Types[content_type]&.first&.preferred_extension
     end

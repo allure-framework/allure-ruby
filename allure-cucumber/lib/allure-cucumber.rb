@@ -6,7 +6,8 @@ require "allure-ruby-commons"
 require "allure_cucumber/formatter"
 require "allure_cucumber/config"
 
-module Allure
+# Main allure-cucumber module providing configuration methods
+module AllureCucumber
   class << self
     # Get allure cucumber configuration
     # @return [Allure::CucumberConfig]

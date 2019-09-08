@@ -3,6 +3,7 @@
 require "json"
 
 module Allure
+  # General jsonable object implementation
   class JSONable
     def as_json(_options = {})
       instance_variables.each_with_object({}) do |var, map|

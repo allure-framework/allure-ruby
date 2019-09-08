@@ -1,6 +1,7 @@
 # Allure ruby
 
-Ruby testing framework adaptors for generating allure compatible test reports
+[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)\
+Ruby testing framework adaptors for generating allure compatible test reports.
 
 ## allure-ruby-commons
 

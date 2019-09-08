@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
-module Allure
-  class CucumberConfig < Config
+module AllureCucumber
+  # Allure cucumber configuration
+  class CucumberConfig
     class << self
+      # @return [String] default tms tag prefix
       DEFAULT_TMS_PREFIX = "TMS:"
+      # @return [String] default issue tag prefix
       DEFAULT_ISSUE_PREFIX = "ISSUE:"
+      # @return [String] default severity tag prefix
       DEFAULT_SEVERITY_PREFIX = "SEVERITY:"
 
       attr_writer :tms_prefix, :issue_prefix, :severity_prefix

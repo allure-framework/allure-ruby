@@ -3,6 +3,7 @@
 require_relative "jsonable"
 
 module Allure
+  # Allure model parameter object
   class Parameter < JSONable
     def initialize(name, value)
       @name = name
