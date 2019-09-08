@@ -28,3 +28,7 @@ RSpec.shared_context("cucumber runner") do
     runtime.run!
   end
 end
+
+Allure.configure do |config|
+  config.clean_results_directory = true
+end

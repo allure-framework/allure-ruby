@@ -82,7 +82,7 @@ Put the following in your `features/support/env.rb` file:
 require 'allure-cucumber'
 ```
 
-Use `--format AllureCucumber::CucumberFormatter --out where/you-want-results` while running cucumber or add it to `cucumber.yml`
+Use `--format AllureCucumber::CucumberFormatter --out where/you-want-results` while running cucumber or add it to `cucumber.yml`. Note that cucumber `--out` option overrides `results_directory` set via `Allure.configure` method.
 
 You can also manually attach screenshots and links to test steps and test cases by interacting with allure lifecycle directly. For more info check out `allure-ruby-commons`
 
