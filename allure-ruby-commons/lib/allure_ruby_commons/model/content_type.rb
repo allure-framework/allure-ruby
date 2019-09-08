@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "mime/types"
+
 module Allure
   class ContentType
     TXT = "text/plain"
@@ -15,7 +17,7 @@ module Allure
     JPG = "image/jpeg"
 
     def self.to_extension(content_type)
-      constants.detect { |const| const_get(const) == content_type }&.to_s&.downcase
+      MIME::Types[content_type]&.first&.preferred_extension
     end
   end
 end
