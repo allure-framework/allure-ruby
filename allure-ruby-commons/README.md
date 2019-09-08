@@ -19,6 +19,7 @@ Following configuration options are supported:
 ```ruby
     Allure.configure do |c|
       c.results_directory = "/whatever/you/like"
+      c.clean_results_directory = true
       c.logging_level = Logger::INFO
       # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
       c.link_tms_pattern = "http://www.jira.com/browse/{}"
@@ -43,6 +44,7 @@ Additional methods in [Allure](lib/allure-ruby-commons.rb) exist to add various 
 
 ```ruby
 Allure.add_attachment(name: "attachment", source: "Some string", type: Allure::ContentType::TXT, test_case: false)
+Allure.add_attachment(name: "attachment", source: "/path/to/test.txt", type: Allure::ContentType::TXT, test_case: false)
 Allure.add_link(name: "Custom Url", url: "http://www.github.com")
 ```
 

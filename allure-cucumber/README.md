@@ -29,6 +29,7 @@ Common allure configuration is set via `Allure.configure` method. To change id, 
 ```ruby
 Allure.configure do |c|
   c.results_directory = "/whatever/you/like"
+  c.clean_results_directory = true
   c.logging_level = Logger::INFO
   # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
   c.link_tms_pattern = "http://www.jira.com/browse/{}"
@@ -82,7 +83,7 @@ Put the following in your `features/support/env.rb` file:
 require 'allure-cucumber'
 ```
 
-Use `--format AllureCucumber::CucumberFormatter --out where/you-want-results` while running cucumber or add it to `cucumber.yml`
+Use `--format AllureCucumber::CucumberFormatter --out where/you-want-results` while running cucumber or add it to `cucumber.yml`. Note that cucumber `--out` option overrides `results_directory` set via `Allure.configure` method.
 
 You can also manually attach screenshots and links to test steps and test cases by interacting with allure lifecycle directly. For more info check out `allure-ruby-commons`
 

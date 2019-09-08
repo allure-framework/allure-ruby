@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "fileutils"
 require_relative "cucumber_model"
 
 module AllureCucumber
@@ -19,7 +20,10 @@ module AllureCucumber
 
     # @param [Cucumber::Configuration] config
     def initialize(config)
-      Allure::Config.results_directory = config.out_stream if config.out_stream.is_a?(String)
+      Allure.configure do |c|
+        c.results_directory = config.out_stream if config.out_stream.is_a?(String)
+        FileUtils.rm_f(Dir.glob("#{c.results_directory}/*")) if c.clean_results_directory
+      end
       config.on_event(:test_case_started, &method(:on_test_case_started))
       config.on_event(:test_step_started, &method(:on_test_step_started))
       config.on_event(:test_step_finished, &method(:on_test_step_finished))

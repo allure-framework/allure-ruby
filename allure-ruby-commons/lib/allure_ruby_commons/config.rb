@@ -11,7 +11,7 @@ module Allure
     DEFAULT_LOGGING_LEVEL = Logger::INFO
 
     class << self
-      attr_accessor :link_tms_pattern, :link_issue_pattern
+      attr_accessor :link_tms_pattern, :link_issue_pattern, :clean_results_directory
       attr_writer :results_directory, :logging_level
 
       def results_directory

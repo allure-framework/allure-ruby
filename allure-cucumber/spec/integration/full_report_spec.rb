@@ -6,10 +6,6 @@ describe "allure-cucumber" do
   let(:allure_cli) { Allure::Util.allure_cli }
   let(:results_dir) { Allure::Config.results_directory }
 
-  before(:each) do
-    FileUtils.remove_dir(results_dir) if File.exist?(results_dir)
-  end
-
   it "Generates allure json results files", integration: true do
     run_cucumber_cli("features/features/simple.feature")
 
