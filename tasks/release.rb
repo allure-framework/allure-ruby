@@ -5,6 +5,16 @@ version = File.read("#{root}/ALLURE_VERSION").strip
 
 directory "pkg"
 
+desc "Bump allure version"
+task :bump, [:version] do |_task, args|
+  version = args[:version]
+  File.write("#{root}/ALLURE_VERSION", version, mode: "w")
+
+  sh "bundle install --quiet && git commit Gemfile.lock ALLURE_VERSION -m 'Update allure to v#{version}'"
+  sh "git tag #{version}"
+  sh "git push origin HEAD --follow-tags"
+end
+
 ADAPTORS.each do |adaptor|
   namespace adaptor do
     gem = "pkg/#{adaptor}-#{version}.gem"
