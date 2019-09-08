@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Allure
-  class CucumberConfig < Config
+module AllureCucumber
+  class CucumberConfig
     class << self
       DEFAULT_TMS_PREFIX = "TMS:"
       DEFAULT_ISSUE_PREFIX = "ISSUE:"

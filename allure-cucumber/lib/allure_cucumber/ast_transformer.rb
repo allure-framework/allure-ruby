@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-# Cucumber::Core::Ast is removed in cucumber-core 4.0 version.
-# This will have to be updated accordingly, once stable version rolls out
-
-module Allure
+module AllureCucumber
+  # Cucumber::Core::Ast is removed in cucumber-core 4.0 version.
+  # This will have to be updated accordingly, once stable version rolls out
   module AstTransformer
     # Get scenario object
     # @param [Cucumber::Core::Test::Case] test_case
@@ -15,7 +14,7 @@ module Allure
     end
 
     # Get step object
-    # @param [Cucumber::Core::Test::Step] test_case
+    # @param [Cucumber::Core::Test::Step] test_step
     # @return [Cucumber::Core::Ast::Step]
     def step(test_step)
       test_step.source.detect { |it| it.is_a?(Cucumber::Core::Ast::Step) }

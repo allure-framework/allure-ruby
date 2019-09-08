@@ -6,7 +6,7 @@ require "pathname"
 
 module Allure
   class Util
-    ALLURE_CLI_VERSION = "2.10.0"
+    ALLURE_CLI_VERSION = "2.12.1"
     ALLURE_BIN_URL = "http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/"\
                       "#{ALLURE_CLI_VERSION}/allure-commandline-#{ALLURE_CLI_VERSION}.zip"
 

@@ -17,7 +17,7 @@ end
 RSpec.shared_context("cucumber runner") do
   def run_cucumber_cli(feature, *additional_args)
     configuration = Cucumber::Cli::Configuration.new.tap do |config|
-      args = [feature, "--format", "Allure::CucumberFormatter"]
+      args = [feature, "--format", "AllureCucumber::CucumberFormatter"]
       args.push(*additional_args)
       config.parse!(args)
     end

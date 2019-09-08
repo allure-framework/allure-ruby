@@ -8,7 +8,7 @@ require "csv"
 require_relative "ast_transformer"
 require_relative "tag_parser"
 
-module Allure
+module AllureCucumber
   # Support class for transforming cucumber test entities in to allure model entities
   class AllureCucumberModel
     extend AstTransformer
@@ -19,7 +19,7 @@ module Allure
       # @param [Cucumber::Core::Test::Case] test_case
       # @return [TestResult]
       def test_result(test_case)
-        TestResult.new(
+        Allure::TestResult.new(
           name: test_case.name,
           description: description(test_case),
           description_html: description(test_case),
@@ -36,7 +36,7 @@ module Allure
       # @param [Cucumber::Core::Test::Step] test_step
       # @return [StepResult]
       def step_result(test_step)
-        StepResult.new(
+        Allure::StepResult.new(
           name: "#{step(test_step).keyword}#{test_step.text}",
           attachments: [multiline_arg_attachment(test_step)].compact,
         )
@@ -47,7 +47,7 @@ module Allure
       # @return [StepResult]
       def fixture_result(test_step)
         location = test_step.location.to_s.split("/").last
-        FixtureResult.new(name: location)
+        Allure::FixtureResult.new(name: location)
       end
 
       # Get failure details
@@ -72,12 +72,12 @@ module Allure
       # @return [Array<Allure::Label>]
       def labels(test_case)
         labels = []
-        labels << ResultUtils.framework_label("cucumber")
-        labels << ResultUtils.feature_label(test_case.feature.name)
-        labels << ResultUtils.package_label(test_case.feature.name)
-        labels << ResultUtils.suite_label(test_case.feature.name)
-        labels << ResultUtils.story_label(test_case.name)
-        labels << ResultUtils.test_class_label(test_case.name)
+        labels << Allure::ResultUtils.framework_label("cucumber")
+        labels << Allure::ResultUtils.feature_label(test_case.feature.name)
+        labels << Allure::ResultUtils.package_label(test_case.feature.name)
+        labels << Allure::ResultUtils.suite_label(test_case.feature.name)
+        labels << Allure::ResultUtils.story_label(test_case.name)
+        labels << Allure::ResultUtils.test_class_label(test_case.name)
         unless test_case.tags.empty?
           labels.push(*tag_labels(test_case.tags))
           labels << severity(test_case.tags)
@@ -97,7 +97,7 @@ module Allure
       # @param [Cucumber::Core::Test::Case] test_case
       # @return [Array<Allure::Parameter>]
       def parameters(test_case)
-        example_row(test_case)&.values&.map { |value| Parameter.new("argument", value) }
+        example_row(test_case)&.values&.map { |value| Allure::Parameter.new("argument", value) }
       end
 
       # @param [Cucumber::Core::Test::Case] test_case
@@ -119,7 +119,7 @@ module Allure
       # @param [Cucumber::Core::Ast::DataTable] multiline_arg
       # @return [Allure::Attachment]
       def data_table_attachment(multiline_arg)
-        attachment = lifecycle.prepare_attachment("data-table", ContentType::CSV)
+        attachment = lifecycle.prepare_attachment("data-table", Allure::ContentType::CSV)
         csv = multiline_arg.raw.each_with_object([]) { |row, arr| arr.push(row.to_csv) }.join("")
         lifecycle.write_attachment(csv, attachment)
         attachment
@@ -128,7 +128,7 @@ module Allure
       # @param [String] multiline_arg
       # @return [String]
       def docstring_attachment(multiline_arg)
-        attachment = lifecycle.prepare_attachment("docstring", ContentType::TXT)
+        attachment = lifecycle.prepare_attachment("docstring", Allure::ContentType::TXT)
         lifecycle.write_attachment(multiline_arg.content, attachment)
         attachment
       end

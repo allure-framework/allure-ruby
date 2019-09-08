@@ -2,7 +2,7 @@
 
 require_relative "cucumber_model"
 
-module Allure
+module AllureCucumber
   # Main formatter class. Translates cucumber event to allure lifecycle
   class CucumberFormatter
     HOOK_HANDLERS = {
@@ -10,9 +10,9 @@ module Allure
       "After hook" => :start_tear_down_fixture,
     }.freeze
     ALLURE_STATUS = {
-      failed: Status::FAILED,
-      skipped: Status::SKIPPED,
-      passed: Status::PASSED,
+      failed: Allure::Status::FAILED,
+      skipped: Allure::Status::SKIPPED,
+      passed: Allure::Status::PASSED,
     }.freeze
 
     # @param [Cucumber::Configuration] config
@@ -28,7 +28,7 @@ module Allure
     # @param [Cucumber::Core::Events::TestCaseStarted] event
     # @return [void]
     def on_test_case_started(event)
-      lifecycle.start_test_container(TestResultContainer.new(name: event.test_case.name))
+      lifecycle.start_test_container(Allure::TestResultContainer.new(name: event.test_case.name))
       lifecycle.start_test_case(AllureCucumberModel.test_result(event.test_case))
     end
 
@@ -46,8 +46,8 @@ module Allure
       return if prepare_world_hook?(event.test_step)
 
       update_block = proc do |step|
-        step.stage = Stage::FINISHED
-        step.status = ALLURE_STATUS.fetch(event.result.to_sym, Status::BROKEN)
+        step.stage = Allure::Stage::FINISHED
+        step.status = ALLURE_STATUS.fetch(event.result.to_sym, Allure::Status::BROKEN)
       end
       step_type = hook?(event.test_step) ? "fixture" : "test_step"
 
@@ -60,9 +60,9 @@ module Allure
     # @return [void]
     def on_test_case_finished(event)
       failure_details = AllureCucumberModel.failure_details(event.result)
-      status = ALLURE_STATUS.fetch(event.result.to_sym, Status::BROKEN)
+      status = ALLURE_STATUS.fetch(event.result.to_sym, Allure::Status::BROKEN)
       lifecycle.update_test_case do |test_case|
-        test_case.stage = Stage::FINISHED
+        test_case.stage = Allure::Stage::FINISHED
         test_case.status = event.result.failed? ? Allure::ResultUtils.status(event.result&.exception) : status
         test_case.status_details.flaky = event.result.flaky?
         test_case.status_details.message = failure_details[:message]

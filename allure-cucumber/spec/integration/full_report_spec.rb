@@ -4,7 +4,7 @@ describe "allure-cucumber" do
   include_context "cucumber runner"
 
   let(:allure_cli) { Allure::Util.allure_cli }
-  let(:results_dir) { Allure::CucumberConfig.results_directory }
+  let(:results_dir) { Allure::Config.results_directory }
 
   before(:each) do
     FileUtils.remove_dir(results_dir) if File.exist?(results_dir)

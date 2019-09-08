@@ -1,0 +1,2 @@
+allure-ruby-commons/lib/**/*.rb
+allure-cucumber/lib/**/*.rb
