@@ -29,6 +29,7 @@ Common allure configuration is set via `Allure.configure` method. To change id, 
 ```ruby
 Allure.configure do |c|
   c.results_directory = "/whatever/you/like"
+  c.clean_results_directory = true
   c.logging_level = Logger::INFO
   # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
   c.link_tms_pattern = "http://www.jira.com/browse/{}"
