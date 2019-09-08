@@ -37,7 +37,7 @@ ADAPTORS.each do |adaptor|
 end
 
 namespace :all do
+  task clean: ADAPTORS.map { |adaptor| "#{adaptor}:clean" }
   task build: ADAPTORS.map { |adaptor| "#{adaptor}:build" }
-  task install: ADAPTORS.map { |adaptor| "#{adaptor}:install" }
   task push: ADAPTORS.map { |adaptor| "#{adaptor}:push" }
 end
