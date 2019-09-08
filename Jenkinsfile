@@ -21,10 +21,12 @@ pipeline {
       when { expression { return params.RELEASE } }
       steps {
         configFileProvider([configFile(fileId: 'gem-credentials', variable: 'CREDENTIALS')]) {
-          sh 'mkdir -p ~/.gem && mv $CREDENTIALS ~/.gem/credentials && chmod 0600 ~/.gem/credentials'
-          sh 'git checkout master && git pull origin master'
-          sh 'bundle exec rake bump[${RELEASE_VERSION}]'
-          sh 'bundle exec rake release'
+          sshagent(['qameta-ci_ssh']) {
+            sh 'mkdir -p ~/.gem && mv $CREDENTIALS ~/.gem/credentials && chmod 0600 ~/.gem/credentials'
+            sh 'git checkout master && git pull origin master'
+            sh 'bundle exec rake bump[${RELEASE_VERSION}]'
+            sh 'bundle exec rake release'
+          }
         }
       }
     }
