@@ -3,6 +3,7 @@
 require_relative "config"
 
 module AllureCucumber
+  # Cucumber tag parser helper methods
   module TagParser
     # @param [Cucumber::Core::Ast::Tag] tags
     # @return [Array<Allure::Label>]

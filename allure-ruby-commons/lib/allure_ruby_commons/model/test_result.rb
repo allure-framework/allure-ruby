@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Allure
+  # Allure model test result container
   class TestResult < ExecutableItem
     # @param [String] uuid
     # @param [String] history_id

@@ -3,6 +3,7 @@
 require_relative "jsonable"
 
 module Allure
+  # Allure model attachment object
   class Attachment < JSONable
     # @param [String] name attachment name
     # @param [String] type attachment type, {Allure::ContentType}

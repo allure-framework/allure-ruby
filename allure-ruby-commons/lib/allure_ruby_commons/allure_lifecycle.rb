@@ -163,6 +163,8 @@ module Allure
       yield(@current_fixture)
     end
 
+    # Stop current test fixture
+    # @return [void]
     def stop_fixture
       return logger.error("Could not stop fixture, fixture is not started") unless @current_fixture
 

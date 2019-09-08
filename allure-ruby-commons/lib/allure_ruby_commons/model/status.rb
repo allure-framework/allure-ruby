@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Allure
+  # Allure model statuses
   class Status
     FAILED = :failed
     BROKEN = :broken

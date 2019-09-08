@@ -3,6 +3,7 @@
 require_relative "jsonable"
 
 module Allure
+  # Allure model executable item
   class ExecutableItem < JSONable
     # @param [Hash] options
     # @option options [String] :name

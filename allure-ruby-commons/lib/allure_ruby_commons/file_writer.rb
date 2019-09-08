@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 module Allure
+  # Allure result file writer
   class FileWriter
+    # @return [String] test result suffix
     TEST_RESULT_SUFFIX = "-result.json"
+    # @return [String] test result container suffix
     TEST_RESULT_CONTAINER_SUFFIX = "-container.json"
+    # @return [String] attachment file suffix
     ATTACHMENT_FILE_SUFFIX = "-attachment"
 
     # Write test result

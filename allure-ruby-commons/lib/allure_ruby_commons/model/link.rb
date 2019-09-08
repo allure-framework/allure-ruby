@@ -3,6 +3,7 @@
 require_relative "jsonable"
 
 module Allure
+  # Allure model link object
   class Link < JSONable
     def initialize(type, name, url)
       @type = type

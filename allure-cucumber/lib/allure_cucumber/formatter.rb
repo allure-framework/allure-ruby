@@ -5,10 +5,12 @@ require_relative "cucumber_model"
 module AllureCucumber
   # Main formatter class. Translates cucumber event to allure lifecycle
   class CucumberFormatter
+    # @return [Hash] hook handler methods
     HOOK_HANDLERS = {
       "Before hook" => :start_prepare_fixture,
       "After hook" => :start_tear_down_fixture,
     }.freeze
+    # @return [Hash] allure statuses mapping
     ALLURE_STATUS = {
       failed: Allure::Status::FAILED,
       skipped: Allure::Status::SKIPPED,
