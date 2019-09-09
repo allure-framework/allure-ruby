@@ -9,6 +9,13 @@ Gem::Specification.new do |s|
   s.summary = "Common library for allure results generation"
   s.description = "Utilities allowing to implement allure result generation by other test frameworks"
   s.homepage = "https://github.com/allure-framework/allure-ruby"
+  s.metadata = {
+    "bug_tracker_uri" => "https://github.com/allure-framework/allure-ruby/issues",
+    "changelog_uri" => "https://github.com/allure-framework/allure-ruby/releases",
+    "documentation_uri" => "https://github.com/allure-framework/allure-ruby/blob/master/allure-ruby-commons/README.md",
+    "source_code_uri" => "https://github.com/allure-framework/allure-ruby/tree/master/allure-ruby-commons",
+    "wiki_uri" => "https://github.com/allure-framework/allure-ruby/wiki",
+  }
 
   s.required_ruby_version = ">= 2.5.0"
 
