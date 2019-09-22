@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "fileutils"
 require_relative "cucumber_model"
 
 module AllureCucumber
@@ -22,12 +21,20 @@ module AllureCucumber
     def initialize(config)
       Allure.configure do |c|
         c.results_directory = config.out_stream if config.out_stream.is_a?(String)
-        FileUtils.rm_f(Dir.glob("#{c.results_directory}/*")) if c.clean_results_directory
       end
+
+      config.on_event(:test_run_started, &method(:on_test_run_started))
       config.on_event(:test_case_started, &method(:on_test_case_started))
       config.on_event(:test_step_started, &method(:on_test_step_started))
       config.on_event(:test_step_finished, &method(:on_test_step_finished))
       config.on_event(:test_case_finished, &method(:on_test_case_finished))
+    end
+
+    # Clean test result directory before starting run
+    # @param [Cucumber::Events::TestRunStarted<Type>] _event
+    # @return [void]
+    def on_test_run_started(_event)
+      lifecycle.clean_results_dir
     end
 
     # Handle test case started event

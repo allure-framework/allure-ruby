@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "fileutils"
+
 module Allure
   # Main class for creating and writing allure results
   class AllureLifecycle
@@ -216,6 +218,14 @@ module Allure
       current_executable.steps.push(step_result)
       @step_context.push(step_result)
       step_result
+    end
+
+    # Clean results directory
+    # @return [void]
+    def clean_results_dir
+      Allure.configuration.tap do |c|
+        FileUtils.rm_f(Dir.glob("#{c.results_directory}/*")) if c.clean_results_directory
+      end
     end
 
     private
