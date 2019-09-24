@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ADAPTORS = %w[allure-ruby-commons allure-cucumber].freeze
+ADAPTORS = %w[allure-ruby-commons allure-cucumber allure-rspec].freeze
 
 # Run specific task for all adaptors
 %w[test rubocop].each do |task_name|

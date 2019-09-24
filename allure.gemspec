@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "allure-ruby-commons", version
   s.add_dependency "allure-cucumber", version
+  s.add_dependency "allure-rspec", version
 
   s.add_development_dependency "bundler", "~> 2.0"
   s.add_development_dependency "pry", "~> 0.12.2"
