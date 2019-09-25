@@ -14,7 +14,7 @@ describe "RSpecFormatter.example_started" do
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
       aggregate_failures "Should have correct args" do
         expect(arg.name).to eq(spec)
-        expect(arg.description).to eq("Location - ./spec/fixture/specs/simple_test.rb:4")
+        expect(arg.description).to eq("Location - spec/fixture/specs/simple_test.rb:4")
         expect(arg.full_name).to eq("#{suite} #{spec}")
         expect(arg.links).to be_empty
         expect(arg.parameters).to be_empty
@@ -25,6 +25,7 @@ describe "RSpecFormatter.example_started" do
           result_utils.framework_label("rspec"),
           result_utils.package_label("spec/fixture/specs"),
           result_utils.test_class_label("simple_test"),
+          result_utils.tag_label("some_label"),
         )
       end
     end
@@ -36,7 +37,9 @@ describe "RSpecFormatter.example_started" do
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
       expect(arg.links).to contain_exactly(
         result_utils.tms_link("QA-123"),
+        result_utils.tms_link("QA-124"),
         result_utils.issue_link("BUG-123"),
+        result_utils.issue_link("BUG-124"),
       )
     end
   end

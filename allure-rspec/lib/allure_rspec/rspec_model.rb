@@ -44,22 +44,22 @@ module AllureRspec
       # @param [RSpec::Core::Example] example
       # @return [Array<Allure::Label>]
       def labels(example)
-        labels = []
-        labels << Allure::ResultUtils.framework_label("rspec")
-        labels << Allure::ResultUtils.feature_label(example.example_group.description)
-        labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
-        labels << Allure::ResultUtils.suite_label(example.example_group.description)
-        labels << Allure::ResultUtils.story_label(example.description)
-        labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
-        labels << severity(example.metadata)
-
-        labels
+        [].tap do |labels|
+          labels << Allure::ResultUtils.framework_label("rspec")
+          labels << Allure::ResultUtils.feature_label(example.example_group.description)
+          labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
+          labels << Allure::ResultUtils.suite_label(example.example_group.description)
+          labels << Allure::ResultUtils.story_label(example.description)
+          labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
+          labels << severity(example.metadata)
+          labels.push(*tag_labels(example.metadata))
+        end
       end
 
       # @param [RSpec::Core::Example] example
       # @return [Array<Allure::Label>]
       def links(example)
-        [tms_link(example.metadata), issue_link(example.metadata)].compact
+        tms_links(example.metadata) + issue_links(example.metadata)
       end
 
       # Strip relative ./ form path
