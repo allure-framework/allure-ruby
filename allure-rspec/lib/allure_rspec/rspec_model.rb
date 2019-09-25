@@ -16,8 +16,8 @@ module AllureRspec
       def test_result(example)
         Allure::TestResult.new(
           name: example.description,
-          description: "Location - #{example.location}",
-          description_html: "Location - #{example.location}",
+          description: "Location - #{strip_relative(example.location)}",
+          description_html: "Location - #{strip_relative(example.location)}",
           history_id: Digest::MD5.hexdigest(example.id),
           full_name: example.full_description,
           labels: labels(example),
@@ -47,7 +47,7 @@ module AllureRspec
         labels = []
         labels << Allure::ResultUtils.framework_label("rspec")
         labels << Allure::ResultUtils.feature_label(example.example_group.description)
-        labels << Allure::ResultUtils.package_label(Pathname.new(example.file_path.gsub("./", "")).parent.to_s)
+        labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
         labels << Allure::ResultUtils.suite_label(example.example_group.description)
         labels << Allure::ResultUtils.story_label(example.description)
         labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
@@ -60,6 +60,13 @@ module AllureRspec
       # @return [Array<Allure::Label>]
       def links(example)
         [tms_link(example.metadata), issue_link(example.metadata)].compact
+      end
+
+      # Strip relative ./ form path
+      # @param [String] path
+      # @return [String]
+      def strip_relative(path)
+        path.gsub("./", "")
       end
     end
   end
