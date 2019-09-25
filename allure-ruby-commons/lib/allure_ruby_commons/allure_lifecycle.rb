@@ -6,6 +6,7 @@ module Allure
   # Main class for creating and writing allure results
   class AllureLifecycle
     def initialize
+      @test_context = []
       @step_context = []
     end
 
@@ -13,8 +14,10 @@ module Allure
     # @param [Allure::TestResultContainer] test_result_container
     # @return [Allure::TestResultContainer]
     def start_test_container(test_result_container)
-      test_result_container.start = ResultUtils.timestamp
-      @current_test_result_container = test_result_container
+      test_result_container.tap do |container|
+        container.start = ResultUtils.timestamp
+        @test_context.push(container)
+      end
     end
 
     # @example Update current test container
@@ -25,23 +28,25 @@ module Allure
     # @yieldreturn [void]
     # @return [void]
     def update_test_container
-      unless @current_test_result_container
+      unless current_test_result_container
         return logger.error("Could not update test container, no container is running.")
       end
 
-      yield(@current_test_result_container)
+      yield(current_test_result_container)
     end
 
     # Stop current test container and write result
     # @return [void]
     def stop_test_container
-      unless @current_test_result_container
+      unless current_test_result_container
         return logger.error("Could not stop test container, no container is running.")
       end
 
-      @current_test_result_container.stop = ResultUtils.timestamp
-      file_writer.write_test_result_container(@current_test_result_container)
-      clear_current_test_container
+      current_test_result_container.tap do |container|
+        container.stop = ResultUtils.timestamp
+        file_writer.write_test_result_container(container)
+        clear_last_test_container
+      end
     end
 
     # Start test case and add to current test container
@@ -49,14 +54,14 @@ module Allure
     # @return [Allure::TestResult]
     def start_test_case(test_result)
       clear_step_context
-      unless @current_test_result_container
+      unless current_test_result_container
         return logger.error("Could not start test case, test container is not started")
       end
 
       test_result.start = ResultUtils.timestamp
       test_result.stage = Stage::RUNNING
       test_result.labels.push(ResultUtils.thread_label, ResultUtils.host_label, ResultUtils.language_label)
-      @current_test_result_container.children.push(test_result.uuid)
+      current_test_result_container.children.push(test_result.uuid)
       @current_test_case = test_result
     end
 
@@ -125,7 +130,7 @@ module Allure
     # @return [Allure::FixtureResult]
     def start_prepare_fixture(fixture_result)
       start_fixture(fixture_result) || return
-      @current_test_result_container.befores.push(fixture_result)
+      current_test_result_container.befores.push(fixture_result)
       @current_fixture = fixture_result
     end
 
@@ -134,7 +139,7 @@ module Allure
     # @return [Allure::FixtureResult]
     def start_tear_down_fixture(fixture_result)
       start_fixture(fixture_result) || return
-      @current_test_result_container.afters.push(fixture_result)
+      current_test_result_container.afters.push(fixture_result)
       @current_fixture = fixture_result
     end
 
@@ -143,7 +148,7 @@ module Allure
     # @return [Allure::FixtureResult]
     def start_fixture(fixture_result)
       clear_step_context
-      unless @current_test_result_container
+      unless current_test_result_container
         logger.error("Could not start fixture, test container is not started")
         return false
       end
@@ -242,12 +247,12 @@ module Allure
       current_test_step || @current_fixture || @current_test_case
     end
 
-    def clear_current_test_container
-      @current_test_result_container = nil
+    def current_test_result_container
+      @test_context.last
     end
 
-    def clear_current_test_case
-      @current_test_case = nil
+    def clear_last_test_container
+      @test_context.pop
     end
 
     def current_test_step
@@ -260,6 +265,10 @@ module Allure
 
     def clear_step_context
       @step_context.clear
+    end
+
+    def clear_current_test_case
+      @current_test_case = nil
     end
 
     def clear_current_fixture
