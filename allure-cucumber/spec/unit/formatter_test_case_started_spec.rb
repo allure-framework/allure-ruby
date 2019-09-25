@@ -60,11 +60,7 @@ describe "CucumberFormatter.on_test_case_started" do
     run_cucumber_cli("features/features/tags.feature", "--tags", "@status_details")
 
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
-      aggregate_failures "Should have correct args" do
-        expect(arg.status_details).to eq(
-          Allure::StatusDetails.new(flaky: true, muted: true, known: true),
-        )
-      end
+      expect(arg.status_details).to eq(Allure::StatusDetails.new(flaky: true, muted: true, known: true))
     end
   end
 

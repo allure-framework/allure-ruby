@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "Allure formatter" do
+describe "RSpecFormatter.start" do
   include_context "allure mock"
   include_context "rspec runner"
 

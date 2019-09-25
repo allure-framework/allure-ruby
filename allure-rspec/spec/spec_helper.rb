@@ -5,7 +5,11 @@ require "pry"
 require "allure-ruby-commons"
 require "allure-rspec"
 
-Allure.configure { |c| c.clean_results_directory = true }
+Allure.configure do |c|
+  c.clean_results_directory = true
+  c.link_tms_pattern = "http://www.jira.com/tms/{}"
+  c.link_issue_pattern = "http://www.jira.com/issue/{}"
+end
 
 RSpec.shared_context("allure mock") do
   let(:lifecycle) { spy("lifecycle") }
