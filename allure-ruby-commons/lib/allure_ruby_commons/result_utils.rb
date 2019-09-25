@@ -126,9 +126,9 @@ module Allure
 
       # Get exception status detail
       # @param [Exception] exception
-      # @return [Hash<Symbol, String>]
+      # @return [Allure::StatusDetails]
       def status_details(exception)
-        StatusDetails.new(message: exception.message, trace: exception.backtrace&.join("\n"))
+        StatusDetails.new(message: exception&.message, trace: exception&.backtrace&.join("\n"))
       end
 
       private

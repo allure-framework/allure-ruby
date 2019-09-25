@@ -28,7 +28,10 @@ RSpec.shared_context("rspec runner") do
     allow(RSpec).to receive(:world).and_return(world)
   end
 
-  def run_rspec(spec)
-    RSpec::Core::Runner.run([spec, "--format", "AllureRspecFormatter"], StringIO.new, StringIO.new)
+  def run_rspec(spec, tag = nil)
+    [spec, "--format", "AllureRspecFormatter"].tap do |args|
+      args.push("--tag", tag) if tag
+      RSpec::Core::Runner.run(args, StringIO.new, StringIO.new)
+    end
   end
 end

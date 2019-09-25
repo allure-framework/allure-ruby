@@ -19,8 +19,8 @@ ADAPTORS.each do |adaptor|
   namespace adaptor do
     %w[test rubocop].each do |task_name|
       desc "Run #{task_name} for #{adaptor}"
-      task task_name do
-        system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}")
+      task task_name, :tag do |_task, args|
+        system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}[#{args[:tag] || ''}]")
       end
     end
   end

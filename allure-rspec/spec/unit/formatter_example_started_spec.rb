@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "RSpecFormatter.example_group_started" do
+describe "RSpecFormatter.example_started" do
   include_context "allure mock"
   include_context "rspec runner"
 

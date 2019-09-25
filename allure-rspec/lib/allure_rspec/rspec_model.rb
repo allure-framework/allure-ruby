@@ -26,6 +26,19 @@ module AllureRspec
         )
       end
 
+      # Update test status on finish
+      # @param [RSpec::Core::Example::ExecutionResult] result
+      # @return [Proc]
+      def update_test_proc(result)
+        status_detail = Allure::ResultUtils.status_details(result.exception)
+        proc do |test_case|
+          test_case.stage = Allure::Stage::FINISHED
+          test_case.status = (result.status == :failed) ? Allure::ResultUtils.status(result.exception) : result.status
+          test_case.status_details.message = status_detail.message
+          test_case.status_details.trace = status_detail.trace
+        end
+      end
+
       private
 
       # @param [RSpec::Core::Example] example

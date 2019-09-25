@@ -21,7 +21,7 @@ module AllureRspec
     end
 
     # Starts example group
-    # @param [RSpec::Core::Notifications::GroupNotification] example_group
+    # @param [RSpec::Core::Notifications::GroupNotification] example_group_notification
     # @return [void]
     def example_group_started(example_group_notification)
       lifecycle.start_test_container(
@@ -30,15 +30,26 @@ module AllureRspec
     end
 
     # Starts example
-    # @param [RSpec::Core::Notifications::ExampleNotification] example
+    # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
     # @return [void]
     def example_started(example_notification)
       lifecycle.start_test_case(AllureRspecModel.test_result(example_notification.example))
     end
 
-    def example_finished(example_notification); end
+    # Finishes example
+    # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
+    # @return [void]
+    def example_finished(example_notification)
+      lifecycle.update_test_case(&AllureRspecModel.update_test_proc(example_notification.example.execution_result))
+      lifecycle.stop_test_case
+    end
 
-    def example_group_finished(example_group_notification); end
+    # Starts example group
+    # @param [RSpec::Core::Notifications::GroupNotification] example_group_notification
+    # @return [void]
+    def example_group_finished(_example_group_notification)
+      lifecycle.stop_test_container
+    end
 
     private
 
