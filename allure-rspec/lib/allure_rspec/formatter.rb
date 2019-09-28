@@ -7,6 +7,8 @@ require_relative "rspec_model"
 
 module AllureRspec
   class RSpecFormatter < RSpec::Core::Formatters::BaseFormatter
+    include AllureRspecModel
+
     RSpec::Core::Formatters.register(
       self,
       :start,
@@ -42,14 +44,14 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
     # @return [void]
     def example_started(example_notification)
-      lifecycle.start_test_case(AllureRspecModel.test_result(example_notification.example))
+      lifecycle.start_test_case(test_result(example_notification.example))
     end
 
     # Finishes example
     # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
     # @return [void]
     def example_finished(example_notification)
-      lifecycle.update_test_case(&AllureRspecModel.update_test_proc(example_notification.example.execution_result))
+      lifecycle.update_test_case(&update_test_proc(example_notification.example.execution_result))
       lifecycle.stop_test_case
     end
 
