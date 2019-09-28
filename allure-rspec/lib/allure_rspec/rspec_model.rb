@@ -9,6 +9,13 @@ module AllureRspec
   class AllureRspecModel
     extend TagParser
 
+    # @return [Hash] allure statuses mapping
+    ALLURE_STATUS ||= {
+      failed: Allure::Status::FAILED,
+      pending: Allure::Status::SKIPPED,
+      passed: Allure::Status::PASSED,
+    }.freeze
+
     class << self
       # Transform example to <Allure::TestResult>
       # @param [RSpec::Core::Example] example
@@ -30,12 +37,13 @@ module AllureRspec
       # @param [RSpec::Core::Example::ExecutionResult] result
       # @return [Proc]
       def update_test_proc(result)
-        status_detail = Allure::ResultUtils.status_details(result.exception)
-        proc do |test_case|
-          test_case.stage = Allure::Stage::FINISHED
-          test_case.status = (result.status == :failed) ? Allure::ResultUtils.status(result.exception) : result.status
-          test_case.status_details.message = status_detail.message
-          test_case.status_details.trace = status_detail.trace
+        Allure::ResultUtils.status_details(result.exception).yield_self do |status_detail|
+          proc do |test_case|
+            test_case.stage = Allure::Stage::FINISHED
+            test_case.status = status(result)
+            test_case.status_details.message = status_detail.message
+            test_case.status_details.trace = status_detail.trace
+          end
         end
       end
 
@@ -48,11 +56,24 @@ module AllureRspec
           labels << Allure::ResultUtils.framework_label("rspec")
           labels << Allure::ResultUtils.feature_label(example.example_group.description)
           labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
-          labels << Allure::ResultUtils.suite_label(example.example_group.description)
           labels << Allure::ResultUtils.story_label(example.description)
           labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
           labels << severity(example.metadata)
+          labels.push(*suite_labels(example.example_group))
           labels.push(*tag_labels(example.metadata))
+        end
+      end
+
+      # Add suite labels
+      # @param [RSpec::Core::ExampleGroup] example_group
+      # @return [Array<Allure::Label>]
+      def suite_labels(example_group)
+        example_group.parent_groups.map(&:description).yield_self do |parents|
+          [].tap do |labels|
+            labels << Allure::ResultUtils.suite_label((parents.length == 1) ? parents.last : parents[-2])
+            labels << Allure::ResultUtils.parent_suite_label(parents.last) if parents.length > 1
+            labels << Allure::ResultUtils.sub_suite_label(parents[0..-3].join(" > ")) if parents.length > 2
+          end
         end
       end
 
@@ -60,6 +81,15 @@ module AllureRspec
       # @return [Array<Allure::Label>]
       def links(example)
         tms_links(example.metadata) + issue_links(example.metadata)
+      end
+
+      # Get allure status from result
+      # @param [RSpec::Core::Example::ExecutionResult] result
+      # @return [Symbol]
+      def status(result)
+        return Allure::ResultUtils.status(result.exception) if result.status == :failed
+
+        ALLURE_STATUS[result.status]
       end
 
       # Strip relative ./ form path
