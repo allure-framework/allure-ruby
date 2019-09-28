@@ -16,6 +16,15 @@ module AllureRspec
       :example_finished,
     )
 
+    RSpec::Core::Example.class_eval do
+      Allure.singleton_methods.each do |method|
+        define_method(method) { |*args| Allure.__send__(method, *args) }
+      end
+    end
+
+    # Start test run
+    # @param [RSpec::Core::Notifications::StartNotification] _start_notification
+    # @return [void]
     def start(_start_notification)
       lifecycle.clean_results_dir
     end
