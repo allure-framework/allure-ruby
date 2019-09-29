@@ -26,6 +26,7 @@ GEM
     backports (3.15.0)
     builder (3.2.3)
     coderay (1.1.2)
+    colorize (0.8.1)
     cucumber (3.1.2)
       builder (>= 2.1.2)
       cucumber-core (~> 3.2.0)
@@ -119,6 +120,7 @@ PLATFORMS
 DEPENDENCIES
   allure-ruby!
   bundler (~> 2.0)
+  colorize (~> 0.8)
   pry (~> 0.12.2)
   rake (~> 13.0)
   rspec (~> 3.8)

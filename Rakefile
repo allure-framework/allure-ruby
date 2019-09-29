@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "tasks/test"
-require_relative "tasks/release"
+require_relative "rake/test"
+require_relative "rake/release"
 
-desc "Run all tests by default"
+desc "Run all tests"
 task default: :test
-
-desc "Build gem files for all projects"
-task build: "all:build"
-
-desc "Release all gems to rubygems"
-task release: "all:push"
