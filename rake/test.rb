@@ -35,7 +35,7 @@ class TestTasks
       desc "Run #{task_name} task for all adaptors"
       task task_name do
         errors = adaptors.each_with_object([]) do |adaptor, a|
-          puts "Executing #{task_name} for #{adaptor}".yellow
+          puts "\nExecuting #{task_name} for #{adaptor}".yellow
           run_task(adaptor, task_name) || a << adaptor
         end
         raise Exception.new("Errors in #{errors.join(', ')}") unless errors.empty?

@@ -15,3 +15,4 @@ pkg
 reports
 .allure
 doc
+coverage

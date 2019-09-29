@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require "rspec"
+require "simplecov"
 require "allure-ruby-commons"
+
+SimpleCov.command_name("allure-ruby-commons")
 
 Allure.configure do |conf|
   conf.link_issue_pattern = "http://jira.com/{}"

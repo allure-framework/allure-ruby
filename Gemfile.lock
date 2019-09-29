@@ -44,6 +44,7 @@ GEM
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
     diff-lcs (1.3)
+    docile (1.3.2)
     gherkin (5.1.0)
     htmlentities (4.3.4)
     jaro_winkler (1.5.3)
@@ -94,6 +95,11 @@ GEM
       rubocop (>= 0.71.0)
     ruby-progressbar (1.10.1)
     rubyzip (2.0.0)
+    simplecov (0.17.1)
+      docile (~> 1.1)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     solargraph (0.37.2)
       backport (~> 1.1)
       bundler (>= 1.17.2)
@@ -126,6 +132,7 @@ DEPENDENCIES
   rspec (~> 3.8)
   rubocop (~> 0.74)
   rubocop-performance (~> 1.4)
+  simplecov (~> 0.17)
   solargraph (~> 0.35)
 
 BUNDLED WITH
