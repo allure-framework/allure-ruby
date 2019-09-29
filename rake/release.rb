@@ -25,22 +25,35 @@ class ReleaseTasks
         puts "Updating version to #{version}".yellow
         sh "bundle install --quiet && git commit Gemfile.lock ALLURE_VERSION -m 'Update allure to v#{version}'"
         sh "git tag #{version}"
+
         puts "Pushing to repo".yellow
         sh "git push origin HEAD --follow-tags"
       end
     end
   end
 
-  def add_adaptor_build_tasks
+  def add_adaptor_build_tasks # rubocop:disable MethodLength
     adaptors.each do |adaptor|
       namespace adaptor do
-        gem = "#{root}/pkg/#{adaptor}-#{version}.gem"
+        gem = "#{adaptor}-#{version}.gem"
+        gem_path = "#{root}/pkg/#{gem}"
         gemspec = "#{adaptor}.gemspec"
 
-        task(:clean) { rm_f gem }
-        task(gem: :pkg) { sh "cd #{adaptor} && gem build #{gemspec} && mv #{adaptor}-#{version}.gem #{root}/pkg/" }
+        task(:clean) do
+          system("rm -f #{gem_path}")
+        end
+
+        task(gem: :pkg) do
+          puts "Building #{gem}".yellow
+          sh "cd #{adaptor} && gem build #{gemspec} && mv #{gem} #{gem_path}"
+        end
+
         task(build: %i[clean gem])
-        task(release: :build) { sh "gem push #{gem}" }
+
+        task(release: :build) do
+          puts "Pushing #{gem}".yellow
+          sh "gem push #{gem_path}"
+        end
       end
     end
   end
