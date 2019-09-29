@@ -3,17 +3,14 @@
 describe "allure-ruby-commons" do
   include_context "lifecycle"
 
+  let(:results_dir) { Allure::Config.results_directory }
+
   before(:all) do
-    Allure.configure do |conf|
-      conf.results_directory = "reports/allure-results/integration"
-      conf.link_issue_pattern = "http://jira.com/{}"
-      conf.link_tms_pattern = "http://jira.com/{}"
-    end
-    FileUtils.remove_dir(Allure::Config.results_directory) if File.exist?(Allure::Config.results_directory)
+    clean_results_dir
   end
 
   before do
-    image = File.new(File.join(Dir.pwd, "spec/images/ruby-logo.png"))
+    image = File.new(File.join(Dir.pwd, "spec/fixtures/ruby-logo.png"))
 
     start_test_container("Result Container")
     add_fixture("Before", "prepare")
@@ -57,10 +54,25 @@ describe "allure-ruby-commons" do
     lifecycle.stop_test_container
   end
 
-  it "generate valid json", reporter: true do
-    allure_cli = Allure::Util.allure_cli
-    expect(`#{allure_cli} generate -c #{Allure::Config.results_directory} -o reports/allure-report`.chomp).to(
-      eq("Report successfully generated to reports/allure-report"),
-    )
+  it "generate valid json", integration: true do
+    container = File.new(Dir["#{results_dir}/*container.json"].first)
+    result = File.new(Dir["#{results_dir}/*result.json"].first)
+    attachments = Dir["#{results_dir}/*attachment*"]
+
+    aggregate_failures "Results files should exist" do
+      expect(File.exist?(container)).to be_truthy
+      expect(File.exist?(result)).to be_truthy
+      expect(File.exist?(attachments[0])).to be_truthy
+      expect(File.exist?(attachments[1])).to be_truthy
+    end
+
+    container_json = JSON.parse(File.read(container), symbolize_names: true)
+    result_json = JSON.parse(File.read(result), symbolize_names: true)
+
+    aggregate_failures "Json results should contain valid data" do
+      expect(container_json[:name]).to eq("Result Container")
+      expect(result_json[:fullName]).to eq("feature: Some scenario")
+      expect(result_json[:steps].size).to eq(1)
+    end
   end
 end

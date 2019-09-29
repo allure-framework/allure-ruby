@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-require "pry"
 require "rspec"
 require "allure-ruby-commons"
+
+Allure.configure do |conf|
+  conf.link_issue_pattern = "http://jira.com/{}"
+  conf.link_tms_pattern = "http://jira.com/{}"
+end
 
 RSpec.shared_context("lifecycle") do
   let(:lifecycle) { Allure::AllureLifecycle.new }
@@ -40,4 +44,8 @@ RSpec.shared_context("lifecycle mocks") do
     allow(Allure::FileWriter).to receive(:new).and_return(file_writer)
     allow(Logger).to receive(:new).and_return(logger)
   end
+end
+
+def clean_results_dir
+  FileUtils.remove_dir(Allure::Config.results_directory) if File.exist?(Allure::Config.results_directory)
 end

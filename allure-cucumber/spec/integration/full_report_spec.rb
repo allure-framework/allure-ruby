@@ -3,7 +3,6 @@
 describe "allure-cucumber" do
   include_context "cucumber runner"
 
-  let(:allure_cli) { Allure::Util.allure_cli }
   let(:results_dir) { Allure::Config.results_directory }
 
   it "Generates allure json results files", integration: true do
@@ -24,13 +23,5 @@ describe "allure-cucumber" do
       expect(result_json[:description]).to eq("Simple scenario description")
       expect(result_json[:steps].size).to eq(4)
     end
-  end
-
-  it "Allure commandline generates report", reporter: true do
-    run_cucumber_cli("features/features")
-
-    expect(`#{allure_cli} generate -c #{results_dir} -o reports/allure-report`.chomp).to(
-      eq("Report successfully generated to reports/allure-report"),
-    )
   end
 end

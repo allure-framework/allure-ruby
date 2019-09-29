@@ -17,11 +17,14 @@ end
 # Run specific task for single adaptor
 ADAPTORS.each do |adaptor|
   namespace adaptor do
-    %w[test rubocop].each do |task_name|
-      desc "Run #{task_name} for #{adaptor}"
-      task task_name, :tag do |_task, args|
-        system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}[#{args[:tag] || ''}]")
-      end
+    desc "Run rubocop for #{adaptor}"
+    task "rubocop" do
+      system("cd #{adaptor} && #{$PROGRAM_NAME} rubocop")
+    end
+
+    desc "Run test for #{adaptor}"
+    task "test", :tag do |_task, args|
+      system("cd #{adaptor} && #{$PROGRAM_NAME} test[#{args[:tag] || ''}]")
     end
   end
 end

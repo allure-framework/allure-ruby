@@ -3,6 +3,10 @@
 describe Allure::FileWriter do
   let(:file_writer) { Allure::FileWriter.new }
 
+  before(:all) do
+    clean_results_dir
+  end
+
   it "writes test result container" do
     test_result_container = Allure::TestResultContainer.new
     json_file = File.join(Allure::Config.results_directory, "#{test_result_container.uuid}-container.json")

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "rspec"
-require "pry"
 require "allure-ruby-commons"
 require "allure-rspec"
 
