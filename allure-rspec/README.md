@@ -93,7 +93,7 @@ end
 Test severity (`normal` by default) can be changed via `severity` tag:
 
 ```ruby
-it "some test case", severity: "critical" do
+it "some test case", severity: :critical do
   # test
 end
 ```
