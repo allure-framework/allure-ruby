@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "colorize"
+require "rake"
 
 module TaskUtil
   def root

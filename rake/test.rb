@@ -31,14 +31,12 @@ class TestTasks
   private
 
   def add_all_adaptors_tasks
-    %w[test rubocop].each do |task_name|
-      desc "Run #{task_name} task for all adaptors"
-      task task_name do
-        errors = adaptors.each_with_object([]) do |adaptor, a|
-          puts "\nExecuting #{task_name} for #{adaptor}".yellow
-          run_task(adaptor, task_name) || a << adaptor
-        end
-        raise Exception.new("Errors in #{errors.join(', ')}") unless errors.empty?
+    namespace :all do
+      task(:rubocop) { run_all_adaptors(:rubocop) }
+      task(:test) do
+        run_all_adaptors(:test)
+      ensure
+        merge_coverage
       end
     end
   end
@@ -47,16 +45,35 @@ class TestTasks
     adaptors.each do |adaptor|
       namespace adaptor do
         desc "Run rubocop for #{adaptor}"
-        task(:rubocop) { run_task(adaptor, :rubocop) }
+        task(:rubocop) { run_single_adaptor(adaptor, :rubocop) }
 
         desc "Run tests for #{adaptor}"
-        task(:test, :tag) { |_task, args| run_task(adaptor, "test[#{args[:tag] || ''}]") }
+        task(:test, :tag) { |_task, args| run_single_adaptor(adaptor, "test[#{args[:tag] || ''}]") }
       end
     end
   end
 
-  def run_task(adaptor, task_name)
+  def run_all_adaptors(task_name)
+    errors = adaptors.each_with_object([]) do |adaptor, a|
+      puts "\nExecuting #{task_name} for #{adaptor}".yellow
+      run_single_adaptor(adaptor, task_name) || a << adaptor
+    end
+    raise Exception.new("Errors in #{errors.join(', ')}") unless errors.empty?
+  end
+
+  def run_single_adaptor(adaptor, task_name)
     system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}")
+  end
+
+  def merge_coverage
+    ENV["COVERAGE"] = "true"
+    require "simplecov"
+
+    results = Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
+      res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
+    end
+    puts "\nGenerating combined coverage report".yellow
+    SimpleCov::ResultMerger.merge_results(*results).format!
   end
 end
 
