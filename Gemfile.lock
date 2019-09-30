@@ -11,7 +11,7 @@ PATH
       json (>= 1.8, < 3)
       mime-types (~> 3.3)
       require_all (~> 2.0)
-      rubyzip (~> 1.2)
+      rubyzip (>= 1.2, < 3.0)
       uuid (~> 2.3)
 
 GEM
@@ -88,7 +88,7 @@ GEM
     rubocop-performance (1.4.1)
       rubocop (>= 0.71.0)
     ruby-progressbar (1.10.1)
-    rubyzip (1.2.4)
+    rubyzip (2.0.0)
     solargraph (0.37.2)
       backport (~> 1.1)
       bundler (>= 1.17.2)
