@@ -1,3 +1,7 @@
 # frozen_string_literal: true
 
-SimpleCov.start { add_filter ["/spec/", "/fixture/", "/features/"] } unless ENV["COVERAGE"]
+return if ENV["COVERAGE"]
+
+SimpleCov.start do 
+  add_filter ["/spec/", "/fixture/", "/features/"]
+end

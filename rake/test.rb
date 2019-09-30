@@ -56,13 +56,15 @@ class TestTasks
   def run_all_adaptors(task_name)
     errors = adaptors.each_with_object([]) do |adaptor, a|
       puts "\nExecuting #{task_name} for #{adaptor}".yellow
-      run_single_adaptor(adaptor, task_name) || a << adaptor
+      run_single_adaptor(adaptor, task_name)
+    rescue
+      a << adaptor
     end
-    raise Exception.new("Errors in #{errors.join(', ')}") unless errors.empty?
+    raise StandardError.new("Errors in #{errors.join(', ')}") unless errors.empty?
   end
 
   def run_single_adaptor(adaptor, task_name)
-    system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}")
+    system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}") || (raise StandardError.new("Task failed!"))
   end
 
   def merge_coverage
