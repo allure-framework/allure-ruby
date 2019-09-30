@@ -33,7 +33,9 @@ class TestTasks
   def add_all_adaptors_tasks
     namespace :all do
       task(:rubocop) { run_all_adaptors(:rubocop) }
-      task(:test) do
+      task(:test) { run_all_adaptors(:test) }
+      task(:test_with_coverage) do
+        ENV["COVERAGE"] = "true"
         run_all_adaptors(:test)
       ensure
         merge_coverage
@@ -68,7 +70,7 @@ class TestTasks
   end
 
   def merge_coverage
-    ENV["COVERAGE"] = "true"
+    ENV["COV_MERGE"] = "true"
     require "simplecov"
 
     results = Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|

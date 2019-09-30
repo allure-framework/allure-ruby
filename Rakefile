@@ -11,6 +11,9 @@ task rubocop: "all:rubocop"
 desc "Run all tests"
 task test: "all:test"
 
+desc "Run all tests and generate SimpleCov report"
+task test_with_coverage: "all:test_with_coverage"
+
 desc "Clean gem files from pkg folder"
 task clean: "all:clean"
 

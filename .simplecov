@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-return if ENV["COVERAGE"]
+return unless ENV["COVERAGE"] && !ENV["COV_MERGE"]
 
-SimpleCov.start do 
+SimpleCov.start do
   add_filter ["/spec/", "/fixture/", "/features/"]
   minimum_coverage 95
 end
