@@ -76,7 +76,7 @@ module Allure
     # Add description to current test case
     # @param [String] description
     # @return [void]
-    def description(description)
+    def add_description(description)
       lifecycle.update_test_case do |test_case|
         test_case.description = description
       end

@@ -1,6 +1,6 @@
 # Allure ruby
 
-[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)\
+[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)  
 Ruby testing framework adaptors for generating allure compatible test reports.
 
 ## allure-ruby-commons
@@ -12,7 +12,7 @@ Ruby testing framework adaptors for generating allure compatible test reports.
 gem "allure-ruby-commons"
 ```
 
-[allure-ruby-commons docs](allure-ruby-commons/README.md)
+[allure-ruby-commons docs](https://github.com/allure-framework/allure-ruby/blob/master/allure-ruby-commons/README.md)
 
 ## allure-cucumber
 
@@ -23,4 +23,15 @@ gem "allure-ruby-commons"
 gem "allure-cucumber"
 ```
 
-[allure-cucumber docs](allure-cucumber/README.md)
+[allure-cucumber docs](https://github.com/allure-framework/allure-ruby/blob/master/allure-cucumber/README.md)
+
+## allure-rspec
+
+[![Gem Version](https://badge.fury.io/rb/allure-rspec.svg)](https://badge.fury.io/rb/allure-rspec)
+![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-rspec)
+
+```ruby
+gem "allure-cucumber"
+```
+
+[allure-rspec docs](https://github.com/allure-framework/allure-ruby/blob/master/allure-rspec/README.md)

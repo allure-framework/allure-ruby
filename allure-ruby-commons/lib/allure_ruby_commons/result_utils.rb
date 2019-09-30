@@ -75,6 +75,20 @@ module Allure
         Label.new(SUITE_LABEL_NAME, value)
       end
 
+      # Parent suite label
+      # @param [String] value
+      # @return [Allure::Label]
+      def parent_suite_label(value)
+        Label.new(PARENT_SUITE_LABEL_NAME, value)
+      end
+
+      # Parent suite label
+      # @param [String] value
+      # @return [Allure::Label]
+      def sub_suite_label(value)
+        Label.new(SUB_SUITE_LABEL_NAME, value)
+      end
+
       # Story label
       # @param [String] value
       # @return [Allure::Label]
@@ -119,16 +133,16 @@ module Allure
 
       # Get status based on exception type
       # @param [Exception] exception
-      # @return [String]
+      # @return [Symbol]
       def status(exception)
         expectation_error?(exception) ? Status::FAILED : Status::BROKEN
       end
 
       # Get exception status detail
       # @param [Exception] exception
-      # @return [Hash<Symbol, String>]
+      # @return [Allure::StatusDetails]
       def status_details(exception)
-        StatusDetails.new(message: exception.message, trace: exception.backtrace&.join("\n"))
+        StatusDetails.new(message: exception&.message, trace: exception&.backtrace&.join("\n"))
       end
 
       private

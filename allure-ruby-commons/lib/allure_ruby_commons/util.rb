@@ -8,7 +8,7 @@ module Allure
   # Utility for downloading allure commandline binary
   class Util
     # @return [String] CLI version
-    ALLURE_CLI_VERSION = "2.12.1"
+    ALLURE_CLI_VERSION = "2.13.0"
     # @return [String] CLI bin download url
     ALLURE_BIN_URL = "http://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/"\
                       "#{ALLURE_CLI_VERSION}/allure-commandline-#{ALLURE_CLI_VERSION}.zip"

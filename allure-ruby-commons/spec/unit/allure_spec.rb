@@ -48,7 +48,7 @@ describe Allure do
     end
 
     it "sets test case description" do
-      Allure.description("Test description")
+      Allure.add_description("Test description")
       expect(@test_case.description).to eq("Test description")
     end
 

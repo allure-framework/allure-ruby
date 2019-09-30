@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ADAPTORS = %w[allure-ruby-commons allure-cucumber].freeze
+ADAPTORS = %w[allure-ruby-commons allure-cucumber allure-rspec].freeze
 
 # Run specific task for all adaptors
 %w[test rubocop].each do |task_name|
@@ -17,11 +17,14 @@ end
 # Run specific task for single adaptor
 ADAPTORS.each do |adaptor|
   namespace adaptor do
-    %w[test rubocop].each do |task_name|
-      desc "Run #{task_name} for #{adaptor}"
-      task task_name do
-        system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}")
-      end
+    desc "Run rubocop for #{adaptor}"
+    task "rubocop" do
+      system("cd #{adaptor} && #{$PROGRAM_NAME} rubocop")
+    end
+
+    desc "Run test for #{adaptor}"
+    task "test", :tag do |_task, args|
+      system("cd #{adaptor} && #{$PROGRAM_NAME} test[#{args[:tag] || ''}]")
     end
   end
 end
