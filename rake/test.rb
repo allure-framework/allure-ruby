@@ -15,9 +15,10 @@ class TestTasks
   end
 
   def self.add_rspec_task
-    RSpec::Core::RakeTask.new(:test, :tag) do |t, args|
+    RSpec::Core::RakeTask.new(:test, :tag) do |task, args|
       args[:tag].tap do |tag|
-        t.rspec_opts = "--color --require spec_helper --format documentation #{tag ? "--tag #{tag}" : ''}"
+        task.rspec_opts = "--color --require spec_helper --format documentation #{tag ? "--tag #{tag}" : ''}"
+        task.verbose = false
       end
     end
   end
@@ -25,6 +26,7 @@ class TestTasks
   def self.add_rubocop_task
     RuboCop::RakeTask.new(:rubocop) do |task|
       task.options = %w[--parallel]
+      task.verbose = false
     end
   end
 
@@ -72,12 +74,29 @@ class TestTasks
   def merge_coverage
     ENV["COV_MERGE"] = "true"
     require "simplecov"
+    require "coveralls"
 
     results = Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
       res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
     end
+
     puts "\nGenerating combined coverage report".yellow
-    SimpleCov::ResultMerger.merge_results(*results).format!
+    SimpleCov::ResultMerger.merge_results(*results).tap do |result|
+      ENV["CI"] ? publish_coverage(result) : display_coverage(result)
+    end
+  end
+
+  def display_coverage(result)
+    Coveralls::SimpleCov::Formatter.new.display_result(result)
+  end
+
+  def publish_coverage(result)
+    ENV["CI_BRANCH"] = pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last
+    Coveralls::SimpleCov::Formatter.new.format(result)
+  end
+
+  def pull_request?
+    ENV["GITHUB_EVENT_NAME"] == "pull_request"
   end
 end
 
