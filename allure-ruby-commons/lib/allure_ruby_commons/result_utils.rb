@@ -158,8 +158,6 @@ module Allure
       def expectation_error?(exception)
         exception.instance_of?(RSpec::Expectations::ExpectationNotMetError) ||
           exception.instance_of?(RSpec::Expectations::MultipleExpectationsNotMetError)
-      rescue NameError
-        false
       end
     end
   end

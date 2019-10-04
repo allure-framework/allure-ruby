@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require "rspec"
+require "simplecov"
 require "cucumber"
 require "allure-ruby-commons"
 require "allure-cucumber"
 require "digest"
+
+SimpleCov.command_name("allure-cucumber")
 
 RSpec.shared_context("allure mock") do
   let(:lifecycle) { spy("lifecycle") }

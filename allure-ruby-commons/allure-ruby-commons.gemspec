@@ -30,6 +30,5 @@ Gem::Specification.new do |s|
   s.add_dependency "uuid", "~> 2.3"
   s.add_dependency "require_all", "~> 2.0"
   s.add_dependency "json", ">= 1.8", "< 3"
-  s.add_dependency "rubyzip", ">= 1.2", "< 3.0"
   s.add_dependency "mime-types", "~> 3.3"
 end

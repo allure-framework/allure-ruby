@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require "rspec"
+require "simplecov"
 require "allure-ruby-commons"
 require "allure-rspec"
+
+SimpleCov.command_name("allure-rspec")
 
 Allure.configure do |c|
   c.clean_results_directory = true
