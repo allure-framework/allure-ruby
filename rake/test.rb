@@ -91,14 +91,18 @@ class TestTasks
   end
 
   def publish_coverage(result)
-    if ENV["GITHUB_EVENT_NAME"] == "pull_request"
+    ENV["GIT_BRANCH"] = ENV["CI_BRANCH"] = pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last
+    if pull_request?
       name, email, message = `git --no-pager show -s --format='%cn|%ce|%s' $GIT_ID`.strip.split("|")
       ENV["GIT_COMMITTER_NAME"] = name
       ENV["GIT_COMMITTER_EMAIL"] = email
       ENV["GIT_MESSAGE"] = message
-      ENV["GIT_BRANCH"] = ENV["CI_BRANCH"] = ENV["GITHUB_HEAD_REF"]
     end
     Coveralls::SimpleCov::Formatter.new.format(result)
+  end
+
+  def pull_request?
+    ENV["GITHUB_EVENT_NAME"] == "pull_request"
   end
 end
 
