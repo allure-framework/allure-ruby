@@ -30,4 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "colorize", "~> 0.8"
   s.add_development_dependency "simplecov", "~> 0.16"
   s.add_development_dependency "coveralls", "~> 0.8"
+  s.add_development_dependency "semantic", "~> 1.6"
 end
