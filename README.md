@@ -1,4 +1,7 @@
-# Allure ruby
+# [DEPRECATED]
+## Please follow https://github.com/allure-framework/allure-ruby
+Allure ruby
+=====================
 
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)
 ![Workflow status](https://github.com/allure-framework/allure-ruby/workflows/Build/badge.svg)
