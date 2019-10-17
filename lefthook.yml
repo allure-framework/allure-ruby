@@ -1,0 +1,5 @@
+pre-commit:
+  commands:
+    rubocop:
+      glob: "*.{rb,gemspec}"
+      run: bundle exec rubocop {staged_files}
