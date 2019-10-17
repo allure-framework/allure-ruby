@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 require "fileutils"
+require "forwardable"
 
 module Allure
   # Main class for creating and writing allure results
   class AllureLifecycle
+    extend Forwardable
+
     def initialize
       @test_context = []
       @step_context = []
     end
+
+    def_delegators :file_writer, :write_attachment, :write_environment
 
     # Start test result container
     # @param [Allure::TestResultContainer] test_result_container
@@ -206,14 +211,6 @@ module Allure
       extension = ContentType.to_extension(type) || return
       file_name = "#{UUID.generate}-attachment.#{extension}"
       Attachment.new(name: name, source: file_name, type: type)
-    end
-
-    # Write attachment file
-    # @param [File, String] source
-    # @param [Allure::Attachment] attachment
-    # @return [void]
-    def write_attachment(source, attachment)
-      file_writer.write_attachment(source, attachment)
     end
 
     # Add step to current fixture|step|test case

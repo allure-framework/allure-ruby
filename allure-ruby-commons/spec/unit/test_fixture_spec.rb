@@ -4,10 +4,6 @@ describe "AllureLifecycle::Fixtures" do
   include_context "lifecycle"
   include_context "lifecycle mocks"
 
-  before do
-    allow(Logger).to receive(:new).and_return(logger)
-  end
-
   context "without exceptions" do
     before do
       @result_container = start_test_container("Test container")

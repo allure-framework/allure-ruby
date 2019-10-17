@@ -32,6 +32,15 @@ module Allure
       source.is_a?(File) ? copy(source.path, attachment.source) : write(attachment.source, source)
     end
 
+    # Write allure report environment info
+    # @param [Hash<Symbol, String>] environment
+    # @return [void]
+    def write_environment(environment)
+      environment.reduce("") { |e, (k, v)| e + "#{k}=#{v}\n" }.tap do |env|
+        write("environment.properties", env)
+      end
+    end
+
     private
 
     def output_dir
