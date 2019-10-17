@@ -135,7 +135,7 @@ module Allure
       # @param [Exception] exception
       # @return [Symbol]
       def status(exception)
-        expectation_error?(exception) ? Status::FAILED : Status::BROKEN
+        exception.is_a?(RSpec::Expectations::ExpectationNotMetError) ? Status::FAILED : Status::BROKEN
       end
 
       # Get exception status detail
@@ -153,11 +153,6 @@ module Allure
 
       def issue_url(value)
         Allure.configuration.link_issue_pattern.sub("{}", value)
-      end
-
-      def expectation_error?(exception)
-        exception.instance_of?(RSpec::Expectations::ExpectationNotMetError) ||
-          exception.instance_of?(RSpec::Expectations::MultipleExpectationsNotMetError)
       end
     end
   end
