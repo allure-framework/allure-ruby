@@ -47,4 +47,15 @@ describe Allure::FileWriter do
 
     expect(File.exist?(attachment_file)).to be_truthy, "Expected #{attachment_file} to exist"
   end
+
+  it "write environment properties" do
+    environment_file = File.join(Allure::Config.results_directory, "environment.properties")
+    file_writer.write_environment(PROP_1: "test", PROP_2: "test_2")
+
+    expect(File.exist?(environment_file)).to be_truthy, "Expected #{environment_file} to exist"
+    expect(File.read(environment_file)).to eq(<<~FILE)
+      PROP_1=test
+      PROP_2=test_2
+    FILE
+  end
 end

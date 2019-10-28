@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-describe Allure do
+describe Allure, test: true do
   include_context "lifecycle"
+  include_context "lifecycle mocks"
 
   context "lifecycle" do
     it "returns thread specific object" do
@@ -73,12 +74,16 @@ describe Allure do
     end
 
     it "adds attachment" do
-      Allure.add_attachment(name: "Test attach", source: "Some string", type: Allure::ContentType::TXT)
-      aggregate_failures "Should return correct attachment parameters" do
-        attachment = @test_case.attachments.last
-        expect(attachment.name).to eq("Test attach")
-        expect(attachment.type).to eq("text/plain")
-        expect(attachment.source).to include(".txt")
+      { name: "Test attach", source: "Some string", type: Allure::ContentType::TXT }.tap do |args|
+        expect(file_writer).to receive(:write_attachment).with(args[:source], kind_of(Allure::Attachment))
+        Allure.add_attachment(**args)
+      end
+    end
+
+    it "adds environment" do
+      { PROP_1: "test", PROP_2: "test" }.tap do |env|
+        expect(file_writer).to receive(:write_environment).with(env)
+        Allure.add_environment(env)
       end
     end
 

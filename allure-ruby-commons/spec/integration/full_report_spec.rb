@@ -12,6 +12,8 @@ describe "allure-ruby-commons" do
   before do
     image = File.new(File.join(Dir.pwd, "spec/fixtures/ruby-logo.png"))
 
+    Allure.add_environment(TYPE: "integration", spec: "allure-ruby-commons")
+
     start_test_container("Result Container")
     add_fixture("Before", "prepare")
 
@@ -58,10 +60,12 @@ describe "allure-ruby-commons" do
     container = File.new(Dir["#{results_dir}/*container.json"].first)
     result = File.new(Dir["#{results_dir}/*result.json"].first)
     attachments = Dir["#{results_dir}/*attachment*"]
+    environment = File.join(results_dir, "environment.properties")
 
     aggregate_failures "Results files should exist" do
       expect(File.exist?(container)).to be_truthy
       expect(File.exist?(result)).to be_truthy
+      expect(File.exist?(environment)).to be_truthy
       expect(File.exist?(attachments[0])).to be_truthy
       expect(File.exist?(attachments[1])).to be_truthy
     end
