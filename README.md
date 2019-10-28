@@ -33,7 +33,7 @@ gem "allure-cucumber"
 ![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-rspec)
 
 ```ruby
-gem "allure-cucumber"
+gem "allure-rspec"
 ```
 
 [allure-rspec docs](https://github.com/allure-framework/allure-ruby/blob/master/allure-rspec/README.md)
