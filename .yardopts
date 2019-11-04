@@ -1,2 +1,3 @@
 allure-ruby-commons/lib/**/*.rb
 allure-cucumber/lib/**/*.rb
+allure-rspec/lib/**/*.rb
