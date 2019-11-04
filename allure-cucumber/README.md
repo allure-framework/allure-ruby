@@ -96,6 +96,10 @@ Allure.add_attachment(name: "attachment", source: "Some string", type: Allure::C
 Allure.add_link("Custom Url", "http://www.github.com")
 ```
 
+### Example project
+
+[Cucumber Example](https://github.com/allure-examples/allure-cucumber-example)
+
 ## How to generate report
 
 This adaptor only generates json files containing information about tests. See [wiki section](https://docs.qameta.io/allure/#_reporting) on how to generate report.

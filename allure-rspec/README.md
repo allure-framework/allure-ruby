@@ -130,6 +130,10 @@ it "some test case" do |e|
 end
 ```
 
+### Example project
+
+[RSpec Example](https://github.com/allure-examples/allure-rspec-example)
+
 ## HTML report generation
 
 Report is generated using allure commandline tool. [Allure wiki](https://docs.qameta.io/allure/#_reporting).
