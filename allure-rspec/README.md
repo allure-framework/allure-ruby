@@ -1,4 +1,5 @@
 # allure-rspec
+[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/allure-rspec)
 
 Allure adapter for [rspec](https://rspec.info/) testing framework
 

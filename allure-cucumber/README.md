@@ -1,4 +1,5 @@
 # Allure Cucumber Adaptor
+[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/allure-cucumber)
 
 This repository contains Allure adaptor for [Cucumber](http://cukes.info/) framework.
 
