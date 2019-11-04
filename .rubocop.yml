@@ -570,16 +570,16 @@ Lint/UnderscorePrefixedVariableName:
 Lint/UnifiedInteger:
   Enabled: true
 
-Lint/UnneededCopDisableDirective:
+Lint/RedundantCopDisableDirective:
   Enabled: true
 
-Lint/UnneededCopEnableDirective:
+Lint/RedundantCopEnableDirective:
   Enabled: true
 
-Lint/UnneededSplatExpansion:
+Lint/RedundantSplatExpansion:
   Enabled: true
 
-Lint/UnneededRequireStatement:
+Lint/RedundantRequireStatement:
   Enabled: true
 
 Lint/UnreachableCode:
@@ -1461,19 +1461,19 @@ Style/TrivialAccessors:
 Style/UnlessElse:
   Enabled: true
 
-Style/UnneededCapitalW:
+Style/RedundantCapitalW:
   Enabled: true
 
-Style/UnneededCondition:
+Style/RedundantCondition:
   Enabled: true
 
-Style/UnneededInterpolation:
+Style/RedundantInterpolation:
   Enabled: true
 
-Style/UnneededPercentQ:
+Style/RedundantPercentQ:
   Enabled: true
 
-Style/UnneededSort:
+Style/RedundantSort:
   Enabled: true
 
 Style/UnpackFirst:
