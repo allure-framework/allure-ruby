@@ -2,7 +2,6 @@
 
 require "colorize"
 require "rake"
-require "semantic"
 
 module TaskUtil
   def root
@@ -14,6 +13,6 @@ module TaskUtil
   end
 
   def version
-    Semantic::Version.new(File.read("#{root}/ALLURE_VERSION").strip)
+    ENV["VERSION"] || File.read("#{root}/LOCAL_VERSION").strip
   end
 end

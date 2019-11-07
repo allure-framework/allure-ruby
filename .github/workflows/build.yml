@@ -23,8 +23,8 @@ jobs:
 
       - name: Install
         run: |
-          gem install bundler -v 2.0.2
-          bundle install
+          gem install bundler -v 2.0.2 --no-document
+          bundle install -j $(nproc)
 
       - name: Lint
         run: bundle exec rake rubocop
