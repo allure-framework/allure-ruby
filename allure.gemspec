@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-version = File.read(File.expand_path("ALLURE_VERSION", __dir__)).strip
+version = ENV["VERSION"] || File.read(File.expand_path("LOCAL_VERSION", __dir__)).strip
 
 Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
@@ -30,6 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "colorize", "~> 0.8"
   s.add_development_dependency "simplecov", "~> 0.16"
   s.add_development_dependency "coveralls", "~> 0.8"
-  s.add_development_dependency "semantic", "~> 1.6"
   s.add_development_dependency "lefthook", "~> 0.6.3"
 end

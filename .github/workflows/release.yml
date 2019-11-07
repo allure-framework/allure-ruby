@@ -1,9 +1,8 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - "[23].[0-9]+.[0-9]+"
+  release:
+    types: [published]
 
 jobs:
   release:
@@ -18,8 +17,8 @@ jobs:
 
       - name: Install
         run: |
-          gem install bundler -v 2.0.2
-          bundle install
+          gem install bundler -v 2.0.2 --no-document
+          bundle install -j $(nproc)
       
       - name: Test
         run: bundle exec rake
@@ -30,3 +29,4 @@ jobs:
           bundle exec rake release
         env:
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_TOKEN }}
+          VERSION: ${{ github.event.release.tag_name }}
