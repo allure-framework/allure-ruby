@@ -1,4 +1,5 @@
 # Allure Cucumber Adaptor
+[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/allure-cucumber)
 
 This repository contains Allure adaptor for [Cucumber](http://cukes.info/) framework.
 
@@ -95,6 +96,10 @@ require "allure-cucumber"
 Allure.add_attachment(name: "attachment", source: "Some string", type: Allure::ContentType::TXT, test_case: true)
 Allure.add_link("Custom Url", "http://www.github.com")
 ```
+
+### Example project
+
+[Cucumber Example](https://github.com/allure-examples/allure-cucumber-example)
 
 ## How to generate report
 

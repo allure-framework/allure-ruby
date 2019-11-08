@@ -1,4 +1,5 @@
 # allure-rspec
+[![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/allure-rspec)
 
 Allure adapter for [rspec](https://rspec.info/) testing framework
 
@@ -129,6 +130,10 @@ it "some test case" do |e|
   e.add_attachment(name: "attachment", source: "Some string", type: Allure::ContentType::TXT)
 end
 ```
+
+### Example project
+
+[RSpec Example](https://github.com/allure-examples/allure-rspec-example)
 
 ## HTML report generation
 
