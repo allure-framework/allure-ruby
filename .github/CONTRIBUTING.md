@@ -21,7 +21,7 @@ bundle exec lefthook install -f
 bundle exec rake
 ```
 
-**To test changes locally, build gems**
+**To test changes locally, bump version and build gems**
 
 ```bash
 bundle exec rake build
@@ -32,7 +32,7 @@ All gems will be built in `pkg` folder
 **Install gem with**
 
 ```bash
-gem install pkg/allure-cucumber-0.0.1.pre.gem
+gem install pkg/allure-cucumber-${ALLURE_VERSION}.gem
 ```
 
 **After everything is tested, push your fork and submit a pull request.**
