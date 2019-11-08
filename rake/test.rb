@@ -2,6 +2,7 @@
 
 require "rspec/core/rake_task"
 require "rubocop/rake_task"
+require "json"
 
 require_relative "util"
 
@@ -91,14 +92,20 @@ class TestTasks
   end
 
   def publish_coverage(result)
-    ENV["GIT_BRANCH"] = ENV["CI_BRANCH"] = pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last
-    if pull_request?
-      name, email, message = `git --no-pager show -s --format='%cn|%ce|%s' $GIT_ID`.strip.split("|")
-      ENV["GIT_COMMITTER_NAME"] = name
-      ENV["GIT_COMMITTER_EMAIL"] = email
-      ENV["GIT_MESSAGE"] = message
+    JSON.parse(ENV["CONTEXT"], object_class: OpenStruct).tap do |context|
+      coveralls_set_env(pull_request? ? context.event.pull_request.head.sha : context.sha)
     end
     Coveralls::SimpleCov::Formatter.new.format(result)
+  end
+
+  def coveralls_set_env(sha)
+    ENV["GIT_ID"] = sha
+    ENV["GIT_BRANCH"] = ENV["CI_BRANCH"] = pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last
+    ENV["GIT_MESSAGE"] = `git --no-pager show -s --format='%s' #{sha}`
+    ENV["GIT_COMMITTER_NAME"] = `git --no-pager show -s --format='%cN' #{sha}`
+    ENV["GIT_COMMITTER_EMAIL"] = `git --no-pager show -s --format='%ce' #{sha}`
+    ENV["GIT_AUTHOR_NAME"] = `git --no-pager show -s --format='%aN' #{sha}`
+    ENV["GIT_AUTHOR_EMAIL"] = `git --no-pager show -s --format='%ae' #{sha}`
   end
 
   def pull_request?
