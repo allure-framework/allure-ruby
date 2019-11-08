@@ -4,11 +4,13 @@ categories:
   - title: '🚀 New Features'
     label: 'type:new feature'
   - title: '🔬 Improvements'
-    label: 'type:improvement'
+    label: 'type:enhancement'
   - title: '🐞 Bug Fixes'
     label: 'type:bug'
   - title: '📦 Dependency updates'
     label: 'type:dependency'
+  - title: '📄 Documentation updates'
+    label: 'type:documentation'
 
 change-template: '* $TITLE (via #$NUMBER) - @$AUTHOR'
 template: |
