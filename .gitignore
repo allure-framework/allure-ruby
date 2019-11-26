@@ -1,7 +1,6 @@
 # Package Files #
 pkg
 *.gem
-Gemfile.lock
 
 # Editors
 .vscode
