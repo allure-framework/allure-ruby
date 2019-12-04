@@ -53,7 +53,7 @@ GEM
     gherkin (5.1.0)
     jaro_winkler (1.5.4)
     json (2.2.0)
-    lefthook (0.6.5)
+    lefthook (0.6.6)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
     maruku (0.7.3)
