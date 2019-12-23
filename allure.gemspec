@@ -31,5 +31,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "simplecov", "~> 0.16"
   s.add_development_dependency "coveralls", "~> 0.8"
   s.add_development_dependency "semantic", "~> 1.6"
-  s.add_development_dependency "lefthook", "~> 0.6.3"
+  s.add_development_dependency "lefthook", "~> 0.7.0"
 end
