@@ -7,5 +7,6 @@ module Allure
     BROKEN = :broken
     PASSED = :passed
     SKIPPED = :skipped
+    UNKNOWN = :unknown
   end
 end

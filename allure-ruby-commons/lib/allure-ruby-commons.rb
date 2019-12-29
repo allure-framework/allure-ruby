@@ -138,11 +138,18 @@ module Allure
       lifecycle.add_attachment(name: name, source: source, type: type, test_case: test_case)
     end
 
-    # Write allure report environment info
+    # Add allure report environment info
     # @param [Hash<Symbol, String>] environment
     # @return [void]
     def add_environment(environment)
       lifecycle.write_environment(environment)
+    end
+
+    # Add categories info
+    # @param [File, Array<Allure::Category>] categories
+    # @return [void]
+    def add_categories(categories)
+      lifecycle.write_categories(categories)
     end
 
     # Add step with provided name and optional status to current test step, fixture or test case
