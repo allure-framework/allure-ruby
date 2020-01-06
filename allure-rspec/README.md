@@ -26,7 +26,7 @@ There are no rspec adapter specific configuration options. Main allure configura
 Via commandline, simply add:
 
 ```bash
---format AllureRspecFormatter
+--format AllureRspec::Formatter
 ```
 
 RSpec configuration:
