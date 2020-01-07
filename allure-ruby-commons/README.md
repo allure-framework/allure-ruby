@@ -1,4 +1,5 @@
 # Allure Ruby Adaptor API
+
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/allure-ruby-commons)
 
 This is a helper library containing the basics for any ruby-based Allure adaptor.

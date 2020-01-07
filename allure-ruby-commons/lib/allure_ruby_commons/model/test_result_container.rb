@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "jsonable"
+
 module Allure
   # Allure model step result container
   class TestResultContainer < JSONable

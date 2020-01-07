@@ -48,7 +48,7 @@ describe Allure::FileWriter do
     expect(File.exist?(attachment_file)).to be_truthy, "Expected #{attachment_file} to exist"
   end
 
-  it "write environment properties" do
+  it "writes environment properties" do
     environment_file = File.join(Allure::Config.results_directory, "environment.properties")
     file_writer.write_environment(PROP_1: "test", PROP_2: "test_2")
 
@@ -57,5 +57,22 @@ describe Allure::FileWriter do
       PROP_1=test
       PROP_2=test_2
     FILE
+  end
+
+  it "writes categories from argument" do
+    categories_file = File.join(Allure::Config.results_directory, "categories.json")
+    file_writer.write_categories(
+      [Allure::Category.new(name: "Ignored test", matched_statuses: [Allure::Status::SKIPPED])],
+    )
+
+    expect(File.exist?(categories_file)).to be_truthy, "Expected #{categories_file} to exist"
+    expect(File.read(categories_file)).to eq('[{"name":"Ignored test","matchedStatuses":["skipped"]}]')
+  end
+
+  it "writes categories from file" do
+    categories_file = File.join(Allure::Config.results_directory, "categories.json")
+    file_writer.write_categories(File.new(File.join(Dir.pwd, "spec", "fixtures", "categories.json")))
+
+    expect(File.exist?(categories_file)).to be_truthy, "Expected #{categories_file} to exist"
   end
 end

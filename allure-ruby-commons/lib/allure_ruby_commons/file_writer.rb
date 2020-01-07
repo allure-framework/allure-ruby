@@ -9,6 +9,10 @@ module Allure
     TEST_RESULT_CONTAINER_SUFFIX = "-container.json"
     # @return [String] attachment file suffix
     ATTACHMENT_FILE_SUFFIX = "-attachment"
+    # @return [String] environment info file
+    ENVIRONMENT_FILE = "environment.properties"
+    # @return [String] categories definition json
+    CATEGORIES_FILE = "categories.json"
 
     # Write test result
     # @param [Allure::TestResult] test_result
@@ -37,7 +41,18 @@ module Allure
     # @return [void]
     def write_environment(environment)
       environment.reduce("") { |e, (k, v)| e + "#{k}=#{v}\n" }.tap do |env|
-        write("environment.properties", env)
+        write(ENVIRONMENT_FILE, env)
+      end
+    end
+
+    # Write categories info
+    # @param [File, Array<Allure::Category>] categories
+    # @return [void]
+    def write_categories(categories)
+      if categories.is_a?(File)
+        copy(categories.path, CATEGORIES_FILE)
+      else
+        write(CATEGORIES_FILE, categories.to_json)
       end
     end
 

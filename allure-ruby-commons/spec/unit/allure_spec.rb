@@ -87,6 +87,13 @@ describe Allure, test: true do
       end
     end
 
+    it "adds categories" do
+      [Allure::Category.new(name: "Ignored test", matched_statuses: [Allure::Status::SKIPPED])].tap do |cat|
+        expect(file_writer).to receive(:write_categories).with(cat)
+        Allure.add_categories(cat)
+      end
+    end
+
     it "adds custom step" do
       test_step = Allure.step(name: "Custom step", status: Allure::Status::FAILED)
       expect(@test_case.steps.last).to eq(test_step)

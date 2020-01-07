@@ -13,7 +13,7 @@ module Allure
       @step_context = []
     end
 
-    def_delegators :file_writer, :write_attachment, :write_environment
+    def_delegators :file_writer, :write_attachment, :write_environment, :write_categories
 
     # Start test result container
     # @param [Allure::TestResultContainer] test_result_container

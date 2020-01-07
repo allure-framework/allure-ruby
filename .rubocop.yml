@@ -20,6 +20,10 @@ Bundler/InsecureProtocolSource:
 Bundler/OrderedGems:
   Enabled: true
 
+Layout/LineLength:
+  Enabled: true
+  Max: 120
+
 Layout/AccessModifierIndentation:
   Enabled: true
   EnforcedStyle: indent
@@ -635,10 +639,6 @@ Metrics/ClassLength:
 
 Metrics/CyclomaticComplexity:
   Enabled: false
-
-Metrics/LineLength:
-  Enabled: true
-  Max: 120
 
 Metrics/MethodLength:
   Enabled: true
@@ -1439,7 +1439,7 @@ Style/TrivialAccessors:
   AllowPredicates: true
   AllowDSLWriters: false
   IgnoreClassMethods: false
-  AllowedMethod:
+  AllowedMethods:
     - to_ary
     - to_a
     - to_c
