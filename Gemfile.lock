@@ -108,7 +108,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    solargraph (0.38.2)
+    solargraph (0.38.3)
       backport (~> 1.1)
       benchmark
       bundler (>= 1.17.2)
@@ -128,7 +128,7 @@ GEM
     thor (1.0.1)
     tilt (2.0.10)
     tins (1.22.2)
-    unicode-display_width (1.6.0)
+    unicode-display_width (1.6.1)
     uuid (2.3.9)
       macaddr (~> 1.0)
     yard (0.9.24)
