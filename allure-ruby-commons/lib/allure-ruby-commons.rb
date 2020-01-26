@@ -158,6 +158,7 @@ module Allure
     # @return [void]
     def step(name:, status: nil)
       lifecycle.add_test_step(StepResult.new(name: name, status: status || Status::PASSED, stage: Stage::FINISHED))
+      lifecycle.stop_test_step
     end
 
     # Run passed block as step with given name
