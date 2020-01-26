@@ -14,7 +14,7 @@ describe "RSpecFormatter.example_started" do
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
       aggregate_failures "Should have correct args" do
         expect(arg.name).to eq(spec)
-        expect(arg.description).to eq("Location - spec/fixture/specs/simple_test.rb:4")
+        expect(arg.description).to eq("Location - spec/fixture/specs/simple_test.rb:12")
         expect(arg.full_name).to eq("#{suite} #{spec}")
         expect(arg.links).to be_empty
         expect(arg.parameters).to be_empty
