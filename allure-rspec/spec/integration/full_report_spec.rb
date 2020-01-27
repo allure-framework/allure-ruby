@@ -21,8 +21,8 @@ describe "allure-rspec" do
     aggregate_failures "Json results should contain valid data" do
       expect(container_json[:name]).to eq("Suite")
       expect(result_json[:name]).to eq("spec")
-      expect(result_json[:description]).to eq("Location - spec/fixture/specs/simple_test.rb:4")
-      expect(result_json[:steps].size).to eq(0)
+      expect(result_json[:description]).to eq("Location - spec/fixture/specs/simple_test.rb:12")
+      expect(result_json[:steps].size).to eq(3)
     end
   end
 end
