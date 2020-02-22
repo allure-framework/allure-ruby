@@ -8,8 +8,11 @@ jobs:
   release:
     runs-on: ubuntu-16.04
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/cache@v1
+      - name: Checkout
+        uses: actions/checkout@master
+      
+      - name: Get cached gems
+        uses: actions/cache@v1
         with:
           path: vendor/bundle
           key: 2.7-gems-${{ hashFiles('Gemfile.lock') }}
