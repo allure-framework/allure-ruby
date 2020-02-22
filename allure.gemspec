@@ -32,4 +32,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "simplecov-console", "~> 0.6.0"
   s.add_development_dependency "semantic", "~> 1.6.1"
   s.add_development_dependency "lefthook", "~> 0.7.0"
+  s.add_development_dependency "down", "~> 5.1.1"
 end

@@ -1,0 +1,394 @@
+{
+  "ci_service": {
+    "branch": "code-climate",
+    "build_identifier": "",
+    "build_url": "",
+    "commit_sha": "32ac7cf4bfb318747efc159f09d55455f21e28c4",
+    "committed_at": 1582362742,
+    "name": ""
+  },
+  "environment": {
+    "gem_version": "3.1.2",
+    "package_version": "",
+    "pwd": "/Users/andrejs.cunskis/source/allure-ruby-fork",
+    "prefix": "/Users/andrejs.cunskis/source/allure-ruby-fork",
+    "rails_root": "",
+    "reporter_version": "0.6.3",
+    "simplecov_root": ""
+  },
+  "git": {
+    "branch": "code-climate",
+    "head": "32ac7cf4bfb318747efc159f09d55455f21e28c4",
+    "committed_at": 1582362742
+  },
+  "covered_percent": 100,
+  "covered_strength": 0,
+  "line_counts": {
+    "missed": 0,
+    "covered": 682,
+    "total": 682
+  },
+  "source_files": [
+    {
+      "blob_id": "a68186227f975592c130f6cc3a87f0a38584e59c",
+      "coverage": "[null,null,1,1,1,1,null,1,1,null,1,null,1,1,1,null,null,null,null,1,26,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,85,null,null,null,null,null,null,null,null,1,7,7,null,null,null,null,null,1,26,20,null,20,null,null,null,null,1,433,null,null,1,null,null,null,1,26,26,26,26,26,26,26,26,11,11,null,null,26,null,null,null,null,1,26,null,26,null,null,null,null,1,32,null,null,null,null,1,52,52,null,null,null,null,1,85,85,null,2,null,null,null,null,1,1,3,1,1,null,null,null,null,1,1,1,1,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 22.31578947368421,
+      "line_counts": {
+        "missed": 0,
+        "covered": 57,
+        "total": 57
+      },
+      "name": "allure-cucumber/lib/allure_cucumber/cucumber_model.rb"
+    },
+    {
+      "blob_id": "c21b9101f54236e8a4826a8f607cf9f9c32a71d7",
+      "coverage": "[null,null,1,null,1,null,null,null,1,328,null,126,null,null,null,null,null,1,314,null,75,null,null,null,null,null,1,320,null,75,null,null,null,null,null,1,19,null,null,null,null,null,1,null,19,null,null,null,null,null,1,null,null,null,null,1,421,null,null,null,null,null,1,361,null,null,null,null,null,1,367,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 110.72727272727273,
+      "line_counts": {
+        "missed": 0,
+        "covered": 22,
+        "total": 22
+      },
+      "name": "allure-rspec/lib/allure_rspec/tag_parser.rb"
+    },
+    {
+      "blob_id": "a67c33a61fcda3f6a92388d7a1e219320d01c01f",
+      "coverage": "[null,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,null,null,null,1,2,null,null,null,null,null,1,2,null,null,null,null,null,null,1,4,null,null,null,null,null,1,6,2,null,null,null,null,null,null,1,2,1,null,1,null,null,null,1,null,1,12,null,null,1,9,18,null,null,1,3,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 2.7857142857142856,
+      "line_counts": {
+        "missed": 0,
+        "covered": 28,
+        "total": 28
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/file_writer.rb"
+    },
+    {
+      "blob_id": "c1bcfa3d651e841ed8a259fc981c49e4d546ffcb",
+      "coverage": "[null,null,1,null,1,null,1,1,1,1,1,1,1,1,1,1,1,1,null,null,null,null,1,10,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 1.5625,
+      "line_counts": {
+        "missed": 0,
+        "covered": 16,
+        "total": 16
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/content_type.rb"
+    },
+    {
+      "blob_id": "52aa6e68c02cda86a62b22de35348eabdad05c8b",
+      "coverage": "[null,null,1,null,1,null,1,1,7,7,7,null,null,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 3.25,
+      "line_counts": {
+        "missed": 0,
+        "covered": 8,
+        "total": 8
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/link.rb"
+    },
+    {
+      "blob_id": "53c7f4ef2f18536871ff7f8ae51ab084f35c41f4",
+      "coverage": "[null,null,1,null,1,1,null,1,null,1,null,1,null,1,null,null,1,23,null,null,null,1,23,null,null,null,1,23,null,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 6.076923076923077,
+      "line_counts": {
+        "missed": 0,
+        "covered": 13,
+        "total": 13
+      },
+      "name": "allure-cucumber/lib/allure_cucumber/config.rb"
+    },
+    {
+      "blob_id": "f4561e2c0e0f061d10f86547498cd3b8a573a92e",
+      "coverage": "[null,null,1,null,1,1,1,1,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 6,
+        "total": 6
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/stage.rb"
+    },
+    {
+      "blob_id": "85f4060d38a254ad18eda3ffc84cb757c5edf552",
+      "coverage": "[null,null,1,null,1,null,1,1,null,null,1,null,null,null,null,null,1,null,null,null,null,null,1,23,23,null,null,23,23,23,23,23,null,null,null,null,null,1,23,null,null,null,null,null,1,26,26,null,null,null,null,null,1,118,null,null,null,null,null,1,118,null,92,10,10,null,92,null,92,92,null,null,null,null,null,1,26,26,26,4,4,4,4,4,null,26,26,null,null,1,null,null,null,1,361,null,null,null,null,1,151,null,null,null,null,1,85,null,null,null,null,1,33,null,7,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 33.28,
+      "line_counts": {
+        "missed": 0,
+        "covered": 50,
+        "total": 50
+      },
+      "name": "allure-cucumber/lib/allure_cucumber/formatter.rb"
+    },
+    {
+      "blob_id": "84796dcdd3c5736f468236481e350b7405f3b9e5",
+      "coverage": "[null,null,null,1,1,1,null,null,1,1,null,null,1,24,null,null,null,null,null,1,16,null,null,null,null,1,3,null,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,null,1,4,4,null,null,null,null,null,null,1,1,1,null,null,null,null,null,null,1,1,1,null,null,null,null,null,null,null,1,1,1,null,null,null,null,null,null,null,1,1,null,null,null,null,null,null,1,1,null,null,null,null,null,null,null,1,2,2,null,null,null,null,null,null,null,null,null,1,1,null,null,null,null,null,1,2,null,null,null,null,null,1,1,null,null,null,null,null,null,1,1,1,null,null,null,null,null,null,1,2,2,2,null,1,1,1,null,1,null,2,null,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 1.9137931034482758,
+      "line_counts": {
+        "missed": 0,
+        "covered": 58,
+        "total": 58
+      },
+      "name": "allure-ruby-commons/lib/allure-ruby-commons.rb"
+    },
+    {
+      "blob_id": "52379fe016fde2ed5ef0d23e97d5a743bfc7bd98",
+      "coverage": "[null,null,1,null,1,null,1,null,null,null,null,null,null,null,null,null,null,1,64,64,64,64,64,64,64,64,64,null,null,1,null,null,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 41.5,
+      "line_counts": {
+        "missed": 0,
+        "covered": 14,
+        "total": 14
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/executable_item.rb"
+    },
+    {
+      "blob_id": "aa856c34ce2512d32e30c293334810d59916209f",
+      "coverage": "[null,null,1,null,1,null,null,null,null,null,1,67,67,67,67,67,null,null,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 37.666666666666664,
+      "line_counts": {
+        "missed": 0,
+        "covered": 9,
+        "total": 9
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/status_details.rb"
+    },
+    {
+      "blob_id": "a309a44a822171380c690308f607760e124b46f0",
+      "coverage": "[null,null,1,1,null,1,null,1,1,null,1,54,54,null,null,1,null,null,null,null,1,47,47,47,null,null,null,null,null,null,null,null,null,null,1,2,1,null,null,1,null,null,null,null,1,5,1,null,null,4,4,4,4,null,null,null,null,null,null,1,37,37,1,null,null,36,36,36,36,36,null,null,null,null,null,null,null,null,null,1,13,null,12,null,null,null,null,1,5,null,4,4,4,4,4,null,null,null,null,null,1,17,null,16,16,16,16,null,null,null,null,null,null,null,null,null,1,6,null,5,null,null,null,null,1,9,null,8,8,8,null,null,null,null,null,1,6,5,5,null,null,null,null,null,1,2,2,2,null,null,null,null,null,1,8,8,1,1,null,null,7,7,null,null,null,null,null,null,null,null,null,1,4,null,3,null,null,null,null,1,4,null,3,3,3,3,null,null,null,null,null,null,null,null,1,10,1,null,9,9,1,null,8,null,null,null,null,null,null,1,10,9,9,null,null,null,null,null,1,17,17,17,null,null,null,null,1,1,1,null,null,null,1,null,1,13,null,null,1,19,null,null,1,25,null,null,1,100,null,null,1,4,null,null,1,61,null,null,1,8,null,null,1,52,null,null,1,4,null,null,1,3,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 10.216666666666667,
+      "line_counts": {
+        "missed": 0,
+        "covered": 120,
+        "total": 120
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/allure_lifecycle.rb"
+    },
+    {
+      "blob_id": "11d031515c33fa7b0c53fdda40dcb8f623c630b4",
+      "coverage": "[null,null,null,1,1,null,1,null]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 3,
+        "total": 3
+      },
+      "name": "allure-rspec/lib/allure-rspec.rb"
+    },
+    {
+      "blob_id": "bf35cc4af6d8df187384431680c81e4625ccd4b0",
+      "coverage": "[null,null,1,null,1,null,1,null,1,null,1,null,1,1,1,null,1,21,null,null,1,9,null,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 3.3333333333333335,
+      "line_counts": {
+        "missed": 0,
+        "covered": 12,
+        "total": 12
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/config.rb"
+    },
+    {
+      "blob_id": "47c8a9ceab78ff5773a5ea0d5f043d114f23777f",
+      "coverage": "[null,null,1,null,1,null]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 2,
+        "total": 2
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/fixture_result.rb"
+    },
+    {
+      "blob_id": "d269a377414e1018f985246741d417d514585727",
+      "coverage": "[null,null,1,null,1,null,1,1,23,131,131,131,null,null,null,1,23,null,null,1,28,null,null,1,null,1,280,null,null,1,null,1,148,131,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 54.526315789473685,
+      "line_counts": {
+        "missed": 0,
+        "covered": 19,
+        "total": 19
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/jsonable.rb"
+    },
+    {
+      "blob_id": "088461b7d0d511f6bdf746f53cb639c9f978e4d3",
+      "coverage": "[null,null,1,1,null,1,null,1,1,1,null,null,1,null,null,null,null,null,null,null,null,1,19,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,19,19,4,4,4,4,null,null,null,null,1,null,null,null,1,19,19,19,19,19,19,19,19,19,null,null,null,null,null,null,1,19,19,19,19,19,null,null,null,null,null,null,1,19,null,null,null,null,null,1,4,null,2,null,null,null,null,null,1,57,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 10.9,
+      "line_counts": {
+        "missed": 0,
+        "covered": 40,
+        "total": 40
+      },
+      "name": "allure-rspec/lib/allure_rspec/rspec_model.rb"
+    },
+    {
+      "blob_id": "fa765c05f95b21d92e3cc9a91023f5ca782e894a",
+      "coverage": "[null,null,1,null,null,1,null,null,null,1,52,104,null,null,null,null,null,null,1,712,null,null,null,null,null,1,82,null,null,null,null,null,1,85,85,null,2,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 86.76923076923077,
+      "line_counts": {
+        "missed": 0,
+        "covered": 13,
+        "total": 13
+      },
+      "name": "allure-cucumber/lib/allure_cucumber/ast_transformer.rb"
+    },
+    {
+      "blob_id": "71cabc70a6558e195389e44f725421e949338177",
+      "coverage": "[null,null,1,null,1,1,null,null,null,null,null,1,2,2,2,2,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 1.5,
+      "line_counts": {
+        "missed": 0,
+        "covered": 8,
+        "total": 8
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/category.rb"
+    },
+    {
+      "blob_id": "f5e32dd2965f7578bbff8645697c686abc41a7f6",
+      "coverage": "[null,null,1,null,1,null]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 2,
+        "total": 2
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/step_result.rb"
+    },
+    {
+      "blob_id": "dbc24f1071ef701c080162759fe7f8ad2c0c3b62",
+      "coverage": "[null,null,1,null,1,1,1,1,1,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 7,
+        "total": 7
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/status.rb"
+    },
+    {
+      "blob_id": "e474b3385731e7f6d78bb8f661560ea2b4b927ab",
+      "coverage": "[null,null,1,null,1,null,1,null,null,1,11,23,13,null,null,null,null,1,26,null,26,26,23,4,null,null,null,null,1,26,null,26,26,23,4,null,null,null,null,1,11,11,23,null,null,11,null,null,null,null,1,null,41,22,23,null,null,null,1,null,null,1,146,null,null,null,null,null,null,null,null,null,null,null,1,133,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 20.87878787878788,
+      "line_counts": {
+        "missed": 0,
+        "covered": 33,
+        "total": 33
+      },
+      "name": "allure-cucumber/lib/allure_cucumber/tag_parser.rb"
+    },
+    {
+      "blob_id": "18834b98e13747006aeee0625c380563b8362092",
+      "coverage": "[null,null,1,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,38,38,38,38,38,38,null,null,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 23.2,
+      "line_counts": {
+        "missed": 0,
+        "covered": 10,
+        "total": 10
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/test_result.rb"
+    },
+    {
+      "blob_id": "5cb4cdfa20b53d5e78be139a0aa9daf20c2d7fbd",
+      "coverage": "[null,null,1,null,1,null,1,1,48,48,48,48,48,48,null,null,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 26.636363636363637,
+      "line_counts": {
+        "missed": 0,
+        "covered": 11,
+        "total": 11
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/test_result_container.rb"
+    },
+    {
+      "blob_id": "185d2b3dfcabc20b9330d4a82b32fbb32d875506",
+      "coverage": "[null,null,1,null,1,null,1,null,null,null,1,11,11,11,null,null,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 4.75,
+      "line_counts": {
+        "missed": 0,
+        "covered": 8,
+        "total": 8
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/attachment.rb"
+    },
+    {
+      "blob_id": "cbb1e7268e4a58b86d220dfb14d71f0c1952dee2",
+      "coverage": "[null,null,1,1,1,null,1,null,1,1,1,null,1,null,null,null,null,null,null,null,null,1,1,42,null,null,null,null,null,null,1,14,null,null,null,null,null,1,18,null,null,null,null,null,null,null,1,19,null,null,null,null,null,1,19,19,null,null,null,null,null,1,18,null,null,1,null,null,null,1,107,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 10.92,
+      "line_counts": {
+        "missed": 0,
+        "covered": 25,
+        "total": 25
+      },
+      "name": "allure-rspec/lib/allure_rspec/formatter.rb"
+    },
+    {
+      "blob_id": "695f3e4ea3d3625ff775e4db4e7186c4993bfb21",
+      "coverage": "[null,null,1,null,1,null,1,1,2,2,null,null,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 1.2857142857142858,
+      "line_counts": {
+        "missed": 0,
+        "covered": 7,
+        "total": 7
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/parameter.rb"
+    },
+    {
+      "blob_id": "2af6a29486609430c09134c9d0554dfca6b2b71c",
+      "coverage": "[null,null,1,null,1,null,1,1,137,137,null,null,1,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 39.857142857142854,
+      "line_counts": {
+        "missed": 0,
+        "covered": 7,
+        "total": 7
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/model/label.rb"
+    },
+    {
+      "blob_id": "ab628f6101c503e8b99d382f0db736775d2e0971",
+      "coverage": "[null,null,1,null,1,null,1,1,1,null,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,null,1,null,null,1,125,null,null,null,null,1,36,null,null,null,null,1,36,null,null,1,36,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,1,null,null,null,null,null,1,4,null,null,null,null,null,1,3,null,null,1,null,1,1,null,null,1,1,null,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 4.6,
+      "line_counts": {
+        "missed": 0,
+        "covered": 65,
+        "total": 65
+      },
+      "name": "allure-ruby-commons/lib/allure_ruby_commons/result_utils.rb"
+    },
+    {
+      "blob_id": "ff9a48f45b810d97c6760e2d781935a559e4fac7",
+      "coverage": "[null,null,null,1,null,1,1,null,null,1,1,null,null,1,1,null,null,null,null,null,null,1,1,null,null,null,null]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 9,
+        "total": 9
+      },
+      "name": "allure-cucumber/lib/allure-cucumber.rb"
+    }
+  ],
+  "repo_token": ""
+}

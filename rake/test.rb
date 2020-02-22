@@ -3,8 +3,56 @@
 require "rspec/core/rake_task"
 require "rubocop/rake_task"
 require "json"
+require "fileutils"
 
 require_relative "util"
+
+class CodeClimateUploader
+  CC_REPORTER_URL = "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64"
+  CC_REPORTER = "vendor/bundle/cc_reporter_0.6.3"
+  CC_JSON = "codeclimate.json"
+  SIMPLECOV_RESULT = "coverage/.resultset.json"
+
+  class << self
+    def upload
+      download_reporter
+      format_coverage
+      upload_coverage
+    end
+
+    private
+
+    def format_coverage
+      system(cc_env, "./#{CC_REPORTER} format-coverage #{SIMPLECOV_RESULT} -t simplecov -o #{CC_JSON}")
+    end
+
+    def upload_coverage
+      system(cc_env, "./#{CC_REPORTER} upload-coverage -i #{CC_JSON}")
+    end
+
+    def cc_env
+      @cc_env ||= {
+        "GIT_COMMIT_SHA" => pull_request? ? context.event.pull_request.head.sha : context.sha,
+        "GIT_BRANCH" => pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last,
+        "CI_NAME" => "github-actions",
+      }
+    end
+
+    def context
+      @context ||= JSON.parse(ENV["CONTEXT"], object_class: OpenStruct)
+    end
+
+    def pull_request?
+      @pull_request ||= ENV["GITHUB_EVENT_NAME"] == "pull_request"
+    end
+
+    def download_reporter
+      return if File.exist?(CC_REPORTER)
+
+      system("curl -s -L #{CC_REPORTER_URL} -o #{CC_REPORTER} && chmod a+x #{CC_REPORTER}")
+    end
+  end
+end
 
 class TestTasks
   include Rake::DSL
@@ -82,16 +130,18 @@ class TestTasks
       formatter(multiformatter)
     end
 
+    merge_results
+    CodeClimateUploader.upload if ENV["CI"] && ENV["RUBY_VERSION"] == "2.7"
+  end
+
+  def merge_results
     puts "\nGenerating combined coverage report".yellow
+    results = Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
+      res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
+    end
     SimpleCov::ResultMerger.merge_results(*results).tap do |result|
       SimpleCov::ResultMerger.store_result(result)
       result.format!
-    end
-  end
-
-  def results
-    Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
-      res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
     end
   end
 
