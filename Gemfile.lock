@@ -54,7 +54,7 @@ GEM
     e2mmap (0.1.0)
     gherkin (5.1.0)
     jaro_winkler (1.5.4)
-    json (2.2.0)
+    json (2.3.0)
     lefthook (0.7.1)
     macaddr (1.7.2)
       systemu (~> 2.6.5)

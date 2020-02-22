@@ -10,15 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@master
       
-      - name: Set up Ruby 2.6
+      - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6.x
+          ruby-version: '2.7'
 
       - name: Install
-        run: |
-          gem install bundler -v 2.0.2 --no-document
-          bundle install -j $(nproc)
+        run: bundle install -j $(nproc)
       
       - name: Test
         run: bundle exec rake
