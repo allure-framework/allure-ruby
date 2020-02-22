@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-16.04
     steps:
       - uses: actions/checkout@master
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: 2.7-gems-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: 2.7-gems-
       
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
@@ -18,6 +23,7 @@ jobs:
       - name: Install
         run: |
           gem install bundler -v 2.1.2 --no-document
+          bundle config path vendor/bundle
           bundle install -j $(nproc)
       
       - name: Test
