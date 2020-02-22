@@ -102,14 +102,15 @@ GEM
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
     semantic (1.6.1)
-    simplecov (0.18.2)
+    simplecov (0.17.1)
       docile (~> 1.1)
-      simplecov-html (~> 0.11)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
     simplecov-console (0.6.0)
       ansi
       simplecov
       terminal-table
-    simplecov-html (0.12.0)
+    simplecov-html (0.10.2)
     solargraph (0.38.5)
       backport (~> 1.1)
       benchmark
@@ -139,18 +140,18 @@ PLATFORMS
 
 DEPENDENCIES
   allure-ruby!
-  bundler (~> 2.0)
-  colorize (~> 0.8)
+  bundler (~> 2.1.2)
+  colorize (~> 0.8.1)
   lefthook (~> 0.7.0)
   pry (~> 0.12.2)
-  rake (~> 13.0)
-  rspec (~> 3.8)
-  rubocop (~> 0.74)
-  rubocop-performance (~> 1.4)
-  semantic (~> 1.6)
-  simplecov (~> 0.16)
+  rake (~> 13.0.1)
+  rspec (~> 3.9.0)
+  rubocop (~> 0.80.0)
+  rubocop-performance (~> 1.5.2)
+  semantic (~> 1.6.1)
+  simplecov (~> 0.17.1)
   simplecov-console (~> 0.6.0)
-  solargraph (~> 0.35)
+  solargraph (~> 0.38.5)
 
 BUNDLED WITH
    2.1.2

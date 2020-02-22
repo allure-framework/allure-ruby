@@ -77,11 +77,21 @@ class TestTasks
     require "simplecov"
     require "simplecov-console"
 
-    puts "\nGenerating combined coverage report".yellow
-    SimpleCov.collate(Dir["#{root}/*/coverage/.resultset.json"]) do
+    SimpleCov.configure do
       %w[allure-cucumber allure-rspec allure-ruby-commons].each { |g| add_group(g, g) }
-      enable_coverage(:branch)
       formatter(multiformatter)
+    end
+
+    puts "\nGenerating combined coverage report".yellow
+    SimpleCov::ResultMerger.merge_results(*results).tap do |result|
+      SimpleCov::ResultMerger.store_result(result)
+      result.format!
+    end
+  end
+
+  def results
+    Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
+      res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
     end
   end
 

@@ -42,10 +42,12 @@ jobs:
         env:
           BUNDLE_SUPPRESS_INSTALL_USING_MESSAGES: 'true'
 
-      - name: Lint
-        run: bundle exec rake rubocop
-
       - name: Test
-        run: bundle exec rake test_with_coverage
+        uses: paambaati/codeclimate-action@v2.4.0
         env:
           CI: "true"
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_ID }}
+        with:
+          coverageCommand: bundle exec rake test_with_coverage
+          coverageLocations:
+            "${{ github.workspace }}/coverage/.resultset.json:simplecov"
