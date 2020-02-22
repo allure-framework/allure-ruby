@@ -28,6 +28,8 @@ jobs:
           gem install bundler -v 2.1.2 --no-document
           bundle config path vendor/bundle
           bundle install -j $(nproc)
+        env:
+          BUNDLE_SUPPRESS_INSTALL_USING_MESSAGES: 'true'
       
       - name: Test
         run: bundle exec rake
