@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  test:
     name: Test
     runs-on: ubuntu-latest
 
