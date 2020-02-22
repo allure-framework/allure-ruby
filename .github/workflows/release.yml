@@ -16,7 +16,9 @@ jobs:
           ruby-version: '2.7'
 
       - name: Install
-        run: bundle install -j $(nproc)
+        run: |
+          gem install bundler -v 2.1.2 --no-document
+          bundle install -j $(nproc)
       
       - name: Test
         run: bundle exec rake

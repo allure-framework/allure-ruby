@@ -27,7 +27,9 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
 
       - name: Install
-        run: bundle install -j $(nproc)
+        run: |
+          gem install bundler -v 2.1.2 --no-document
+          bundle install -j $(nproc)
 
       - name: Lint
         run: bundle exec rake rubocop
