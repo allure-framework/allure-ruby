@@ -48,8 +48,4 @@ jobs:
       - name: Test
         run: bundle exec rake test_with_coverage
         env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
           CI: "true"
-          CI_NAME: github-ci
-          CI_PULL_REQUEST: ${{ github.event.number }}
-          CONTEXT: ${{ toJson(github) }}

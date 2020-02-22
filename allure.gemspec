@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "solargraph", "~> 0.35"
   s.add_development_dependency "colorize", "~> 0.8"
   s.add_development_dependency "simplecov", "~> 0.16"
-  s.add_development_dependency "coveralls", "~> 0.8"
+  s.add_development_dependency "simplecov-console", "~> 0.6.0"
   s.add_development_dependency "semantic", "~> 1.6"
   s.add_development_dependency "lefthook", "~> 0.7.0"
 end

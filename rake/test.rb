@@ -75,41 +75,20 @@ class TestTasks
   def merge_coverage
     ENV["COV_MERGE"] = "true"
     require "simplecov"
-    require "coveralls"
-
-    results = Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
-      res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
-    end
+    require "simplecov-console"
 
     puts "\nGenerating combined coverage report".yellow
-    SimpleCov::ResultMerger.merge_results(*results).tap do |result|
-      ENV["CI"] ? publish_coverage(result) : display_coverage(result)
+    SimpleCov.collate(Dir["#{root}/*/coverage/.resultset.json"]) do
+      %w[allure-cucumber allure-rspec allure-ruby-commons].each { |g| add_group(g, g) }
+      enable_coverage(:branch)
+      formatter(multiformatter)
     end
   end
 
-  def display_coverage(result)
-    Coveralls::SimpleCov::Formatter.new.display_result(result)
-  end
-
-  def publish_coverage(result)
-    JSON.parse(ENV["CONTEXT"], object_class: OpenStruct).tap do |context|
-      coveralls_set_env(pull_request? ? context.event.pull_request.head.sha : context.sha)
-    end
-    Coveralls::SimpleCov::Formatter.new.format(result)
-  end
-
-  def coveralls_set_env(sha)
-    ENV["GIT_ID"] = sha
-    ENV["GIT_BRANCH"] = ENV["CI_BRANCH"] = pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last
-    ENV["GIT_MESSAGE"] = `git --no-pager show -s --format='%s' #{sha}`
-    ENV["GIT_COMMITTER_NAME"] = `git --no-pager show -s --format='%cN' #{sha}`
-    ENV["GIT_COMMITTER_EMAIL"] = `git --no-pager show -s --format='%ce' #{sha}`
-    ENV["GIT_AUTHOR_NAME"] = `git --no-pager show -s --format='%aN' #{sha}`
-    ENV["GIT_AUTHOR_EMAIL"] = `git --no-pager show -s --format='%ae' #{sha}`
-  end
-
-  def pull_request?
-    ENV["GITHUB_EVENT_NAME"] == "pull_request"
+  def multiformatter
+    formatters = [SimpleCov::Formatter::Console]
+    formatters << SimpleCov::Formatter::HTMLFormatter if ENV["COV_HTML_REPORT"]
+    SimpleCov::Formatter::MultiFormatter.new(formatters)
   end
 end
 
