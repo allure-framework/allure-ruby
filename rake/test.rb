@@ -18,7 +18,7 @@ class TestTasks
   def self.add_rspec_task
     RSpec::Core::RakeTask.new(:test, :tag) do |task, args|
       args[:tag].tap do |tag|
-        task.rspec_opts = "--color --require spec_helper --format documentation #{tag ? "--tag #{tag}" : ''}"
+        task.rspec_opts = "--color --tty --require spec_helper --format documentation #{tag ? "--tag #{tag}" : ''}"
         task.verbose = false
       end
     end
@@ -26,7 +26,7 @@ class TestTasks
 
   def self.add_rubocop_task
     RuboCop::RakeTask.new(:rubocop) do |task|
-      task.options = %w[--parallel]
+      task.options = %w[--parallel --color]
       task.verbose = false
     end
   end
