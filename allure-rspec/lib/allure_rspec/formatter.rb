@@ -20,7 +20,7 @@ module AllureRspec
 
     RSpec::Core::Example.class_eval do
       Allure.singleton_methods.each do |method|
-        define_method(method) { |*args, **opts, &block| Allure.__send__(method, *args, **opts, &block) }
+        define_method(method) { |*args, &block| Allure.__send__(method, *args, &block) }
       end
     end
 
