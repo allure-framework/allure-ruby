@@ -108,7 +108,7 @@ class TestTasks
 
   def run_all_adaptors(task_name)
     errors = adaptors.each_with_object([]) do |adaptor, a|
-      puts "\nExecuting #{task_name} for #{adaptor}".yellow
+      puts "Executing #{task_name} for #{adaptor}".yellow
       run_single_adaptor(adaptor, task_name)
     rescue
       a << adaptor
@@ -135,7 +135,7 @@ class TestTasks
   end
 
   def merge_results
-    puts "\nGenerating combined coverage report".yellow
+    puts "Generating combined coverage report".yellow
     results = Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
       res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
     end
