@@ -5,7 +5,7 @@ require_relative "config"
 module AllureCucumber
   # Cucumber tag parser helper methods
   module TagParser
-    # @param [Cucumber::Core::Ast::Tag] tags
+    # @param [Array<Cucumber::Core::Ast::Tag>] tags
     # @return [Array<Allure::Label>]
     def tag_labels(tags)
       tags
@@ -13,29 +13,23 @@ module AllureCucumber
         .map { |tag| Allure::ResultUtils.tag_label(tag.name.delete_prefix("@")) }
     end
 
-    # @param [Cucumber::Core::Ast::Tag] tags
+    # @param [Array<Cucumber::Core::Ast::Tag>] tags
     # @return [Array<Allure::Link>]
     def tms_links(tags)
       return [] unless Allure::Config.link_tms_pattern
 
-      tms_pattern = reserved_patterns[:tms]
-      tags
-        .select { |tag| tag.name.match?(tms_pattern) }
-        .map { |tag| tag.name.match(tms_pattern) { |match| Allure::ResultUtils.tms_link(match[:tms]) } }
+      matching_links(tags, :tms)
     end
 
-    # @param [Cucumber::Core::Ast::Tag] tags
+    # @param [Array<Cucumber::Core::Ast::Tag>] tags
     # @return [Array<Allure::Link>]
     def issue_links(tags)
       return [] unless Allure::Config.link_issue_pattern
 
-      issue_pattern = reserved_patterns[:issue]
-      tags
-        .select { |tag| tag.name.match?(issue_pattern) }
-        .map { |tag| tag.name.match(issue_pattern) { |match| Allure::ResultUtils.issue_link(match[:issue]) } }
+      matching_links(tags, :issue)
     end
 
-    # @param [Cucumber::Core::Ast::Tag] tags
+    # @param [Array<Cucumber::Core::Ast::Tag>] tags
     # @return [Allure::Label]
     def severity(tags)
       severity_pattern = reserved_patterns[:severity]
@@ -46,7 +40,7 @@ module AllureCucumber
       Allure::ResultUtils.severity_label(severity)
     end
 
-    # @param [Cucumber::Core::Ast::Tag] tags
+    # @param [Array<Cucumber::Core::Ast::Tag>] tags
     # @return [Hash<Symbol, Boolean>]
     def status_detail_tags(tags)
       {
@@ -58,7 +52,17 @@ module AllureCucumber
 
     private
 
-    # @return [Hash<Symbol, Regexp>] <description>
+    # @param [Array<Cucumber::Core::Ast::Tag>] tags
+    # @param [Symbol] type
+    # @return [Array<Allure::Link>]
+    def matching_links(tags, type)
+      pattern = reserved_patterns[type]
+      tags
+        .select { |tag| tag.name.match?(pattern) }
+        .map { |tag| tag.name.match(pattern) { |match| Allure::ResultUtils.public_send("#{type}_link", match[type]) } }
+    end
+
+    # @return [Hash<Symbol, Regexp>]
     def reserved_patterns
       @reserved_patterns ||= {
         tms: /@#{CucumberConfig.tms_prefix}(?<tms>\S+)/,
