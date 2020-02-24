@@ -46,6 +46,6 @@ jobs:
         run: bundle exec rake test_with_coverage
         env:
           CI: "true"
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_ID }}
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
           CONTEXT: ${{ toJson(github) }}
           RUBY_VERSION: ${{ matrix.ruby }}
