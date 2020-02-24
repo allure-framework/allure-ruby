@@ -1,7 +1,7 @@
 # Allure ruby
 
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)
-![Workflow status](https://github.com/allure-framework/allure-ruby/workflows/Build/badge.svg)
+![Workflow status](https://github.com/allure-framework/allure-ruby/workflows/Test/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/allure-framework/allure-ruby/badge.svg?branch=master)](https://coveralls.io/github/allure-framework/allure-ruby?branch=master)  
 Ruby testing framework adaptors for generating allure compatible test reports.
 

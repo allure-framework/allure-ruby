@@ -1,0 +1,55 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ruby: ['2.5', '2.6', '2.7']
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Cache gems
+        uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ matrix.ruby }}-gems-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: ${{ matrix.ruby }}-gems-
+
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Install
+        run: |
+          gem install bundler -v 2.1.2 --no-document
+          bundle config path vendor/bundle
+          bundle install -j $(nproc)
+        env:
+          BUNDLE_SUPPRESS_INSTALL_USING_MESSAGES: 'true'
+
+      - name: Lint
+        run: bundle exec rake rubocop
+
+      - name: Test
+        run: bundle exec rake test_with_coverage
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
+          CI: "true"
+          CI_NAME: github-ci
+          CI_PULL_REQUEST: ${{ github.event.number }}
+          CONTEXT: ${{ toJson(github) }}

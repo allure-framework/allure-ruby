@@ -7,6 +7,7 @@ PATH
     allure-rspec (2.13.3)
       allure-ruby-commons (= 2.13.3)
       rspec-core (~> 3.8)
+      ruby2_keywords (~> 0.0.2)
     allure-ruby (2.13.3)
       allure-cucumber (= 2.13.3)
       allure-rspec (= 2.13.3)
@@ -54,7 +55,7 @@ GEM
     e2mmap (0.1.0)
     gherkin (5.1.0)
     jaro_winkler (1.5.4)
-    json (2.2.0)
+    json (2.3.0)
     lefthook (0.7.1)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
@@ -104,6 +105,7 @@ GEM
     rubocop-performance (1.5.2)
       rubocop (>= 0.71.0)
     ruby-progressbar (1.10.1)
+    ruby2_keywords (0.0.2)
     semantic (1.6.1)
     simplecov (0.16.1)
       docile (~> 1.1)
@@ -154,4 +156,4 @@ DEPENDENCIES
   solargraph (~> 0.35)
 
 BUNDLED WITH
-   2.0.2
+   2.1.2

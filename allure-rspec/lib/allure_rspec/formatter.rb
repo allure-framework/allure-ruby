@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "ruby2_keywords"
 require "rspec/core"
 require "rspec/core/formatters/base_formatter"
 
@@ -20,7 +21,7 @@ module AllureRspec
 
     RSpec::Core::Example.class_eval do
       Allure.singleton_methods.each do |method|
-        define_method(method) { |*args, &block| Allure.__send__(method, *args, &block) }
+        ruby2_keywords define_method(method) { |*args, &block| Allure.__send__(method, *args, &block) }
       end
     end
 
