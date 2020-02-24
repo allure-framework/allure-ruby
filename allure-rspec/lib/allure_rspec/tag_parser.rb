@@ -7,27 +7,23 @@ module AllureRspec
     # @param [Hash] metadata
     # @return [Array<Allure::Label>]
     def tag_labels(metadata)
-      return [] unless Allure::Config.link_tms_pattern && metadata.keys.any? { |k| allure?(k) }
+      return [] unless metadata.keys.any? { |k| allure?(k) }
 
-      metadata.select { |k, _v| allure?(k) }.values.map { |v| Allure::ResultUtils.tag_label(v) }
+      metadata.select { |k| allure?(k) }.values.map { |v| Allure::ResultUtils.tag_label(v) }
     end
 
     # Get tms links
     # @param [Hash] metadata
     # @return [Array<Allure::Link>]
     def tms_links(metadata)
-      return [] unless Allure::Config.link_tms_pattern && metadata.keys.any? { |k| tms?(k) }
-
-      metadata.select { |k, _v| tms?(k) }.values.map { |v| Allure::ResultUtils.tms_link(v) }
+      matching_links(metadata, :tms)
     end
 
     # Get issue links
     # @param [Hash] metadata
     # @return [Array<Allure::Link>]
     def issue_links(metadata)
-      return [] unless Allure::Config.link_issue_pattern && metadata.keys.any? { |k| issue?(k) }
-
-      metadata.select { |k, _v| issue?(k) }.values.map { |v| Allure::ResultUtils.issue_link(v) }
+      matching_links(metadata, :issue)
     end
 
     # Get severity
@@ -49,6 +45,19 @@ module AllureRspec
     end
 
     private
+
+    # @param [Hash] metadata
+    # @param [Symbol] type
+    # @return [Array<Allure::Link>]
+    def matching_links(metadata, type)
+      unless Allure::Config.public_send("link_#{type}_pattern") && metadata.keys.any? { |k| __send__("#{type}?", k) }
+        return []
+      end
+
+      metadata
+        .select { |k| __send__("#{type}?", k) }.values
+        .map { |v| Allure::ResultUtils.public_send("#{type}_link", v) }
+    end
 
     # Does key match custom allure label
     # @param [Symbol] key
