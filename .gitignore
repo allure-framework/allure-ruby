@@ -16,3 +16,4 @@ reports
 .allure
 doc
 coverage
+vendor/bundle

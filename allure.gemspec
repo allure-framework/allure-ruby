@@ -20,16 +20,16 @@ Gem::Specification.new do |s|
   s.add_dependency "allure-cucumber", version
   s.add_dependency "allure-rspec", version
 
-  s.add_development_dependency "bundler", "~> 2.0"
+  s.add_development_dependency "bundler", "~> 2.1.2"
   s.add_development_dependency "pry", "~> 0.12.2"
-  s.add_development_dependency "rake", "~> 13.0"
-  s.add_development_dependency "rspec", "~> 3.8"
-  s.add_development_dependency "rubocop", "~> 0.74"
-  s.add_development_dependency "rubocop-performance", "~> 1.4"
-  s.add_development_dependency "solargraph", "~> 0.35"
-  s.add_development_dependency "colorize", "~> 0.8"
-  s.add_development_dependency "simplecov", "~> 0.16"
-  s.add_development_dependency "coveralls", "~> 0.8"
-  s.add_development_dependency "semantic", "~> 1.6"
+  s.add_development_dependency "rake", "~> 13.0.1"
+  s.add_development_dependency "rspec", "~> 3.9.0"
+  s.add_development_dependency "rubocop", "~> 0.80.0"
+  s.add_development_dependency "rubocop-performance", "~> 1.5.2"
+  s.add_development_dependency "solargraph", "~> 0.38.5"
+  s.add_development_dependency "colorize", "~> 0.8.1"
+  s.add_development_dependency "simplecov", "~> 0.17.1"
+  s.add_development_dependency "simplecov-console", "~> 0.6.0"
+  s.add_development_dependency "semantic", "~> 1.6.1"
   s.add_development_dependency "lefthook", "~> 0.7.0"
 end

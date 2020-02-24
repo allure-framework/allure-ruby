@@ -2,7 +2,9 @@
 
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)
 ![Workflow status](https://github.com/allure-framework/allure-ruby/workflows/Test/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/allure-framework/allure-ruby/badge.svg?branch=master)](https://coveralls.io/github/allure-framework/allure-ruby?branch=master)  
+[![Maintainability](https://api.codeclimate.com/v1/badges/5e53b4f63c4f600178005f0e/maintainability)](https://codeclimate.com/github/allure-framework/allure-ruby/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/5e53b4f63c4f600178005f0e/test_coverage)](https://codeclimate.com/github/allure-framework/allure-ruby/test_coverage)
+
 Ruby testing framework adaptors for generating allure compatible test reports.
 
 ## allure-ruby-commons

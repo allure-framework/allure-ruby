@@ -2,6 +2,8 @@
 
 We love pull requests from everyone.
 
+## Setup
+
 **Fork, then clone the repo:**
 
 ```bash
@@ -15,11 +17,15 @@ bundle install
 bundle exec lefthook install -f
 ```
 
-**Make your change. Add tests for your change. Make sure all the tests pass:**
+## Testing
+
+**Make your change. Add tests for your change. Make sure all the tests pass and coverage is good:**
 
 ```bash
-bundle exec rake
+COV_HTML_REPORT=true bundle exec rake test_with_coverage
 ```
+
+## Building
 
 **To test changes locally, bump version and build gems**
 

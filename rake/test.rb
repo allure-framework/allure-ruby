@@ -3,8 +3,56 @@
 require "rspec/core/rake_task"
 require "rubocop/rake_task"
 require "json"
+require "fileutils"
 
 require_relative "util"
+
+class CodeClimateUploader
+  CC_REPORTER_URL = "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64"
+  CC_REPORTER = "vendor/bundle/cc_reporter_0.6.3"
+  CC_JSON = "codeclimate.json"
+  SIMPLECOV_RESULT = "coverage/.resultset.json"
+
+  class << self
+    def upload
+      download_reporter
+      format_coverage
+      upload_coverage
+    end
+
+    private
+
+    def format_coverage
+      system(cc_env, "./#{CC_REPORTER} format-coverage #{SIMPLECOV_RESULT} -t simplecov -o #{CC_JSON}")
+    end
+
+    def upload_coverage
+      system(cc_env, "./#{CC_REPORTER} upload-coverage -i #{CC_JSON}")
+    end
+
+    def cc_env
+      @cc_env ||= {
+        "GIT_COMMIT_SHA" => pull_request? ? context.event.pull_request.head.sha : context.sha,
+        "GIT_BRANCH" => pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last,
+        "CI_NAME" => "github-actions",
+      }
+    end
+
+    def context
+      @context ||= JSON.parse(ENV["CONTEXT"], object_class: OpenStruct)
+    end
+
+    def pull_request?
+      @pull_request ||= ENV["GITHUB_EVENT_NAME"] == "pull_request"
+    end
+
+    def download_reporter
+      return if File.exist?(CC_REPORTER)
+
+      system("curl -s -L #{CC_REPORTER_URL} -o #{CC_REPORTER} && chmod a+x #{CC_REPORTER}")
+    end
+  end
+end
 
 class TestTasks
   include Rake::DSL
@@ -60,7 +108,7 @@ class TestTasks
 
   def run_all_adaptors(task_name)
     errors = adaptors.each_with_object([]) do |adaptor, a|
-      puts "\nExecuting #{task_name} for #{adaptor}".yellow
+      puts "Executing #{task_name} for #{adaptor}".yellow
       run_single_adaptor(adaptor, task_name)
     rescue
       a << adaptor
@@ -75,41 +123,32 @@ class TestTasks
   def merge_coverage
     ENV["COV_MERGE"] = "true"
     require "simplecov"
-    require "coveralls"
+    require "simplecov-console"
 
+    SimpleCov.configure do
+      %w[allure-cucumber allure-rspec allure-ruby-commons].each { |g| add_group(g, g) }
+      formatter(multiformatter)
+    end
+
+    merge_results
+    CodeClimateUploader.upload if ENV["CI"] && ENV["RUBY_VERSION"] == "2.7"
+  end
+
+  def merge_results
+    puts "Generating combined coverage report".yellow
     results = Dir.glob("#{root}/*/coverage/.resultset.json").each_with_object([]) do |file, res|
       res << SimpleCov::Result.from_hash(JSON.parse(File.read(file)))
     end
-
-    puts "\nGenerating combined coverage report".yellow
     SimpleCov::ResultMerger.merge_results(*results).tap do |result|
-      ENV["CI"] ? publish_coverage(result) : display_coverage(result)
+      SimpleCov::ResultMerger.store_result(result)
+      result.format!
     end
   end
 
-  def display_coverage(result)
-    Coveralls::SimpleCov::Formatter.new.display_result(result)
-  end
-
-  def publish_coverage(result)
-    JSON.parse(ENV["CONTEXT"], object_class: OpenStruct).tap do |context|
-      coveralls_set_env(pull_request? ? context.event.pull_request.head.sha : context.sha)
-    end
-    Coveralls::SimpleCov::Formatter.new.format(result)
-  end
-
-  def coveralls_set_env(sha)
-    ENV["GIT_ID"] = sha
-    ENV["GIT_BRANCH"] = ENV["CI_BRANCH"] = pull_request? ? ENV["GITHUB_HEAD_REF"] : ENV["GITHUB_REF"].split("/").last
-    ENV["GIT_MESSAGE"] = `git --no-pager show -s --format='%s' #{sha}`
-    ENV["GIT_COMMITTER_NAME"] = `git --no-pager show -s --format='%cN' #{sha}`
-    ENV["GIT_COMMITTER_EMAIL"] = `git --no-pager show -s --format='%ce' #{sha}`
-    ENV["GIT_AUTHOR_NAME"] = `git --no-pager show -s --format='%aN' #{sha}`
-    ENV["GIT_AUTHOR_EMAIL"] = `git --no-pager show -s --format='%ae' #{sha}`
-  end
-
-  def pull_request?
-    ENV["GITHUB_EVENT_NAME"] == "pull_request"
+  def multiformatter
+    formatters = [SimpleCov::Formatter::Console]
+    formatters << SimpleCov::Formatter::HTMLFormatter if ENV["COV_HTML_REPORT"]
+    SimpleCov::Formatter::MultiFormatter.new(formatters)
   end
 end
 
