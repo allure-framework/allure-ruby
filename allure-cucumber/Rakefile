@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../rake/test"
+load("../lib/tasks/test.rake")
 
 TestTasks.add_rspec_task
 TestTasks.add_rubocop_task

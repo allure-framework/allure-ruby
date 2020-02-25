@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "rake/test"
-require_relative "rake/release"
+Dir["lib/tasks/*.rake"].each { |f| load(f) }
 
 task default: "all:test"
 
