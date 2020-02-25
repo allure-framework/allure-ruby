@@ -11,6 +11,8 @@ module Allure
     def initialize
       @test_context = []
       @step_context = []
+      @logger = Logger.new(STDOUT, level: Config.logging_level)
+      @file_writer = FileWriter.new
     end
 
     def_delegators :file_writer, :write_attachment, :write_environment, :write_categories
@@ -232,13 +234,7 @@ module Allure
 
     private
 
-    def logger
-      @logger ||= Logger.new(STDOUT, level: Config.logging_level)
-    end
-
-    def file_writer
-      @file_writer ||= FileWriter.new
-    end
+    attr_accessor :logger, :file_writer
 
     def current_executable
       current_test_step || @current_fixture || @current_test_case

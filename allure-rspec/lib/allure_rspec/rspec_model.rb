@@ -50,34 +50,6 @@ module AllureRspec
 
     # @param [RSpec::Core::Example] example
     # @return [Array<Allure::Label>]
-    def labels(example)
-      [].tap do |labels|
-        labels << Allure::ResultUtils.framework_label("rspec")
-        labels << Allure::ResultUtils.feature_label(example.example_group.description)
-        labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
-        labels << Allure::ResultUtils.story_label(example.description)
-        labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
-        labels << severity(example.metadata)
-        labels.push(*suite_labels(example.example_group))
-        labels.push(*tag_labels(example.metadata))
-      end
-    end
-
-    # Add suite labels
-    # @param [RSpec::Core::ExampleGroup] example_group
-    # @return [Array<Allure::Label>]
-    def suite_labels(example_group)
-      example_group.parent_groups.map(&:description).yield_self do |parents|
-        [].tap do |labels|
-          labels << Allure::ResultUtils.suite_label((parents.length == 1) ? parents.last : parents[-2])
-          labels << Allure::ResultUtils.parent_suite_label(parents.last) if parents.length > 1
-          labels << Allure::ResultUtils.sub_suite_label(parents[0..-3].join(" > ")) if parents.length > 2
-        end
-      end
-    end
-
-    # @param [RSpec::Core::Example] example
-    # @return [Array<Allure::Label>]
     def links(example)
       tms_links(example.metadata) + issue_links(example.metadata)
     end
@@ -89,6 +61,51 @@ module AllureRspec
       return Allure::ResultUtils.status(result.exception) if result.status == :failed
 
       ALLURE_STATUS[result.status]
+    end
+
+    # @param [RSpec::Core::Example] example
+    # @return [Array<Allure::Label>]
+    def labels(example)
+      [].tap do |labels|
+        labels << Allure::ResultUtils.framework_label("rspec")
+        labels << Allure::ResultUtils.feature_label(example.example_group.description)
+        labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
+        labels << Allure::ResultUtils.story_label(example.description)
+        labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
+        labels << severity(example.metadata)
+        labels.push(*tag_labels(example.metadata))
+        labels.push(*suite_labels(example.example_group))
+      end
+    end
+
+    # Add suite labels
+    # @param [RSpec::Core::ExampleGroup] example_group
+    # @return [Array<Allure::Label>]
+    def suite_labels(example_group)
+      [].tap do |labels|
+        parents = example_group.parent_groups.map(&:description)
+        labels << Allure::ResultUtils.suite_label(suite(parents))
+        labels << Allure::ResultUtils.parent_suite_label(parent_suite(parents))
+        labels << Allure::ResultUtils.sub_suite_label(sub_suites(parents))
+      end
+    end
+
+    # @param [Array<String>] parents
+    # @return [String]
+    def suite(parents)
+      parents.length == 1 ? parents.last : parents[-2]
+    end
+
+    # @param [Array<String>] parents
+    # @return [String]
+    def parent_suite(parents)
+      parents.length > 1 ? parents.last : nil
+    end
+
+    # @param [Array<String>] parents
+    # @return [String]
+    def sub_suites(parents)
+      parents.length > 2 ? parents[0..-3].join(" > ") : nil
     end
 
     # Strip relative ./ form path
