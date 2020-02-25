@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rubocop-performance", "~> 1.5.2"
   s.add_development_dependency "solargraph", "~> 0.38.5"
   s.add_development_dependency "colorize", "~> 0.8.1"
-  s.add_development_dependency "simplecov", "~> 0.17.1"
+  s.add_development_dependency "simplecov", "~> 0.18.4"
   s.add_development_dependency "simplecov-console", "~> 0.6.0"
   s.add_development_dependency "semantic", "~> 1.6.1"
   s.add_development_dependency "lefthook", "~> 0.7.0"

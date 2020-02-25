@@ -102,15 +102,14 @@ GEM
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
     semantic (1.6.1)
-    simplecov (0.17.1)
+    simplecov (0.18.4)
       docile (~> 1.1)
-      json (>= 1.8, < 3)
-      simplecov-html (~> 0.10.0)
+      simplecov-html (~> 0.11)
     simplecov-console (0.6.0)
       ansi
       simplecov
       terminal-table
-    simplecov-html (0.10.2)
+    simplecov-html (0.12.1)
     solargraph (0.38.5)
       backport (~> 1.1)
       benchmark
@@ -149,7 +148,7 @@ DEPENDENCIES
   rubocop (~> 0.80.0)
   rubocop-performance (~> 1.5.2)
   semantic (~> 1.6.1)
-  simplecov (~> 0.17.1)
+  simplecov (~> 0.18.4)
   simplecov-console (~> 0.6.0)
   solargraph (~> 0.38.5)
 
