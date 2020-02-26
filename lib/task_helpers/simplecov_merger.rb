@@ -3,6 +3,8 @@
 require "json"
 require "fileutils"
 
+require_relative "util"
+
 class SimpleCovMerger
   extend TaskUtil
 

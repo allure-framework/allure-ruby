@@ -2,6 +2,8 @@
 
 require "semantic"
 
+require_relative "util"
+
 class VersionUpdater
   extend TaskUtil
   extend Rake::DSL
