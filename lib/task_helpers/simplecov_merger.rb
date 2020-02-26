@@ -26,6 +26,7 @@ class SimpleCovMerger
       SimpleCov.collate(Dir["#{root}/*/coverage/.resultset.json"]) do
         formatter(multiformatter)
         minimum_coverage(95)
+        enable_coverage(:branch)
       end
     end
 
