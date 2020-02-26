@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "../task_helpers/util"
+require "rake"
+
+require_relative "../task_helpers/util.rb"
+require_relative "../task_helpers/release_util.rb"
 
 class ReleaseTasks
   include Rake::DSL
@@ -19,10 +22,7 @@ class ReleaseTasks
   def add_version_bump_task
     desc "Update allure version"
     task :version, [:increment, :push] do |_task, args|
-      File.write("#{root}/ALLURE_VERSION", version.increment!(args[:increment] || "patch"), mode: "w")
-
-      commit
-      push if args[:push]
+      VersionUpdater.update(args[:increment], args[:push])
     end
   end
 
@@ -58,17 +58,6 @@ class ReleaseTasks
       task build: adaptors.map { |adaptor| "#{adaptor}:build" }
       task release: adaptors.map { |adaptor| "#{adaptor}:release" }
     end
-  end
-
-  def commit
-    puts "Updating version to #{version}".yellow
-    sh("git commit ALLURE_VERSION -m 'Update allure to v#{version}'")
-    sh("git tag #{version}")
-  end
-
-  def push
-    puts "Pushing changes to repository".yellow
-    sh("git push origin HEAD && git push origin #{version}")
   end
 end
 
