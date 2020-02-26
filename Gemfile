@@ -2,4 +2,21 @@
 
 source "https://rubygems.org"
 
-gemspec
+gem "allure-cucumber", path: "allure-cucumber"
+gem "allure-rspec", path: "allure-rspec"
+gem "allure-ruby-commons", path: "allure-ruby-commons"
+
+group :development do
+  gem "bundler", "~> 2.1.2"
+  gem "colorize", "~> 0.8.1"
+  gem "lefthook", "~> 0.7.0"
+  gem "pry", "~> 0.12.2"
+  gem "rake", "~> 13.0.1"
+  gem "rspec", "~> 3.9.0"
+  gem "rubocop", "~> 0.80.0"
+  gem "rubocop-performance", "~> 1.5.2"
+  gem "semantic", "~> 1.6.1"
+  gem "simplecov", "~> 0.17.1"
+  gem "simplecov-console", "~> 0.6.0"
+  gem "solargraph", "~> 0.38.5"
+end
