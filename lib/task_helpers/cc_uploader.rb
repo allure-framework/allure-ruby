@@ -3,24 +3,23 @@
 class CodeClimateUploader
   CC_REPORTER_URL = "https://codeclimate.com/downloads/test-reporter/test-reporter-0.6.3-linux-amd64"
   CC_REPORTER = "vendor/bundle/cc_reporter_0.6.3"
-  CC_JSON = "codeclimate.json"
-  SIMPLECOV_RESULT = "coverage/.resultset.json"
+  CC_JSON = "coverage/codeclimate.json"
 
   class << self
-    def upload
+    def upload(simplecov_result)
       download_reporter
-      format_coverage
+      format_coverage(simplecov_result)
       upload_coverage
     end
 
     private
 
-    def format_coverage
-      system(cc_env, "./#{CC_REPORTER} format-coverage #{SIMPLECOV_RESULT} -t simplecov -o #{CC_JSON}")
+    def format_coverage(simplecov_result)
+      shell("./#{CC_REPORTER} format-coverage #{simplecov_result} -t simplecov -o #{CC_JSON}", cc_env)
     end
 
     def upload_coverage
-      system(cc_env, "./#{CC_REPORTER} upload-coverage -i #{CC_JSON}")
+      shell("./#{CC_REPORTER} upload-coverage -i #{CC_JSON}", cc_env)
     end
 
     def cc_env
@@ -42,7 +41,12 @@ class CodeClimateUploader
     def download_reporter
       return if File.exist?(CC_REPORTER)
 
-      system("curl -s -L #{CC_REPORTER_URL} -o #{CC_REPORTER} && chmod a+x #{CC_REPORTER}")
+      shell("curl -s -L #{CC_REPORTER_URL} -o #{CC_REPORTER} && chmod a+x #{CC_REPORTER}")
+    end
+
+    def shell(cmd, env = {})
+      status = system(env, cmd)
+      raise StandardError.new("Command failed") unless status
     end
   end
 end

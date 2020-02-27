@@ -42,8 +42,9 @@ class TestTasks
         ENV["COVERAGE"] = "true"
         run_all_adaptors(:test)
       ensure
-        SimpleCovMerger.merge_coverage
-        CodeClimateUploader.upload if ENV["CI"] && ENV["RUBY_VERSION"] == "2.7"
+        cc_resultset_json = "coverage/.resultset_cc.json"
+        SimpleCovMerger.merge_coverage(cc_resultset_json)
+        CodeClimateUploader.upload(cc_resultset_json) if ENV["CI"] && ENV["RUBY_VERSION"] == "2.7"
       end
     end
   end
