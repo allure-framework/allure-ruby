@@ -109,11 +109,11 @@ GEM
     simplecov (0.18.5)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
-    simplecov-console (0.6.0)
+    simplecov-console (0.7.0)
       ansi
       simplecov
       terminal-table
-    simplecov-html (0.12.1)
+    simplecov-html (0.12.2)
     solargraph (0.38.5)
       backport (~> 1.1)
       benchmark
@@ -155,7 +155,7 @@ DEPENDENCIES
   rubocop-performance (~> 1.5.2)
   semantic (~> 1.6.1)
   simplecov (~> 0.18.5)
-  simplecov-console (~> 0.6.0)
+  simplecov-console (~> 0.7.0)
   solargraph (~> 0.38.5)
 
 BUNDLED WITH
