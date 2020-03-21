@@ -34,7 +34,9 @@ module AllureCucumber
     # Scenario description or it's location
     # @return [String]
     def description
-      @description ||= scenario.description.empty? ? test_case.location.file : scenario.description.strip
+      @description ||= begin
+        scenario.description.empty? ? "Location - #{test_case.location}" : scenario.description.strip
+      end
     end
 
     # Scenario outline row parameters

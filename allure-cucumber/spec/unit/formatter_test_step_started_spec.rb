@@ -6,13 +6,13 @@ describe "on_test_step_started" do
 
   context "test step" do
     it "is started" do
-      run_cucumber_cli(<<~SCENARIO)
+      run_cucumber_cli(<<~FEATURE)
         Feature: Simple feature
 
         Scenario: Add a to b
           Simple scenario description
           Given a is 5
-      SCENARIO
+      FEATURE
 
       expect(lifecycle).to have_received(:start_test_step).once do |step|
         aggregate_failures "Should start with correct parameters" do
@@ -23,14 +23,14 @@ describe "on_test_step_started" do
     end
 
     it "is started with multiline arg attachment" do
-      run_cucumber_cli(<<~SCENARIO)
+      run_cucumber_cli(<<~FEATURE)
         Feature: Simple feature
 
         Scenario: Add a to b
           Given step has a table
             | value | value_2 |
             | 1     | 2       |
-      SCENARIO
+      FEATURE
 
       expect(lifecycle).to have_received(:start_test_step).once do |step|
         attachment = step.attachments.first
@@ -44,7 +44,7 @@ describe "on_test_step_started" do
     end
 
     it "is started with docstring attachment" do
-      run_cucumber_cli(<<~SCENARIO)
+      run_cucumber_cli(<<~FEATURE)
         Feature: Simple feature
 
         Scenario: Add a to b
@@ -52,7 +52,7 @@ describe "on_test_step_started" do
             """
             I am a docstring
             """
-      SCENARIO
+      FEATURE
 
       expect(lifecycle).to have_received(:start_test_step).once do |step|
         attachment = step.attachments.first
@@ -68,14 +68,14 @@ describe "on_test_step_started" do
 
   context "fixture" do
     it "for before hook is started" do
-      run_cucumber_cli(<<~SCENARIO, "--tags", "@before")
+      run_cucumber_cli(<<~FEATURE)
         Feature: Simple feature
 
         @before
         Scenario: Add a to b
           Simple scenario description
           Given a is 5
-      SCENARIO
+      FEATURE
 
       expect(lifecycle).to have_received(:start_prepare_fixture).once do |fixture|
         expect(fixture.name).to eq("env.rb:12")
@@ -83,14 +83,14 @@ describe "on_test_step_started" do
     end
 
     it "for after hook is started" do
-      run_cucumber_cli(<<~SCENARIO, "--tags", "@after")
+      run_cucumber_cli(<<~FEATURE)
         Feature: Simple feature
 
         @after
         Scenario: Add a to b
           Simple scenario description
           Given a is 5
-      SCENARIO
+      FEATURE
 
       expect(lifecycle).to have_received(:start_tear_down_fixture).once do |fixture|
         expect(fixture.name).to eq("env.rb:19")

@@ -11,21 +11,19 @@ class CucumberHelper
     @stdout = StringIO.new
     @stderr = StringIO.new
     @kernel = MockKernel.new
-    @tmp_dir = "tmp/#{tmp_dir}"
+    @tmp_dir = tmp_dir
   end
 
   def execute(feature, args)
     setup(feature)
 
-    Dir.chdir(tmp_dir) do
-      Cucumber::Cli::Main.new(
-        [feature_file, *default_args, *args],
-        nil,
-        @stdout,
-        @stderr,
-        @kernel,
-      ).execute!
-    end
+    Cucumber::Cli::Main.new(
+      [feature_file, *default_args, *args],
+      nil,
+      @stdout,
+      @stderr,
+      @kernel,
+    ).execute!
   ensure
     write_file("#{tmp_dir}/cucumber_output.txt", all_output)
   end
@@ -41,7 +39,7 @@ class CucumberHelper
   def setup(feature)
     FileUtils.rm_rf(tmp_dir)
 
-    write_file("#{tmp_dir}/#{feature_file}", feature)
+    write_file(feature_file, feature)
     write_file("#{tmp_dir}/features/support/env.rb", env)
     write_file("#{tmp_dir}/features/step_definitions/step_defs.rb", step_defs)
   end
@@ -52,14 +50,15 @@ class CucumberHelper
   end
 
   def feature_file
-    "features/test.feature"
+    "#{tmp_dir}/features/test.feature"
   end
 
   def default_args
     [
       "--no-color",
+      "--require", "#{tmp_dir}/features",
       "--format", "pretty",
-      "--format", "AllureCucumber::CucumberFormatter", "--out", "reports/allure-results"
+      "--format", "AllureCucumber::CucumberFormatter", "--out", "#{tmp_dir}/reports/allure-results"
     ]
   end
 

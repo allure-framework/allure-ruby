@@ -1,12 +1,21 @@
 # frozen_string_literal: true
 
-describe "allure-cucumber" do
+describe "allure cucumber" do
   include_context "cucumber runner"
 
   let(:results_dir) { Allure::Config.results_directory }
 
-  it "Generates allure json results files", integration: true do
-    run_cucumber_cli("features/features/simple.feature")
+  it "generates allure json results files", integration: true do
+    run_cucumber_cli(<<~FEATURE)
+      Feature: Simple feature
+
+      Scenario: Add a to b
+        Simple scenario description
+        Given a is 5
+        And b is 10
+        When I add a to b
+        Then result is 15
+    FEATURE
 
     container = File.new(Dir["#{results_dir}/*container.json"].first)
     result = File.new(Dir["#{results_dir}/*result.json"].first)

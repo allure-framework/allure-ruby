@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
+require "simplecov"
 require "allure-cucumber"
 require "rspec"
-require "simplecov"
 require "digest"
 require "pry"
 
@@ -19,9 +19,8 @@ RSpec.shared_context("allure mock") do
 end
 
 RSpec.shared_context("cucumber runner") do
-  let(:cucumber) do |e|
-    CucumberHelper.new(e.full_description.tr(" ", "_"))
-  end
+  let(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
+  let(:cucumber) { CucumberHelper.new(test_tmp_dir) }
 
   def run_cucumber_cli(feature, *args)
     cucumber.execute(feature, args)

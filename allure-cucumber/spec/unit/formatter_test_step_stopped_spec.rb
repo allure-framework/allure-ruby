@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "CucumberFormatter.on_test_step_finished" do
+describe "on_test_step_finished" do
   include_context "allure mock"
   include_context "cucumber runner"
 
@@ -10,7 +10,12 @@ describe "CucumberFormatter.on_test_step_finished" do
 
   context "test step" do
     it "with passed status is updated" do
-      run_cucumber_cli("features/features/step/simple.feature")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        Scenario: Add a to b
+          Given a is 5
+      FEATURE
 
       expect(lifecycle).to have_received(:update_test_step).with(no_args).once do |&arg|
         arg.call(@step)
@@ -22,7 +27,13 @@ describe "CucumberFormatter.on_test_step_finished" do
     end
 
     it "with failed status is updated" do
-      run_cucumber_cli("features/features/step/exception.feature")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        Scenario: Add a to b
+          Then step fails with simple exception
+      FEATURE
+
       expect(lifecycle).to have_received(:update_test_step).with(no_args).once do |&arg|
         arg.call(@step)
         expect(@step.status).to eq(Allure::Status::FAILED)
@@ -30,7 +41,13 @@ describe "CucumberFormatter.on_test_step_finished" do
     end
 
     it "with skipped status is updated" do
-      run_cucumber_cli("features/features/step/skipped.feature")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        Scenario: Add a to b
+          Then step fails with simple exception
+          And this step shoud be skipped
+      FEATURE
 
       expect(lifecycle).to have_received(:update_test_step).with(no_args).twice do |&arg|
         arg.call(@step)
@@ -39,19 +56,38 @@ describe "CucumberFormatter.on_test_step_finished" do
     end
 
     it "is stopped" do
-      run_cucumber_cli("features/features/step/simple.feature")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        Scenario: Add a to b
+          Given a is 5
+      FEATURE
+
       expect(lifecycle).to have_received(:stop_test_step).with(no_args).once
     end
   end
 
   context "fixture" do
     it "is stopped" do
-      run_cucumber_cli("features/features/hooks.feature")
-      expect(lifecycle).to have_received(:stop_fixture).with(no_args).exactly(3).times
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        @before @after
+        Scenario: Add a to b
+          Given a is 5
+      FEATURE
+
+      expect(lifecycle).to have_received(:stop_fixture).with(no_args).exactly(2).times
     end
 
     it "with passed status is updated" do
-      run_cucumber_cli("features/features/hooks.feature", "--tags", "@before")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        @before
+        Scenario: Add a to b
+          Given a is 5
+      FEATURE
 
       expect(lifecycle).to have_received(:update_fixture).with(no_args).once do |&arg|
         arg.call(@step)
@@ -60,7 +96,13 @@ describe "CucumberFormatter.on_test_step_finished" do
     end
 
     it "with failed status is updated" do
-      run_cucumber_cli("features/features/hooks.feature", "--tags", "@broken_hook")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        @broken_hook
+        Scenario: Add a to b
+          Given a is 5
+      FEATURE
 
       expect(lifecycle).to have_received(:update_fixture).with(no_args).once do |&arg|
         arg.call(@step)

@@ -39,7 +39,7 @@ describe "on_test_case_started" do
         expect(arg.links).to be_empty
         expect(arg.parameters).to be_empty
         expect(arg.history_id).to eq(
-          Digest::MD5.hexdigest("#<Cucumber::Core::Test::Case: features/test.feature:3>"),
+          Digest::MD5.hexdigest("#<Cucumber::Core::Test::Case: #{test_tmp_dir}/features/test.feature:3>"),
         )
         expect(arg.labels).to include(
           result_utils.feature_label(feature),

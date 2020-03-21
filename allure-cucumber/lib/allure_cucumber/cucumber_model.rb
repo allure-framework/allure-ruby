@@ -59,7 +59,7 @@ module AllureCucumber
     end
 
     # Get failure details
-    # @param [Cucumber::Core::Test::Result] result <description>
+    # @param [Cucumber::Core::Test::Result] result
     # @return [Hash<Symbol, String>]
     def failure_details(result)
       return { message: result.exception.message, trace: result.exception.backtrace.join("\n") } if result.failed?
@@ -71,13 +71,6 @@ module AllureCucumber
     private
 
     attr_reader :ast_lookup, :lifecycle
-
-    # Get scenario
-    # @param [Cucumber::Core::Test::Case] test_case
-    # @return [Cucumber::Messages::GherkinDocument::Feature::Scenario]
-    def scenario(test_case)
-      @ast_lookup.scenario_source(test_case)
-    end
 
     # @param [Scenario] scenario
     # @return [Array<Allure::Label>]
@@ -100,8 +93,6 @@ module AllureCucumber
     # @param [Cucumber::Core::Test::Case] test_case
     # @return [Array<Allure::Link>]
     def links(test_case)
-      return [] unless test_case.tags
-
       tms_links(test_case.tags) + issue_links(test_case.tags)
     end
 
@@ -109,13 +100,6 @@ module AllureCucumber
     # @return [Array<Allure::Parameter>]
     def parameters(scenario)
       scenario.examples.map { |k, v| Allure::Parameter.new(k, v) }
-    end
-
-    # @param [Cucumber::Core::Test::Case] test_case
-    # @return [String]
-    def description(test_case)
-      scenario = scenario(test_case)
-      scenario.description.empty? ? "Location - #{scenario.file_colon_line}" : scenario.description.strip
     end
 
     # @param [Step] step
@@ -129,7 +113,7 @@ module AllureCucumber
     def data_table_attachment(step)
       return unless step.data_table
 
-      attachment = Allure::Attachment.prepare_attachment("data-table", Allure::ContentType::CSV)
+      attachment = Allure::ResultUtils.prepare_attachment("data-table", Allure::ContentType::CSV)
       csv = step.data_table.rows.each_with_object([]) { |row, arr| arr.push(row.cells.map(&:value).to_csv) }.join("")
       { source: csv, allure_attachment: attachment }
     end
@@ -139,7 +123,7 @@ module AllureCucumber
     def docstring_attachment(step)
       return unless step.doc_string
 
-      attachment = Allure::Attachment.prepare_attachment("docstring", Allure::ContentType::TXT)
+      attachment = Allure::ResultUtils.prepare_attachment("docstring", Allure::ContentType::TXT)
       { source: step.doc_string.content, allure_attachment: attachment }
     end
   end

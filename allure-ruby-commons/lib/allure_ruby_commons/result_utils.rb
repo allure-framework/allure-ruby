@@ -145,6 +145,16 @@ module Allure
         StatusDetails.new(message: exception&.message, trace: exception&.backtrace&.join("\n"))
       end
 
+      # Allure attachment object
+      # @param [String] name
+      # @param [String] type
+      # @return [Allure::Attachment]
+      def prepare_attachment(name, type)
+        extension = ContentType.to_extension(type) || return
+        file_name = "#{UUID.generate}-attachment.#{extension}"
+        Attachment.new(name: name, source: file_name, type: type)
+      end
+
       private
 
       def tms_url(value)
