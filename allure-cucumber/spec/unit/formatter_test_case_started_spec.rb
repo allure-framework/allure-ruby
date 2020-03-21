@@ -77,14 +77,14 @@ describe "CucumberFormatter.on_test_case_started" do
       expect(examples[0].name).to include("Add a to b, Examples (#1)")
       expect(examples[1].name).to include("Add a to b, Examples (#2)")
       expect(examples[0].parameters).to contain_exactly(
-        Allure::Parameter.new("argument", "5"),
-        Allure::Parameter.new("argument", "10"),
-        Allure::Parameter.new("argument", "15"),
+        Allure::Parameter.new("num_a", "5"),
+        Allure::Parameter.new("num_b", "10"),
+        Allure::Parameter.new("result", "15"),
       )
       expect(examples[1].parameters).to contain_exactly(
-        Allure::Parameter.new("argument", "6"),
-        Allure::Parameter.new("argument", "7"),
-        Allure::Parameter.new("argument", "13"),
+        Allure::Parameter.new("num_a", "6"),
+        Allure::Parameter.new("num_b", "7"),
+        Allure::Parameter.new("result", "13"),
       )
     end
   end

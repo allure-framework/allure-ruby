@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rspec"
+require "pry"
 require "simplecov"
 require "cucumber"
 require "allure-ruby-commons"

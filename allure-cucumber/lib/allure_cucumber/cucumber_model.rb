@@ -2,32 +2,38 @@
 
 require "cucumber"
 require "cucumber/core"
-require "digest"
 require "csv"
 
-require_relative "ast_transformer"
+require_relative "models/scenario"
+require_relative "models/step"
 require_relative "tag_parser"
 
 module AllureCucumber
   # Support class for transforming cucumber test entities in to allure model entities
-  module AllureCucumberModel
-    include AstTransformer
+  class AllureCucumberModel
     include TagParser
+
+    # @param [Cucumber::Configuration] config
+    def initialize(config)
+      @ast_lookup = Cucumber::Formatter::AstLookup.new(config)
+    end
 
     # Convert to allure test result
     # @param [Cucumber::Core::Test::Case] test_case
     # @return [TestResult]
     def test_result(test_case)
+      scenario = Scenario.new(test_case, ast_lookup)
+
       Allure::TestResult.new(
-        name: test_case.name,
-        description: description(test_case),
-        description_html: description(test_case),
-        history_id: Digest::MD5.hexdigest(test_case.inspect),
-        full_name: "#{test_case.feature.name}: #{test_case.name}",
-        labels: labels(test_case),
-        links: links(test_case),
-        parameters: parameters(test_case) || [],
-        status_details: Allure::StatusDetails.new(**status_detail_tags(test_case.tags.map(&:name))),
+        name: scenario.name,
+        description: scenario.description,
+        description_html: scenario.description,
+        history_id: scenario.id,
+        full_name: "#{scenario.feature_name}: #{scenario.name}",
+        labels: labels(scenario),
+        links: links(scenario),
+        parameters: parameters(scenario),
+        status_details: Allure::StatusDetails.new(**status_detail_tags(scenario.tags)),
       )
     end
 
@@ -59,27 +65,30 @@ module AllureCucumber
       {}
     end
 
-    # Get thread specific lifecycle
-    # @return [Allure::AllureLifecycle]
-    def lifecycle
-      Allure.lifecycle
-    end
-
     private
 
+    attr_reader :ast_lookup
+
+    # Get scenario
     # @param [Cucumber::Core::Test::Case] test_case
+    # @return [Cucumber::Messages::GherkinDocument::Feature::Scenario]
+    def scenario(test_case)
+      @ast_lookup.scenario_source(test_case)
+    end
+
+    # @param [Scenario] scenario
     # @return [Array<Allure::Label>]
-    def labels(test_case)
+    def labels(scenario)
       labels = []
       labels << Allure::ResultUtils.framework_label("cucumber")
-      labels << Allure::ResultUtils.feature_label(test_case.feature.name)
-      labels << Allure::ResultUtils.package_label(test_case.feature.name)
-      labels << Allure::ResultUtils.suite_label(test_case.feature.name)
-      labels << Allure::ResultUtils.story_label(test_case.name)
-      labels << Allure::ResultUtils.test_class_label(test_case.name)
-      unless test_case.tags.empty?
-        labels.push(*tag_labels(test_case.tags))
-        labels << severity(test_case.tags)
+      labels << Allure::ResultUtils.feature_label(scenario.feature_name)
+      labels << Allure::ResultUtils.package_label(scenario.feature_folder)
+      labels << Allure::ResultUtils.suite_label(scenario.feature_name)
+      labels << Allure::ResultUtils.story_label(scenario.name)
+      labels << Allure::ResultUtils.test_class_label(scenario.feature_file_name)
+      unless scenario.tags.empty?
+        labels.push(*tag_labels(scenario.tags))
+        labels << severity(scenario.tags)
       end
 
       labels
@@ -93,10 +102,10 @@ module AllureCucumber
       tms_links(test_case.tags) + issue_links(test_case.tags)
     end
 
-    # @param [Cucumber::Core::Test::Case] test_case
+    # @param [AllureCucumber::Scenario] scenario
     # @return [Array<Allure::Parameter>]
-    def parameters(test_case)
-      example_row(test_case)&.values&.map { |value| Allure::Parameter.new("argument", value) }
+    def parameters(scenario)
+      scenario.examples.map { |k, v| Allure::Parameter.new(k, v) }
     end
 
     # @param [Cucumber::Core::Test::Case] test_case

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
+require "cucumber/formatter/ast_lookup"
+
 require_relative "cucumber_model"
 
 module AllureCucumber
   # Main formatter class. Translates cucumber event to allure lifecycle
   class CucumberFormatter
-    include AllureCucumberModel
-
     # @return [Hash] hook handler methods
     HOOK_HANDLERS = {
       "Before hook" => :start_prepare_fixture,
@@ -24,6 +24,8 @@ module AllureCucumber
       Allure.configure do |c|
         c.results_directory = config.out_stream if config.out_stream.is_a?(String)
       end
+
+      @cucumber_model = AllureCucumberModel.new(config)
 
       config.on_event(:test_run_started, &method(:on_test_run_started))
       config.on_event(:test_case_started, &method(:on_test_case_started))
@@ -44,7 +46,7 @@ module AllureCucumber
     # @return [void]
     def on_test_case_started(event)
       lifecycle.start_test_container(Allure::TestResultContainer.new(name: event.test_case.name))
-      lifecycle.start_test_case(test_result(event.test_case))
+      lifecycle.start_test_case(cucumber_model.test_result(event.test_case))
     end
 
     # Handle test step started event
@@ -74,7 +76,7 @@ module AllureCucumber
     # @param [Cucumber::Core::Events::TestCaseFinished] event
     # @return [void]
     def on_test_case_finished(event)
-      failure_details = failure_details(event.result)
+      failure_details = cucumber_model.failure_details(event.result)
       status = ALLURE_STATUS.fetch(event.result.to_sym, Allure::Status::BROKEN)
       lifecycle.update_test_case do |test_case|
         test_case.stage = Allure::Stage::FINISHED
@@ -88,6 +90,14 @@ module AllureCucumber
     end
 
     private
+
+    attr_accessor :cucumber_model
+
+    # Get thread specific lifecycle
+    # @return [Allure::AllureLifecycle]
+    def lifecycle
+      Allure.lifecycle
+    end
 
     # @param [Cucumber::Core::Test::Step] test_step <description>
     # @return [Boolean]
@@ -104,7 +114,7 @@ module AllureCucumber
     # @param [Cucumber::Core::Test::Step] test_step
     # @return [void]
     def handle_step_started(test_step)
-      lifecycle.start_test_step(step_result(test_step))
+      lifecycle.start_test_step(cucumber_model.step_result(test_step))
     end
 
     # @param [Cucumber::Core::Test::Step] test_step
@@ -112,7 +122,7 @@ module AllureCucumber
     def handle_hook_started(test_step)
       return if prepare_world_hook?(test_step)
 
-      lifecycle.public_send(HOOK_HANDLERS[test_step.text], fixture_result(test_step))
+      lifecycle.public_send(HOOK_HANDLERS[test_step.text], cucumber_model.fixture_result(test_step))
     end
   end
 end
