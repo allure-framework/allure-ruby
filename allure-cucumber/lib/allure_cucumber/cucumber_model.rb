@@ -39,20 +39,23 @@ module AllureCucumber
 
     # Convert to allure step result
     # @param [Cucumber::Core::Test::Step] test_step
-    # @return [StepResult]
+    # @return [Hash]
     def step_result(test_step)
-      Allure::StepResult.new(
-        name: "#{step(test_step).keyword}#{test_step.text}",
-        attachments: [multiline_arg_attachment(test_step)].compact,
+      step = Step.new(test_step, ast_lookup.step_source(test_step))
+      attachments = step_attachments(step)
+      allure_step = Allure::StepResult.new(
+        name: step.name,
+        attachments: attachments.map { |att| att[:allure_attachment] },
       )
+
+      { allure_step: allure_step, attachments: attachments }
     end
 
     # Convert to allure step result
-    # @param [Cucumber::Core::Test::Step] test_step
+    # @param [Cucumber::Core::Test::HookStep] hook_step
     # @return [StepResult]
-    def fixture_result(test_step)
-      location = test_step.location.to_s.split("/").last
-      Allure::FixtureResult.new(name: location)
+    def fixture_result(hook_step)
+      Allure::FixtureResult.new(name: hook_step.location.to_s.split("/").last)
     end
 
     # Get failure details
@@ -67,7 +70,7 @@ module AllureCucumber
 
     private
 
-    attr_reader :ast_lookup
+    attr_reader :ast_lookup, :lifecycle
 
     # Get scenario
     # @param [Cucumber::Core::Test::Case] test_case
@@ -115,30 +118,29 @@ module AllureCucumber
       scenario.description.empty? ? "Location - #{scenario.file_colon_line}" : scenario.description.strip
     end
 
-    # @param [Cucumber::Core::Test::Step] test_step
-    # @return [Allure::Attachment]
-    def multiline_arg_attachment(test_step)
-      arg = multiline_arg(test_step)
-      return unless arg
-
-      arg.data_table? ? data_table_attachment(arg) : docstring_attachment(arg)
+    # @param [Step] step
+    # @return [Array<Allure::Attachment>]
+    def step_attachments(step)
+      [data_table_attachment(step), docstring_attachment(step)].compact
     end
 
-    # @param [Cucumber::Core::Ast::DataTable] multiline_arg
+    # @param [Step] step
     # @return [Allure::Attachment]
-    def data_table_attachment(multiline_arg)
-      attachment = lifecycle.prepare_attachment("data-table", Allure::ContentType::CSV)
-      csv = multiline_arg.raw.each_with_object([]) { |row, arr| arr.push(row.to_csv) }.join("")
-      lifecycle.write_attachment(csv, attachment)
-      attachment
+    def data_table_attachment(step)
+      return unless step.data_table
+
+      attachment = Allure::Attachment.prepare_attachment("data-table", Allure::ContentType::CSV)
+      csv = step.data_table.rows.each_with_object([]) { |row, arr| arr.push(row.cells.map(&:value).to_csv) }.join("")
+      { source: csv, allure_attachment: attachment }
     end
 
-    # @param [String] multiline_arg
+    # @param [Step] step
     # @return [String]
-    def docstring_attachment(multiline_arg)
-      attachment = lifecycle.prepare_attachment("docstring", Allure::ContentType::TXT)
-      lifecycle.write_attachment(multiline_arg.content, attachment)
-      attachment
+    def docstring_attachment(step)
+      return unless step.doc_string
+
+      attachment = Allure::Attachment.prepare_attachment("docstring", Allure::ContentType::TXT)
+      { source: step.doc_string.content, allure_attachment: attachment }
     end
   end
 end

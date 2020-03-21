@@ -7,12 +7,6 @@ describe "CucumberFormatter.on_test_step_started" do
   let(:result_utils) { Allure::ResultUtils }
 
   context "test step" do
-    before do
-      allow(lifecycle).to receive(:prepare_attachment) do |name, type|
-        Allure::AllureLifecycle.new.prepare_attachment(name, type)
-      end
-    end
-
     it "is started" do
       run_cucumber_cli("features/features/step/simple.feature")
 

@@ -53,7 +53,7 @@ module AllureCucumber
     # @param [Cucumber::Core::Events::TestStepStarted] event
     # @return [void]
     def on_test_step_started(event)
-      hook?(event.test_step) ? handle_hook_started(event.test_step) : handle_step_started(event.test_step)
+      event.test_step.hook? ? handle_hook_started(event.test_step) : handle_step_started(event.test_step)
     end
 
     # Handle test step finished event
@@ -114,7 +114,9 @@ module AllureCucumber
     # @param [Cucumber::Core::Test::Step] test_step
     # @return [void]
     def handle_step_started(test_step)
-      lifecycle.start_test_step(cucumber_model.step_result(test_step))
+      step = cucumber_model.step_result(test_step)
+      lifecycle.start_test_step(step[:allure_step])
+      step[:attachments].each { |att| lifecycle.write_attachment(att[:source], att[:allure_attachment]) }
     end
 
     # @param [Cucumber::Core::Test::Step] test_step

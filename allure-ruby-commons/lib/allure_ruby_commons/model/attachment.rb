@@ -14,6 +14,16 @@ module Allure
       @source = source
     end
 
+    # Create unique attachment object
+    # @param [String] name
+    # @param [String] type
+    # @return [Allure::Attachment]
+    def self.prepare_attachment(name, type)
+      extension = ContentType.to_extension(type) || return
+      file_name = "#{UUID.generate}-attachment.#{extension}"
+      new(name: name, source: file_name, type: type)
+    end
+
     attr_accessor :name, :type, :source
   end
 end
