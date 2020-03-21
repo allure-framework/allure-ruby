@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "rspec"
-require "pry"
-require "simplecov"
-require "cucumber"
-require "allure-ruby-commons"
 require "allure-cucumber"
+require "rspec"
+require "simplecov"
 require "digest"
+require "pry"
+
+require_relative "cucumber_helper"
 
 SimpleCov.command_name("allure-cucumber")
 
@@ -19,20 +19,11 @@ RSpec.shared_context("allure mock") do
 end
 
 RSpec.shared_context("cucumber runner") do
-  def run_cucumber_cli(feature, *additional_args)
-    configuration = Cucumber::Cli::Configuration.new.tap do |config|
-      args = [feature, "--format", "AllureCucumber::CucumberFormatter"]
-      args.push(*additional_args)
-      config.parse!(args)
-    end
-    runtime = Cucumber::Runtime.new.tap do |run|
-      run.configure(configuration)
-    end
-
-    runtime.run!
+  let(:cucumber) do |e|
+    CucumberHelper.new(e.full_description.tr(" ", "_"))
   end
-end
 
-Allure.configure do |config|
-  config.clean_results_directory = true
+  def run_cucumber_cli(feature, *args)
+    cucumber.execute(feature, args)
+  end
 end

@@ -17,3 +17,4 @@ reports
 doc
 coverage
 vendor/bundle
+tmp
