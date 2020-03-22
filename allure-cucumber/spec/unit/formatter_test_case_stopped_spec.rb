@@ -8,7 +8,7 @@ describe "on_test_case_finished" do
     @test_case = Allure::TestResult.new
   end
 
-  it "stops test container and test case", cov: true do
+  it "stops test container and test case" do
     run_cucumber_cli(<<~FEATURE)
       Feature: Simple feature
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "cucumber"
 require "cucumber/core"
 require "csv"
 
@@ -20,7 +19,7 @@ module AllureCucumber
 
     # Convert to allure test result
     # @param [Cucumber::Core::Test::Case] test_case
-    # @return [TestResult]
+    # @return [Allure::TestResult]
     def test_result(test_case)
       scenario = Scenario.new(test_case, ast_lookup)
 
@@ -41,7 +40,7 @@ module AllureCucumber
     # @param [Cucumber::Core::Test::Step] test_step
     # @return [Hash]
     def step_result(test_step)
-      step = Step.new(test_step, ast_lookup.step_source(test_step))
+      step = Step.new(ast_lookup.step_source(test_step))
       attachments = step_attachments(step)
       allure_step = Allure::StepResult.new(
         name: step.name,
@@ -53,7 +52,7 @@ module AllureCucumber
 
     # Convert to allure step result
     # @param [Cucumber::Core::Test::HookStep] hook_step
-    # @return [StepResult]
+    # @return [Allure::StepResult]
     def fixture_result(hook_step)
       Allure::FixtureResult.new(name: hook_step.location.to_s.split("/").last)
     end

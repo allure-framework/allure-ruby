@@ -7,14 +7,22 @@ describe "allure cucumber" do
 
   it "generates allure json results files", integration: true do
     run_cucumber_cli(<<~FEATURE)
-      Feature: Simple feature
+      Feature: Simple scenario outline feature
 
-      Scenario: Add a to b
+      @before @after
+      Scenario Outline: Add a to b
         Simple scenario description
-        Given a is 5
-        And b is 10
+        Given a input is
+          | value   |
+          | <num_a> |
+        And b is <num_b>
         When I add a to b
-        Then result is 15
+        Then result is <result>
+        Examples:
+          | num_a | num_b | result |
+          | 5     | 10    | 15     |
+          | 6     | 7     | 12     |
+          | 1     | 1     | 2      |
     FEATURE
 
     container = File.new(Dir["#{results_dir}/*container.json"].first)
@@ -27,8 +35,10 @@ describe "allure cucumber" do
 
     container_json = JSON.parse(File.read(container), symbolize_names: true)
     result_json = JSON.parse(File.read(result), symbolize_names: true)
+
     aggregate_failures "Json results should contain valid data" do
       expect(container_json[:name]).to eq("Add a to b")
+      expect(result_json[:name]).to match(/Add a to b, Examples \(#\d\)/)
       expect(result_json[:description]).to eq("Simple scenario description")
       expect(result_json[:steps].size).to eq(4)
     end

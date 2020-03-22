@@ -3,7 +3,6 @@
 require "simplecov"
 require "allure-cucumber"
 require "rspec"
-require "digest"
 require "pry"
 
 require_relative "cucumber_helper"

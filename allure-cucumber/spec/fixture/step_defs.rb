@@ -4,6 +4,10 @@ Given("a is {int}") do |num|
   @a = num
 end
 
+Given("a input is") do |table|
+  @a = table.symbolic_hashes.first[:value].to_i
+end
+
 Given("step has a table") do |table|
 end
 

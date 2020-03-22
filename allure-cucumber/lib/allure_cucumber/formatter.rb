@@ -60,13 +60,11 @@ module AllureCucumber
     # @param [Cucumber::Core::Events::TestStepFinished] event
     # @return [void]
     def on_test_step_finished(event)
-      return if prepare_world_hook?(event.test_step)
-
       update_block = proc do |step|
         step.stage = Allure::Stage::FINISHED
         step.status = ALLURE_STATUS.fetch(event.result.to_sym, Allure::Status::BROKEN)
       end
-      step_type = hook?(event.test_step) ? "fixture" : "test_step"
+      step_type = event.test_step.hook? ? "fixture" : "test_step"
 
       lifecycle.public_send("update_#{step_type}", &update_block)
       lifecycle.public_send("stop_#{step_type}")
@@ -99,18 +97,6 @@ module AllureCucumber
       Allure.lifecycle
     end
 
-    # @param [Cucumber::Core::Test::Step] test_step <description>
-    # @return [Boolean]
-    def hook?(test_step)
-      HOOK_HANDLERS.key?(test_step.text)
-    end
-
-    # @param [Cucumber::Core::Test::Step] test_step
-    # @return [Boolean]
-    def prepare_world_hook?(test_step)
-      hook?(test_step) && test_step.inspect.include?("prepare_world.rb")
-    end
-
     # @param [Cucumber::Core::Test::Step] test_step
     # @return [void]
     def handle_step_started(test_step)
@@ -119,12 +105,10 @@ module AllureCucumber
       step[:attachments].each { |att| lifecycle.write_attachment(att[:source], att[:allure_attachment]) }
     end
 
-    # @param [Cucumber::Core::Test::Step] test_step
+    # @param [Cucumber::Core::Test::HookStep] hook_step
     # @return [void]
-    def handle_hook_started(test_step)
-      return if prepare_world_hook?(test_step)
-
-      lifecycle.public_send(HOOK_HANDLERS[test_step.text], cucumber_model.fixture_result(test_step))
+    def handle_hook_started(hook_step)
+      lifecycle.public_send(HOOK_HANDLERS[hook_step.text], cucumber_model.fixture_result(hook_step))
     end
   end
 end

@@ -28,13 +28,13 @@ class CucumberHelper
     write_file("#{tmp_dir}/cucumber_output.txt", all_output)
   end
 
-  def all_output
-    [@stdout.string, @stderr.string].reject(&:empty?).join("\n")
-  end
-
   private
 
   attr_reader :tmp_dir
+
+  def all_output
+    [@stdout.string, @stderr.string].reject(&:empty?).join("\n")
+  end
 
   def setup(feature)
     FileUtils.rm_rf(tmp_dir)

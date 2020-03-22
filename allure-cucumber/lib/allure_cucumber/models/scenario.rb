@@ -74,7 +74,10 @@ module AllureCucumber
     end
 
     # Cucumber scenario object
-    # @return [Cucumber::Messages::GherkinDocument::Feature::Scenario]
+    # @return [
+    #   Cucumber::Messages::GherkinDocument::Feature::Scenario,
+    #   Cucumber::Messages::GherkinDocument::Feature::ScenarioOutline
+    # ]
     def scenario
       @scenario ||= scenario_outline? ? scenario_source.scenario_outline : scenario_source.scenario
     end
