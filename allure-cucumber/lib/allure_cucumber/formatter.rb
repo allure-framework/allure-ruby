@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "cucumber/formatter/ast_lookup"
-
 require_relative "cucumber_model"
 
 module AllureCucumber
@@ -35,7 +33,7 @@ module AllureCucumber
     end
 
     # Clean test result directory before starting run
-    # @param [Cucumber::Events::TestRunStarted<Type>] _event
+    # @param [Cucumber::Events::TestRunStarted] _event
     # @return [void]
     def on_test_run_started(_event)
       lifecycle.clean_results_dir

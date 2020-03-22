@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require "cucumber/core"
 require "csv"
+require "cucumber/core"
+require "cucumber/formatter/ast_lookup"
 
 require_relative "models/scenario"
 require_relative "models/step"
