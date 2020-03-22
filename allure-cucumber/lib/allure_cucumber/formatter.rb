@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "cucumber_model"
+require_relative "models/cucumber_model"
 
 module AllureCucumber
   # Main formatter class. Translates cucumber event to allure lifecycle

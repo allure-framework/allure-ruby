@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "config"
-
 module AllureCucumber
   # Cucumber tag parser helper methods
   module TagParser

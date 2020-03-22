@@ -4,8 +4,8 @@ require "csv"
 require "cucumber/core"
 require "cucumber/formatter/ast_lookup"
 
-require_relative "models/scenario"
-require_relative "models/step"
+require_relative "scenario"
+require_relative "step"
 require_relative "tag_parser"
 
 module AllureCucumber
