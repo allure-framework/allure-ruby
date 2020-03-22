@@ -1,4 +1,5 @@
 # Allure Cucumber Adaptor
+
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/allure-cucumber)
 
 This repository contains Allure adaptor for [Cucumber](http://cukes.info/) framework.
@@ -14,14 +15,19 @@ gem 'allure-cucumber'
 And then execute:
 
 ```bash
-  $ bundle
+  bundle
 ```
 
 Or install it yourself as:
 
 ```bash
-  $ gem install allure-cucumber
+  gem install allure-cucumber
 ```
+
+## Cucumber versions
+
+allure-cucumber versions <= 2.13.4 support only cucumber 3 and lower\
+allure-cucumber versions >= 2.13.5 only support cucumber 4 and are not backwards compatible with cucumber 3 and lower
 
 ## Configuration
 
