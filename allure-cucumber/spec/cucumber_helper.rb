@@ -7,6 +7,60 @@ class MockKernel
 end
 
 class CucumberHelper
+  ENV = <<~RUBY
+    require "allure-cucumber"
+
+    Allure.configure do |config|
+      config.link_tms_pattern = "http://www.jira.com/tms/{}"
+      config.link_issue_pattern = "http://www.jira.com/issue/{}"
+    end
+
+    Before("@before") do
+    end
+
+    Before("@broken_hook") do
+      raise Exception.new("Broken hook!")
+    end
+
+    After("@after") do
+    end
+  RUBY
+
+  STEPS = <<~RUBY
+    Given("a is {int}") do |num|
+      @a = num
+    end
+
+    Given("a input is") do |table|
+      @a = table.symbolic_hashes.first[:value].to_i
+    end
+
+    Given("step has a table") do |table|
+    end
+
+    Given("step has a docstring") do |string|
+    end
+
+    And("b is {int}") do |num|
+      @b = num
+    end
+
+    And("this step shoud be skipped") do
+    end
+
+    When("I add a to b") do
+      @c = @a + @b
+    end
+
+    Then("result is {int}") do |num|
+      expect(@c).to eq(num)
+    end
+
+    Then("step fails with simple exception") do
+      raise Exception.new("Simple error!")
+    end
+  RUBY
+
   def initialize(tmp_dir)
     @stdout = StringIO.new
     @stderr = StringIO.new
@@ -40,8 +94,8 @@ class CucumberHelper
     FileUtils.rm_rf(tmp_dir)
 
     write_file(feature_file, feature)
-    write_file("#{tmp_dir}/features/support/env.rb", env)
-    write_file("#{tmp_dir}/features/step_definitions/step_defs.rb", step_defs)
+    write_file("#{tmp_dir}/features/support/env.rb", ENV)
+    write_file("#{tmp_dir}/features/step_definitions/step_defs.rb", STEPS)
   end
 
   def write_file(path, content)
@@ -60,13 +114,5 @@ class CucumberHelper
       "--format", "pretty",
       "--format", "AllureCucumber::CucumberFormatter", "--out", "#{tmp_dir}/reports/allure-results"
     ]
-  end
-
-  def env
-    @env ||= File.read("spec/fixture/env.rb")
-  end
-
-  def step_defs
-    @step_defs ||= File.read("spec/fixture/step_defs.rb")
   end
 end

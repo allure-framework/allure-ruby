@@ -78,7 +78,7 @@ describe "on_test_step_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_prepare_fixture).once do |fixture|
-        expect(fixture.name).to eq("env.rb:12")
+        expect(fixture.name).to eq("env.rb:8")
       end
     end
 
@@ -93,7 +93,7 @@ describe "on_test_step_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_tear_down_fixture).once do |fixture|
-        expect(fixture.name).to eq("env.rb:19")
+        expect(fixture.name).to eq("env.rb:15")
       end
     end
   end
