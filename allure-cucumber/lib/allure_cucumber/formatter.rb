@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cucumber/core"
+
 require_relative "models/cucumber_model"
 
 module AllureCucumber
@@ -40,7 +42,7 @@ module AllureCucumber
     end
 
     # Handle test case started event
-    # @param [Cucumber::Core::Events::TestCaseStarted] event
+    # @param [Cucumber::Events::TestCaseStarted] event
     # @return [void]
     def on_test_case_started(event)
       lifecycle.start_test_container(Allure::TestResultContainer.new(name: event.test_case.name))
@@ -48,14 +50,14 @@ module AllureCucumber
     end
 
     # Handle test step started event
-    # @param [Cucumber::Core::Events::TestStepStarted] event
+    # @param [Cucumber::Events::TestStepStarted] event
     # @return [void]
     def on_test_step_started(event)
       event.test_step.hook? ? handle_hook_started(event.test_step) : handle_step_started(event.test_step)
     end
 
     # Handle test step finished event
-    # @param [Cucumber::Core::Events::TestStepFinished] event
+    # @param [Cucumber::Events::TestStepFinished] event
     # @return [void]
     def on_test_step_finished(event)
       update_block = proc do |step|
@@ -69,7 +71,7 @@ module AllureCucumber
     end
 
     # Handle test case finished event
-    # @param [Cucumber::Core::Events::TestCaseFinished] event
+    # @param [Cucumber::Events::TestCaseFinished] event
     # @return [void]
     def on_test_case_finished(event)
       failure_details = cucumber_model.failure_details(event.result)
