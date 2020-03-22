@@ -21,7 +21,7 @@ RSpec.shared_context("cucumber runner") do
   let(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
   let(:cucumber) { CucumberHelper.new(test_tmp_dir) }
 
-  def run_cucumber_cli(feature, *args)
-    cucumber.execute(feature, args)
+  def run_cucumber_cli(feature)
+    cucumber.execute(feature)
   end
 end

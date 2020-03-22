@@ -14,11 +14,11 @@ class CucumberHelper
     @tmp_dir = tmp_dir
   end
 
-  def execute(feature, args)
+  def execute(feature)
     setup(feature)
 
     Cucumber::Cli::Main.new(
-      [feature_file, *default_args, *args],
+      [feature_file, *args],
       nil,
       @stdout,
       @stderr,
@@ -53,7 +53,7 @@ class CucumberHelper
     "#{tmp_dir}/features/test.feature"
   end
 
-  def default_args
+  def args
     [
       "--no-color",
       "--require", "#{tmp_dir}/features",
