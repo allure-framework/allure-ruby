@@ -6,6 +6,7 @@ require "pathname"
 require_relative "tag_parser"
 
 module AllureRspec
+  # Support class for transforming rspec test entities in to allure model entities
   module AllureRspecModel
     include TagParser
 

@@ -46,10 +46,15 @@ module Allure
         Label.new(HOST_LABEL_NAME, Socket.gethostname)
       end
 
+      # Language label
+      # @return [Allure::Label]
       def language_label
         Label.new(LANGUAGE_LABEL_NAME, "ruby")
       end
 
+      # Framework label
+      # @param [String] value
+      # @return [Allure::Label]
       def framework_label(value)
         Label.new(FRAMEWORK_LABEL_NAME, value)
       end

@@ -6,7 +6,9 @@ require "rspec/core/formatters/base_formatter"
 
 require_relative "rspec_model"
 
+# Main allure-rspec module
 module AllureRspec
+  # Main rspec formatter class translating rspec events to allure lifecycle
   class RSpecFormatter < RSpec::Core::Formatters::BaseFormatter
     include AllureRspecModel
 
