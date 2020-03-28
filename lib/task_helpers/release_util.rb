@@ -9,8 +9,12 @@ class VersionUpdater
   extend Rake::DSL
 
   class << self
+    def version
+      Semantic::Version.new(File.read("#{root}/ALLURE_VERSION").strip)
+    end
+
     def update(increment, push)
-      @version = Semantic::Version.new(File.read("#{root}/ALLURE_VERSION").strip)
+      @version = version
       @new_version = @version.increment!(increment || "patch")
 
       update_allure_version
