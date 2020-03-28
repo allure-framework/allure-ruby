@@ -3,8 +3,8 @@
 require_relative "jsonable"
 
 module Allure
+  # Defects category
   class Category < JSONable
-    # Defects category
     # @param [String] name
     # @param [Array<Allure::Status>] matched_statuses
     # @param [String, Regexp] message_regex

@@ -46,10 +46,15 @@ module Allure
         Label.new(HOST_LABEL_NAME, Socket.gethostname)
       end
 
+      # Language label
+      # @return [Allure::Label]
       def language_label
         Label.new(LANGUAGE_LABEL_NAME, "ruby")
       end
 
+      # Framework label
+      # @param [String] value
+      # @return [Allure::Label]
       def framework_label(value)
         Label.new(FRAMEWORK_LABEL_NAME, value)
       end
@@ -143,6 +148,16 @@ module Allure
       # @return [Allure::StatusDetails]
       def status_details(exception)
         StatusDetails.new(message: exception&.message, trace: exception&.backtrace&.join("\n"))
+      end
+
+      # Allure attachment object
+      # @param [String] name
+      # @param [String] type
+      # @return [Allure::Attachment]
+      def prepare_attachment(name, type)
+        extension = ContentType.to_extension(type) || return
+        file_name = "#{UUID.generate}-attachment.#{extension}"
+        Attachment.new(name: name, source: file_name, type: type)
       end
 
       private

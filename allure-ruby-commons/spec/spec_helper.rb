@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "rspec"
 require "simplecov"
+require "rspec"
 require "allure-ruby-commons"
 
 SimpleCov.command_name("allure-ruby-commons")

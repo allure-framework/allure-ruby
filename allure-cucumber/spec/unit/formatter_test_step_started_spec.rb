@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
-describe "CucumberFormatter.on_test_step_started" do
+describe "on_test_step_started" do
   include_context "allure mock"
   include_context "cucumber runner"
 
-  let(:result_utils) { Allure::ResultUtils }
-
   context "test step" do
-    before do
-      allow(lifecycle).to receive(:prepare_attachment) do |name, type|
-        Allure::AllureLifecycle.new.prepare_attachment(name, type)
-      end
-    end
-
     it "is started" do
-      run_cucumber_cli("features/features/step/simple.feature")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        Scenario: Add a to b
+          Simple scenario description
+          Given a is 5
+      FEATURE
 
       expect(lifecycle).to have_received(:start_test_step).once do |step|
         aggregate_failures "Should start with correct parameters" do
@@ -25,7 +23,14 @@ describe "CucumberFormatter.on_test_step_started" do
     end
 
     it "is started with multiline arg attachment" do
-      run_cucumber_cli("features/features/step/table.feature")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        Scenario: Add a to b
+          Given step has a table
+            | value | value_2 |
+            | 1     | 2       |
+      FEATURE
 
       expect(lifecycle).to have_received(:start_test_step).once do |step|
         attachment = step.attachments.first
@@ -39,7 +44,15 @@ describe "CucumberFormatter.on_test_step_started" do
     end
 
     it "is started with docstring attachment" do
-      run_cucumber_cli("features/features/step/docstring.feature")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        Scenario: Add a to b
+          Given step has a docstring
+            """
+            I am a docstring
+            """
+      FEATURE
 
       expect(lifecycle).to have_received(:start_test_step).once do |step|
         attachment = step.attachments.first
@@ -55,18 +68,32 @@ describe "CucumberFormatter.on_test_step_started" do
 
   context "fixture" do
     it "for before hook is started" do
-      run_cucumber_cli("features/features/hooks.feature", "--tags", "@before")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        @before
+        Scenario: Add a to b
+          Simple scenario description
+          Given a is 5
+      FEATURE
 
       expect(lifecycle).to have_received(:start_prepare_fixture).once do |fixture|
-        expect(fixture.name).to eq("env.rb:12")
+        expect(fixture.name).to eq("env.rb:8")
       end
     end
 
     it "for after hook is started" do
-      run_cucumber_cli("features/features/hooks.feature", "--tags", "@after")
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        @after
+        Scenario: Add a to b
+          Simple scenario description
+          Given a is 5
+      FEATURE
 
       expect(lifecycle).to have_received(:start_tear_down_fixture).once do |fixture|
-        expect(fixture.name).to eq("env.rb:19")
+        expect(fixture.name).to eq("env.rb:15")
       end
     end
   end

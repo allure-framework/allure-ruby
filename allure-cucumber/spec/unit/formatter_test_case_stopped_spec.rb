@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "CucumberFormatter.on_test_case_finished" do
+describe "on_test_case_finished" do
   include_context "allure mock"
   include_context "cucumber runner"
 
@@ -9,14 +9,26 @@ describe "CucumberFormatter.on_test_case_finished" do
   end
 
   it "stops test container and test case" do
-    run_cucumber_cli("features/features/simple.feature")
+    run_cucumber_cli(<<~FEATURE)
+      Feature: Simple feature
+
+      Scenario: Add a to b
+        Simple scenario description
+        Given a is 5
+    FEATURE
 
     expect(lifecycle).to have_received(:stop_test_case).with(no_args).once
     expect(lifecycle).to have_received(:stop_test_container).once
   end
 
   it "correctly updates passed test case" do
-    run_cucumber_cli("features/features/simple.feature")
+    run_cucumber_cli(<<~FEATURE)
+      Feature: Simple feature
+
+      Scenario: Add a to b
+        Simple scenario description
+        Given a is 5
+    FEATURE
 
     expect(lifecycle).to have_received(:update_test_case).with(no_args).once do |&arg|
       arg.call(@test_case)
@@ -29,7 +41,16 @@ describe "CucumberFormatter.on_test_case_finished" do
   end
 
   it "correctly updates failed test case" do
-    run_cucumber_cli("features/features/exception.feature", "--tags", "@failed")
+    run_cucumber_cli(<<~FEATURE)
+      Feature: Simple feature
+
+      Scenario: Add a to b
+        Simple scenario description
+        Given a is 5
+        And b is 10
+        When I add a to b
+        Then result is 16
+    FEATURE
 
     expect(lifecycle).to have_received(:update_test_case).with(no_args) do |&arg|
       arg.call(@test_case)
@@ -43,7 +64,17 @@ describe "CucumberFormatter.on_test_case_finished" do
   end
 
   it "correctly updates broken test case" do
-    run_cucumber_cli("features/features/exception.feature", "--tags", "@broken")
+    run_cucumber_cli(<<~FEATURE)
+      Feature: Simple feature
+
+      Scenario: Add a to b
+        Simple scenario description
+        Given a is 5
+        And b is 10
+        When I add a to b
+        Then step fails with simple exception
+        And this step shoud be skipped
+    FEATURE
 
     expect(lifecycle).to have_received(:update_test_case).with(no_args) do |&arg|
       arg.call(@test_case)

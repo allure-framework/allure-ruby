@@ -6,7 +6,9 @@ require "rspec/core/formatters/base_formatter"
 
 require_relative "rspec_model"
 
+# Main allure-rspec module
 module AllureRspec
+  # Main rspec formatter class translating rspec events to allure lifecycle
   class RSpecFormatter < RSpec::Core::Formatters::BaseFormatter
     include AllureRspecModel
 
@@ -57,7 +59,7 @@ module AllureRspec
     end
 
     # Starts example group
-    # @param [RSpec::Core::Notifications::GroupNotification] example_group_notification
+    # @param [RSpec::Core::Notifications::GroupNotification] _example_group_notification
     # @return [void]
     def example_group_finished(_example_group_notification)
       lifecycle.stop_test_container
