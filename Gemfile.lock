@@ -3,7 +3,7 @@ PATH
   specs:
     allure-cucumber (2.13.4)
       allure-ruby-commons (= 2.13.4)
-      cucumber (~> 4.0.0.rc5)
+      cucumber (>= 4.0.0.rc5)
 
 PATH
   remote: allure-rspec
