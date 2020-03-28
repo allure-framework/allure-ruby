@@ -29,24 +29,24 @@ class ReleaseTasks
   def add_adaptor_build_tasks # rubocop:disable Metrics/MethodLength
     adaptors.each do |adaptor|
       namespace adaptor do
-        gem = -> { "#{adaptor}-#{version}.gem" }
-        gem_path = -> { "#{root}/pkg/#{gem.call}" }
+        gem = "#{adaptor}-#{VersionUpdater.version}.gem"
+        gem_path = "#{root}/pkg/#{gem}"
         gemspec = "#{adaptor}.gemspec"
 
         task(:clean) do
-          system("rm -f #{gem_path.call}")
+          system("rm -f #{gem_path}")
         end
 
         task(gem: :pkg) do
-          puts "Building #{gem.call}".yellow
-          sh "cd #{adaptor} && gem build #{gemspec} && mv #{gem.call} #{gem_path.call}"
+          puts "Building #{gem}".yellow
+          sh "cd #{adaptor} && gem build #{gemspec} && mv #{gem} #{gem_path}"
         end
 
         task(build: %i[clean gem])
 
         task(release: :build) do
-          puts "Pushing #{gem.call}".yellow
-          sh "gem push #{gem_path.call}"
+          puts "Pushing #{gem}".yellow
+          sh "gem push #{gem_path}"
         end
       end
     end
