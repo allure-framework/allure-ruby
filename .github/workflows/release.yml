@@ -35,8 +35,6 @@ jobs:
         run: bundle exec rake
       
       - name: Release
-        run: |
-          script/add-rubygems-token.sh
-          bundle exec rake release
+        run: bundle exec rake release
         env:
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_TOKEN }}
