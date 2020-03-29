@@ -2,8 +2,9 @@
 
 require "simplecov"
 require "rspec"
-require "allure-ruby-commons"
 require "allure-rspec"
+
+require_relative "rspec_runner_helper"
 
 SimpleCov.command_name("allure-rspec")
 
@@ -22,6 +23,9 @@ RSpec.shared_context("allure mock") do
 end
 
 RSpec.shared_context("rspec runner") do
+  let(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
+  let(:rspec_runner) { RspecRunner.new(test_tmp_dir) }
+
   before do
     configuration = RSpec::Core::Configuration.new
     world = RSpec::Core::World.new(configuration)
@@ -30,10 +34,7 @@ RSpec.shared_context("rspec runner") do
     allow(RSpec).to receive(:world).and_return(world)
   end
 
-  def run_rspec(spec, tag = nil)
-    [spec, "--format", "AllureRspecFormatter"].tap do |args|
-      args.push("--tag", tag) if tag
-      RSpec::Core::Runner.run(args, StringIO.new, StringIO.new)
-    end
+  def run_rspec(spec)
+    rspec_runner.run(spec)
   end
 end

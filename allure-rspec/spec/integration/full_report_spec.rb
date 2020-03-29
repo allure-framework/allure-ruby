@@ -1,15 +1,29 @@
 # frozen_string_literal: true
 
-describe "allure-rspec" do
+describe "allure rspec" do
   include_context "rspec runner"
 
   let(:results_dir) { Allure.configuration.results_directory }
 
-  it "Generates allure json results files", integration: true do
-    run_rspec("spec/fixture/specs/simple_test.rb")
+  it "generates allure json results files", integration: true do
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        before(:each) do |e|
+          e.step(name: "Before hook")
+        end
 
-    container = File.new(Dir["#{results_dir}/*container.json"].first)
-    result = File.new(Dir["#{results_dir}/*result.json"].first)
+        after(:each) do |e|
+          e.step(name: "After hook")
+        end
+
+        it "spec", allure: "some_label" do |e|
+          e.step(name: "test body")
+        end
+      end
+    SPEC
+
+    container = File.new(Dir["#{test_tmp_dir}/#{results_dir}/*container.json"].first)
+    result = File.new(Dir["#{test_tmp_dir}/#{results_dir}/*result.json"].first)
 
     aggregate_failures "Results files should exist" do
       expect(File.exist?(container)).to be_truthy
@@ -21,7 +35,7 @@ describe "allure-rspec" do
     aggregate_failures "Json results should contain valid data" do
       expect(container_json[:name]).to eq("Suite")
       expect(result_json[:name]).to eq("spec")
-      expect(result_json[:description]).to eq("Location - spec/fixture/specs/simple_test.rb:12")
+      expect(result_json[:description]).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
       expect(result_json[:steps].size).to eq(3)
     end
   end

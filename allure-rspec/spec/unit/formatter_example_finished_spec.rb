@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "RSpecFormatter.example_finished" do
+describe "example_finished" do
   include_context "allure mock"
   include_context "rspec runner"
 
@@ -11,13 +11,25 @@ describe "RSpecFormatter.example_finished" do
   let(:result_utils) { Allure::ResultUtils }
 
   it "stops test case" do
-    run_rspec("spec/fixture/specs/simple_test.rb")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        it "spec", allure: "some_label" do |e|
+          e.step(name: "test body")
+        end
+      end
+    SPEC
 
     expect(lifecycle).to have_received(:stop_test_case).once
   end
 
   it "correctly updates passed test case" do
-    run_rspec("spec/fixture/specs/simple_test.rb")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        it "spec", allure: "some_label" do |e|
+          e.step(name: "test body")
+        end
+      end
+    SPEC
 
     expect(lifecycle).to have_received(:update_test_case).with(no_args).once do |&arg|
       arg.call(@test_case)
@@ -30,7 +42,13 @@ describe "RSpecFormatter.example_finished" do
   end
 
   it "correctly updates failed test case" do
-    run_rspec("spec/fixture/specs/exception_test.rb", "failed")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        it "failed expectation" do
+          expect(1).to eq(2)
+        end
+      end
+    SPEC
 
     expect(lifecycle).to have_received(:update_test_case).with(no_args) do |&arg|
       arg.call(@test_case)
@@ -44,7 +62,13 @@ describe "RSpecFormatter.example_finished" do
   end
 
   it "correctly updates broken test case" do
-    run_rspec("spec/fixture/specs/exception_test.rb", "broken")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        it "broken expectation" do
+          raise Exception.new("Simple error!")
+        end
+      end
+    SPEC
 
     expect(lifecycle).to have_received(:update_test_case).with(no_args) do |&arg|
       arg.call(@test_case)

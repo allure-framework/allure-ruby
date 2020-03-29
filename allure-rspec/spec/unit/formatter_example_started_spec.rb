@@ -1,30 +1,45 @@
 # frozen_string_literal: true
 
-describe "RSpecFormatter.example_started" do
+describe "example_started" do
   include_context "allure mock"
   include_context "rspec runner"
 
   let(:result_utils) { Allure::ResultUtils }
 
   it "starts test case with correct default arguments" do
-    run_rspec("spec/fixture/specs/simple_test.rb")
-
     suite = "Suite"
     spec = "spec"
+
+    run_rspec(<<~SPEC)
+      describe "#{suite}" do
+        before(:each) do |e|
+          e.step(name: "Before hook")
+        end
+
+        after(:each) do |e|
+          e.step(name: "After hook")
+        end
+
+        it "#{spec}", allure: "some_label" do |e|
+          e.step(name: "test body")
+        end
+      end
+    SPEC
+
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
       aggregate_failures "Should have correct args" do
         expect(arg.name).to eq(spec)
-        expect(arg.description).to eq("Location - spec/fixture/specs/simple_test.rb:12")
+        expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
         expect(arg.full_name).to eq("#{suite} #{spec}")
         expect(arg.links).to be_empty
         expect(arg.parameters).to be_empty
-        expect(arg.history_id).to eq(Digest::MD5.hexdigest("./spec/fixture/specs/simple_test.rb[1:1]"))
+        expect(arg.history_id).to eq(Digest::MD5.hexdigest("./#{test_tmp_dir}/spec/test_spec.rb[1:1]"))
         expect(arg.labels).to include(
           result_utils.feature_label(suite),
           result_utils.story_label(spec),
           result_utils.framework_label("rspec"),
-          result_utils.package_label("spec/fixture/specs"),
-          result_utils.test_class_label("simple_test"),
+          result_utils.package_label("#{test_tmp_dir}/spec"),
+          result_utils.test_class_label("test_spec"),
           result_utils.tag_label("some_label"),
         )
       end
@@ -32,7 +47,16 @@ describe "RSpecFormatter.example_started" do
   end
 
   it "creates issue and tms links" do
-    run_rspec("spec/fixture/specs/tag_test.rb")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        it(
+          "spec",
+          tms: "QA-123", tms_2: "QA-124", issue: "BUG-123", issue_2: "BUG-124",
+          flaky: true, muted: true, severity: "critical"
+        ) do
+        end
+      end
+    SPEC
 
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
       expect(arg.links).to contain_exactly(
@@ -45,7 +69,16 @@ describe "RSpecFormatter.example_started" do
   end
 
   it "adds test severity" do
-    run_rspec("spec/fixture/specs/tag_test.rb")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        it(
+          "spec",
+          tms: "QA-123", tms_2: "QA-124", issue: "BUG-123", issue_2: "BUG-124",
+          flaky: true, muted: true, severity: "critical"
+        ) do
+        end
+      end
+    SPEC
 
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
       expect(arg.labels).to include(result_utils.severity_label("critical"))
@@ -53,7 +86,16 @@ describe "RSpecFormatter.example_started" do
   end
 
   it "adds custom status details" do
-    run_rspec("spec/fixture/specs/tag_test.rb")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        it(
+          "spec",
+          tms: "QA-123", tms_2: "QA-124", issue: "BUG-123", issue_2: "BUG-124",
+          flaky: true, muted: true, severity: "critical"
+        ) do
+        end
+      end
+    SPEC
 
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
       expect(arg.status_details).to eq(Allure::StatusDetails.new(flaky: true, muted: true, known: false))
@@ -61,7 +103,29 @@ describe "RSpecFormatter.example_started" do
   end
 
   it "adds suite labels", test: true do
-    run_rspec("spec/fixture/specs/nested_test.rb")
+    run_rspec(<<~SPEC)
+      describe "Suite" do
+        describe "Nested Suite 1" do
+          it "Spec 1 - 1" do
+          end
+        end
+        describe "Nested Suite 2" do
+          it "Spec 2 - 1" do
+          end
+          it "Spec 2 - 2" do
+          end
+          describe "Nested Suite 2:1" do
+            it "Spec 2:1 - 1" do
+            end
+            describe "Nested Suite 2:1:1" do
+              it "Spec 2:1:1 - 1"
+            end
+          end
+        end
+        it "Spec" do
+        end
+      end
+    SPEC
 
     examples = []
     expect(lifecycle).to have_received(:start_test_case).exactly(6).times do |arg|
