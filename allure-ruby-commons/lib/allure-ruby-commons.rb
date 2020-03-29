@@ -131,7 +131,7 @@ module Allure
     # Add attachment to current test case or step
     # @param [String] name Attachment name
     # @param [File, String] source File or string to save as attachment
-    # @param [String] type attachment type defined in <ContentType> or any other valid mime type
+    # @param [String] type attachment type defined in {ContentType} or any other valid mime type
     # @param [Boolean] test_case add attachment to current test case instead of test step
     # @return [void]
     def add_attachment(name:, source:, type:, test_case: false)
@@ -154,7 +154,7 @@ module Allure
 
     # Add step with provided name and optional status to current test step, fixture or test case
     # @param [String] name
-    # @param [Symbol] status <Status>, <Status::PASSED> by default
+    # @param [Symbol] status {Status}, {Status::PASSED} by default
     # @return [void]
     def step(name:, status: nil)
       lifecycle.add_test_step(StepResult.new(name: name, status: status || Status::PASSED, stage: Stage::FINISHED))
