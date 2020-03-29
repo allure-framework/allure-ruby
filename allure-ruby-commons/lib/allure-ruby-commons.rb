@@ -9,30 +9,30 @@ require_rel "allure_ruby_commons/**/*rb"
 module Allure
   class << self
     # Get thread specific allure lifecycle object
-    # @return [Allure::AllureLifecycle]
+    # @return [AllureLifecycle]
     def lifecycle
       Thread.current[:lifecycle] ||= AllureLifecycle.new
     end
 
     # Set lifecycle object
-    # @param [Allure::AllureLifecycle] lifecycle
+    # @param [AllureLifecycle] lifecycle
     # @return [void]
     def lifecycle=(lifecycle)
       Thread.current[:lifecycle] = lifecycle
     end
 
     # Get allure configuration
-    # @return [Allure::Config]
+    # @return [Config]
     def configuration
-      Config
+      Config.instance
     end
 
     # Set allure configuration
-    # @yieldparam [Allure::Config]
+    # @yieldparam [Config]
     # @yieldreturn [void]
     # @return [void]
     def configure
-      yield(Config)
+      yield(configuration)
     end
 
     # Add epic to current test case
@@ -131,7 +131,7 @@ module Allure
     # Add attachment to current test case or step
     # @param [String] name Attachment name
     # @param [File, String] source File or string to save as attachment
-    # @param [String] type attachment type defined in {Allure::ContentType} or any other valid mime type
+    # @param [String] type attachment type defined in {ContentType} or any other valid mime type
     # @param [Boolean] test_case add attachment to current test case instead of test step
     # @return [void]
     def add_attachment(name:, source:, type:, test_case: false)
@@ -146,7 +146,7 @@ module Allure
     end
 
     # Add categories info
-    # @param [File, Array<Allure::Category>] categories
+    # @param [File, Array<Category>] categories
     # @return [void]
     def add_categories(categories)
       lifecycle.write_categories(categories)
@@ -154,7 +154,7 @@ module Allure
 
     # Add step with provided name and optional status to current test step, fixture or test case
     # @param [String] name
-    # @param [Symbol] status <Allure::Status>, <Allure::Status::PASSED> by default
+    # @param [Symbol] status {Status}, {Status::PASSED} by default
     # @return [void]
     def step(name:, status: nil)
       lifecycle.add_test_step(StepResult.new(name: name, status: status || Status::PASSED, stage: Stage::FINISHED))

@@ -7,7 +7,7 @@ require "allure-rspec"
 
 SimpleCov.command_name("allure-rspec")
 
-Allure.configure do |c|
+AllureRspec.configure do |c|
   c.clean_results_directory = true
   c.link_tms_pattern = "http://www.jira.com/tms/{}"
   c.link_issue_pattern = "http://www.jira.com/issue/{}"

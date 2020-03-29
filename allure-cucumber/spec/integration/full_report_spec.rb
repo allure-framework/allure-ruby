@@ -3,7 +3,7 @@
 describe "allure cucumber" do
   include_context "cucumber runner"
 
-  let(:results_dir) { Allure::Config.results_directory }
+  let(:results_dir) { AllureCucumber.configuration.results_directory }
 
   it "generates allure json results files", integration: true do
     run_cucumber_cli(<<~FEATURE)

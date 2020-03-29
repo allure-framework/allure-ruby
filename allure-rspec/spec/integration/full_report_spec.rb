@@ -3,7 +3,7 @@
 describe "allure-rspec" do
   include_context "rspec runner"
 
-  let(:results_dir) { Allure::Config.results_directory }
+  let(:results_dir) { Allure.configuration.results_directory }
 
   it "Generates allure json results files", integration: true do
     run_rspec("spec/fixture/specs/simple_test.rb")

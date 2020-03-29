@@ -50,7 +50,8 @@ module AllureRspec
     # @param [Symbol] type
     # @return [Array<Allure::Link>]
     def matching_links(metadata, type)
-      unless Allure::Config.public_send("link_#{type}_pattern") && metadata.keys.any? { |k| __send__("#{type}?", k) }
+      unless AllureRspec.configuration.public_send("link_#{type}_pattern") &&
+             metadata.keys.any? { |k| __send__("#{type}?", k) }
         return []
       end
 
