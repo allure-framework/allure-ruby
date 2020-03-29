@@ -2,7 +2,7 @@
 
 describe AllureCucumber do
   it "returns cucumber configuration" do
-    expect(AllureCucumber.configuration).to be(AllureCucumber::CucumberConfig.instance)
+    expect(AllureCucumber.configuration).to be_a(AllureCucumber::CucumberConfig)
   end
 
   it "yields cucumber configuration" do
