@@ -1,4 +1,5 @@
 # allure-rspec
+
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://www.rubydoc.info/gems/allure-rspec)
 
 Allure adapter for [rspec](https://rspec.info/) testing framework
@@ -8,32 +9,45 @@ Allure adapter for [rspec](https://rspec.info/) testing framework
 Add it to gemfile:
 
 ```ruby
-gem 'allure-rspec'
+gem "allure-rspec"
 ```
 
 Require in `spec_helper` or any other setup file:
 
 ```ruby
-require `allure-rspec`
+require "allure-rspec"
 ```
 
 ## Configuration
 
-There are no rspec adapter specific configuration options. Main allure configuration is described [here](https://github.com/allure-framework/allure-ruby/blob/master/allure-ruby-commons/README.md#configuration)
+Following configuration options are supported:
+
+```ruby
+    AllureRspec.configure do |config|
+      config.results_directory = "/whatever/you/like"
+      config.clean_results_directory = true
+      config.logging_level = Logger::INFO
+      # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
+      config.link_tms_pattern = "http://www.jira.com/browse/{}"
+      config.link_issue_pattern = "http://www.jira.com/browse/{}"
+    end
+```
 
 ## Usage
 
-Via commandline, simply add:
+Via commandline arguments, simply add:
 
 ```bash
 --format AllureRspecFormatter
 ```
 
-RSpec configuration:
+or
+
+Via RSpec configuration:
 
 ```ruby
-RSpec.configure do |c|
-  c.formatter = AllureRspecFormatter
+RSpec.configure do |config|
+  config.formatter = AllureRspecFormatter
 end
 ```
 
@@ -42,8 +56,8 @@ end
 Configure tms link pattern:
 
 ```ruby
-Allure.configure do |c|
-  c.link_tms_pattern = "http://www.jira.com/browse/{}"
+AllureRspec.configure do |config|
+  config.link_tms_pattern = "http://www.jira.com/browse/{}"
 end
 ```
 
@@ -68,8 +82,8 @@ end
 Configure issue link pattern:
 
 ```ruby
-Allure.configure do |c|
-  c.link_issue_pattern = "http://www.jira.com/browse/{}"
+AllureRspec.configure do |config|
+  config.link_issue_pattern = "http://www.jira.com/browse/{}"
 end
 ```
 
