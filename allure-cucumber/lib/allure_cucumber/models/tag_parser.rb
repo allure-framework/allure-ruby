@@ -14,7 +14,7 @@ module AllureCucumber
     # @param [Array<String>] tags
     # @return [Array<Allure::Link>]
     def tms_links(tags)
-      return [] unless Allure::Config.link_tms_pattern
+      return [] unless AllureCucumber.configuration.link_tms_pattern
 
       matching_links(tags, :tms)
     end
@@ -22,7 +22,7 @@ module AllureCucumber
     # @param [Array<String>] tags
     # @return [Array<Allure::Link>]
     def issue_links(tags)
-      return [] unless Allure::Config.link_issue_pattern
+      return [] unless AllureCucumber.configuration.link_issue_pattern
 
       matching_links(tags, :issue)
     end
@@ -63,9 +63,9 @@ module AllureCucumber
     # @return [Hash<Symbol, Regexp>]
     def reserved_patterns
       @reserved_patterns ||= {
-        tms: /@#{CucumberConfig.tms_prefix}(?<tms>\S+)/,
-        issue: /@#{CucumberConfig.issue_prefix}(?<issue>\S+)/,
-        severity: /@#{CucumberConfig.severity_prefix}(?<severity>\S+)/,
+        tms: /@#{AllureCucumber.configuration.tms_prefix}(?<tms>\S+)/,
+        issue: /@#{AllureCucumber.configuration.issue_prefix}(?<issue>\S+)/,
+        severity: /@#{AllureCucumber.configuration.severity_prefix}(?<severity>\S+)/,
         flaky: /@flaky/,
         muted: /@muted/,
         known: /@known/,

@@ -11,7 +11,7 @@ module Allure
     def initialize
       @test_context = []
       @step_context = []
-      @logger = Logger.new(STDOUT, level: Config.logging_level)
+      @logger = Logger.new(STDOUT, level: Config.instance.logging_level)
       @file_writer = FileWriter.new
     end
 

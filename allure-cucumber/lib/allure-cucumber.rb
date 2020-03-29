@@ -12,7 +12,7 @@ module AllureCucumber
     # Get allure cucumber configuration
     # @return [Allure::CucumberConfig]
     def configuration
-      CucumberConfig
+      CucumberConfig.instance
     end
 
     # Set allure configuration
@@ -20,7 +20,7 @@ module AllureCucumber
     # @yieldreturn [void]
     # @return [void]
     def configure
-      yield(CucumberConfig)
+      yield(configuration)
     end
   end
 end

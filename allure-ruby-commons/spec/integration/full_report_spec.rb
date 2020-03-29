@@ -3,7 +3,7 @@
 describe "allure-ruby-commons" do
   include_context "lifecycle"
 
-  let(:results_dir) { Allure::Config.results_directory }
+  let(:results_dir) { Allure.configuration.results_directory }
 
   before(:all) do
     clean_results_dir

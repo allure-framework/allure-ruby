@@ -50,5 +50,5 @@ RSpec.shared_context("lifecycle mocks") do
 end
 
 def clean_results_dir
-  FileUtils.remove_dir(Allure::Config.results_directory) if File.exist?(Allure::Config.results_directory)
+  FileUtils.remove_dir(Allure.configuration.results_directory) if File.exist?(Allure.configuration.results_directory)
 end
