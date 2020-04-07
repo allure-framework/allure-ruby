@@ -41,6 +41,9 @@ jobs:
           bundle install -j $(nproc)
         env:
           BUNDLE_SUPPRESS_INSTALL_USING_MESSAGES: 'true'
+      
+      - name: Lint
+        run: bundle exec rake rubocop
 
       - name: Test
         run: bundle exec rake test_with_coverage
