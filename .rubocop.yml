@@ -227,6 +227,9 @@ Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: normal
 
+Layout/IndentationStyle:
+  Enabled: true
+
 Layout/IndentationWidth:
   Enabled: true
   Width: 2
@@ -359,9 +362,6 @@ Layout/SpaceInsideReferenceBrackets:
 Layout/SpaceInsideStringInterpolation:
   Enabled: true
   EnforcedStyle: no_space
-
-Layout/Tab:
-  Enabled: true
 
 Layout/TrailingEmptyLines:
   Enabled: true
