@@ -3,7 +3,6 @@
 require "rake"
 
 require_relative "../task_helpers/util.rb"
-require_relative "../task_helpers/release_util.rb"
 
 class ReleaseTasks
   include Rake::DSL
@@ -12,24 +11,16 @@ class ReleaseTasks
   def initialize
     directory "pkg"
 
-    add_version_bump_task
     add_adaptor_build_tasks
     add_build_tasks
   end
 
   private
 
-  def add_version_bump_task
-    desc "Update allure version"
-    task :version, [:increment, :push] do |_task, args|
-      VersionUpdater.update(args[:increment], args[:push])
-    end
-  end
-
   def add_adaptor_build_tasks # rubocop:disable Metrics/MethodLength
     adaptors.each do |adaptor|
       namespace adaptor do
-        gem = "#{adaptor}-#{VersionUpdater.version}.gem"
+        gem = "#{adaptor}-#{version}.gem"
         gem_path = "#{root}/pkg/#{gem}"
         gemspec = "#{adaptor}.gemspec"
 
