@@ -85,7 +85,7 @@ GEM
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     parallel (1.19.1)
-    parser (2.7.1.1)
+    parser (2.7.1.2)
       ast (~> 2.4.0)
     protobuf-cucumber (3.10.8)
       activesupport (>= 3.2)
@@ -134,7 +134,7 @@ GEM
       simplecov
       terminal-table
     simplecov-html (0.12.2)
-    solargraph (0.39.3)
+    solargraph (0.39.6)
       backport (~> 1.1)
       benchmark
       bundler (>= 1.17.2)
@@ -159,7 +159,7 @@ GEM
     unicode-display_width (1.7.0)
     uuid (2.3.9)
       macaddr (~> 1.0)
-    yard (0.9.24)
+    yard (0.9.25)
     zeitwerk (2.3.0)
 
 PLATFORMS
@@ -179,7 +179,7 @@ DEPENDENCIES
   rubocop-performance (~> 1.5.2)
   simplecov (~> 0.18.5)
   simplecov-console (~> 0.7.2)
-  solargraph (~> 0.39.3)
+  solargraph (~> 0.39.6)
 
 BUNDLED WITH
    2.1.4
