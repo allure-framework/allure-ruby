@@ -13,7 +13,6 @@ group :development do
   gem "lefthook", "~> 0.7.0"
   gem "pry", "~> 0.13.1"
   gem "rake", "~> 13.0.1"
-  gem "semantic", "~> 1.6.1"
   gem "solargraph", "~> 0.39.3"
 end
 
