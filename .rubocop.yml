@@ -221,7 +221,6 @@ Layout/FirstHashElementIndentation:
 
 Layout/HeredocIndentation:
   Enabled: true
-  EnforcedStyle: squiggly
 
 Layout/IndentationConsistency:
   Enabled: true
