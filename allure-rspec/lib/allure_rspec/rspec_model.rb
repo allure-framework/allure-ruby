@@ -67,28 +67,30 @@ module AllureRspec
     # @param [RSpec::Core::Example] example
     # @return [Array<Allure::Label>]
     def labels(example)
-      [].tap do |labels|
-        labels << Allure::ResultUtils.framework_label("rspec")
-        labels << Allure::ResultUtils.feature_label(example.example_group.description)
-        labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
-        labels << Allure::ResultUtils.story_label(example.description)
-        labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
-        labels << severity(example.metadata)
-        labels.push(*tag_labels(example.metadata))
-        labels.push(*suite_labels(example.example_group))
-      end
+      labels = []
+      labels << Allure::ResultUtils.framework_label("rspec")
+      labels << Allure::ResultUtils.feature_label(example.example_group.description)
+      labels << Allure::ResultUtils.package_label(Pathname.new(strip_relative(example.file_path)).parent.to_s)
+      labels << Allure::ResultUtils.story_label(example.description)
+      labels << Allure::ResultUtils.test_class_label(File.basename(example.file_path, ".rb"))
+      labels << severity(example.metadata)
+      labels.push(*tag_labels(example.metadata))
+      labels.push(*suite_labels(example.example_group))
+
+      labels
     end
 
     # Add suite labels
     # @param [RSpec::Core::ExampleGroup] example_group
     # @return [Array<Allure::Label>]
     def suite_labels(example_group)
-      [].tap do |labels|
-        parents = example_group.parent_groups.map { |group| group.description.empty? ? "Anonymous" : group.description }
-        labels << Allure::ResultUtils.suite_label(suite(parents))
-        labels << Allure::ResultUtils.parent_suite_label(parent_suite(parents)) if parent_suite(parents)
-        labels << Allure::ResultUtils.sub_suite_label(sub_suites(parents)) if sub_suites(parents)
-      end
+      parents = example_group.parent_groups.map { |group| group.description.empty? ? "Anonymous" : group.description }
+      labels = []
+      labels << Allure::ResultUtils.suite_label(suite(parents))
+      labels << Allure::ResultUtils.parent_suite_label(parent_suite(parents)) if parent_suite(parents)
+      labels << Allure::ResultUtils.sub_suite_label(sub_suites(parents)) if sub_suites(parents)
+
+      labels
     end
 
     # @param [Array<String>] parents
