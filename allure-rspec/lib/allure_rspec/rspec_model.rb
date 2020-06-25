@@ -84,10 +84,10 @@ module AllureRspec
     # @return [Array<Allure::Label>]
     def suite_labels(example_group)
       [].tap do |labels|
-        parents = example_group.parent_groups.map(&:description)
+        parents = example_group.parent_groups.map { |group| group.description.empty? ? "Anonymous" : group.description }
         labels << Allure::ResultUtils.suite_label(suite(parents))
-        labels << Allure::ResultUtils.parent_suite_label(parent_suite(parents))
-        labels << Allure::ResultUtils.sub_suite_label(sub_suites(parents))
+        labels << Allure::ResultUtils.parent_suite_label(parent_suite(parents)) if parent_suite(parents)
+        labels << Allure::ResultUtils.sub_suite_label(sub_suites(parents)) if sub_suites(parents)
       end
     end
 
