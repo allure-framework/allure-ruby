@@ -6,8 +6,8 @@ describe "allure rspec" do
   let(:results_dir) { Allure.configuration.results_directory }
 
   it "generates allure json results files", integration: true do
-    run_rspec(<<~SPEC)
-      describe "Suite" do
+    run_rspec(<<~RUBY)
+      describe do
         before(:each) do |e|
           e.step(name: "Before hook")
         end
@@ -20,7 +20,7 @@ describe "allure rspec" do
           e.step(name: "test body")
         end
       end
-    SPEC
+    RUBY
 
     container = File.new(Dir["#{test_tmp_dir}/#{results_dir}/*container.json"].first)
     result = File.new(Dir["#{test_tmp_dir}/#{results_dir}/*result.json"].first)
@@ -33,7 +33,7 @@ describe "allure rspec" do
     container_json = JSON.parse(File.read(container), symbolize_names: true)
     result_json = JSON.parse(File.read(result), symbolize_names: true)
     aggregate_failures "Json results should contain valid data" do
-      expect(container_json[:name]).to eq("Suite")
+      expect(container_json[:name]).to eq("Anonymous")
       expect(result_json[:name]).to eq("spec")
       expect(result_json[:description]).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
       expect(result_json[:steps].size).to eq(3)

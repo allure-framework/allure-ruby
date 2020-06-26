@@ -38,9 +38,10 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::GroupNotification] example_group_notification
     # @return [void]
     def example_group_started(example_group_notification)
-      lifecycle.start_test_container(
-        Allure::TestResultContainer.new(name: example_group_notification.group.description),
-      )
+      description = example_group_notification.group.description.yield_self do |desc|
+        desc.empty? ? "Anonymous" : desc
+      end
+      lifecycle.start_test_container(Allure::TestResultContainer.new(name: description))
     end
 
     # Starts example
