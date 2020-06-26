@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@master
       
       - name: Cache gems
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: vendor/bundle
           key: 2.7-gems-${{ hashFiles('Gemfile.lock') }}
