@@ -6,6 +6,8 @@ module Allure
   # Allure model link object
   class Link < JSONable
     def initialize(type, name, url)
+      super()
+
       @type = type
       @name = name
       @url = url

@@ -31,6 +31,8 @@ module AllureCucumber
     attr_writer :tms_prefix, :issue_prefix, :severity_prefix
 
     def initialize
+      super()
+
       @allure_config = Allure.configuration
     end
 

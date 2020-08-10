@@ -16,6 +16,8 @@ module Allure
     # @option options [Array<Allure::Attachment>] :attachments ([])
     # @option options [Array<Allure::Parameter>] :parameters ([])
     def initialize(**options)
+      super()
+
       @name = options[:name]
       @description = options[:description]
       @description_html = options[:description_html]

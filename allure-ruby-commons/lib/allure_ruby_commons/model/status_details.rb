@@ -9,6 +9,8 @@ module Allure
     # @param [String] message
     # @param [String] trace
     def initialize(known: false, muted: false, flaky: false, message: nil, trace: nil)
+      super()
+
       @known = known
       @muted = muted
       @flaky = flaky
