@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "logger"
-
 describe "AllureLifecycle::TestResultContainer" do
   include_context "lifecycle"
   include_context "lifecycle mocks"
@@ -36,8 +34,7 @@ describe "AllureLifecycle::TestResultContainer" do
   it "logs error when stopping or updating test result container" do
     allow(file_writer).to receive(:write_test_result_container)
 
-    expect(logger).to receive(:error).with(/Could not update test container/)
-    expect(logger).to receive(:error).with(/Could not stop test container/)
+    expect_any_instance_of(Logger).to receive(:error).twice
 
     lifecycle.stop_test_container
 

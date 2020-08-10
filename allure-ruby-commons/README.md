@@ -35,6 +35,10 @@ Getting the configuration object:
 Allure.configuration
 ```
 
+### Log level
+
+Log level can be also configured via environment variable `ALLURE_LOG_LEVEL` which accepts one of the following values: `DEBUG INFO WARN ERROR FATAL UNKNOWN`.
+
 ## Allure lifecycle
 
 Reports are built using API defined in AllureLifecycle class and using allure specific entities defined in models.
