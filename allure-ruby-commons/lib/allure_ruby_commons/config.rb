@@ -8,20 +8,14 @@ module Allure
   class Config
     include Singleton
 
-    # @return [String] default allure results directory
-    DEFAULT_RESULTS_DIRECTORY = "reports/allure-results"
-    # @return [String] default loggin level
-    DEFAULT_LOGGING_LEVEL = Logger::INFO
+    # @return [Array<String>] valid log levels
+    LOGLEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
 
-    attr_accessor :link_tms_pattern, :link_issue_pattern, :clean_results_directory
-    attr_writer :results_directory, :logging_level
-
-    def results_directory
-      @results_directory || DEFAULT_RESULTS_DIRECTORY
+    def initialize
+      @results_directory = "reports/allure-results"
+      @logging_level = LOGLEVELS.index(ENV.fetch("ALLURE_LOG_LEVEL", "INFO")) || Logger::INFO
     end
 
-    def logging_level
-      @logging_level || DEFAULT_LOGGING_LEVEL
-    end
+    attr_accessor :results_directory, :logging_level, :link_tms_pattern, :link_issue_pattern, :clean_results_directory
   end
 end

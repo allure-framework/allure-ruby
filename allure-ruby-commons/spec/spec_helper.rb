@@ -41,11 +41,9 @@ end
 
 RSpec.shared_context("lifecycle mocks") do
   let(:file_writer) { double("FileWriter") }
-  let(:logger) { double("Logger") }
 
   before do
     allow(Allure::FileWriter).to receive(:new).and_return(file_writer)
-    allow(Logger).to receive(:new).and_return(logger)
   end
 end
 

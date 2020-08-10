@@ -89,14 +89,14 @@ describe "Lifecycle:Attachments" do
   it "logs no running test case error" do
     allow(file_writer).to receive(:write_test_result)
 
-    expect(logger).to receive(:error).with(/no test, step or fixture is running/)
+    expect_any_instance_of(Logger).to receive(:error)
 
     lifecycle.stop_test_case
     lifecycle.add_attachment(**attach_opts)
   end
 
   it "logs incorrect mime type error" do
-    expect(logger).to receive(:error).with(/unrecognized mime type: nonsence/)
+    expect_any_instance_of(Logger).to receive(:error)
 
     lifecycle.add_attachment(
       name: "Test Attachment",

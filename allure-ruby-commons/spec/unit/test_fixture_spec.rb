@@ -49,7 +49,7 @@ describe "AllureLifecycle::Fixtures" do
 
   context "logs error message" do
     it "no running container" do
-      expect(logger).to receive(:error).with(/Could not start fixture/).and_return(true)
+      expect_any_instance_of(Logger).to receive(:error).and_return(true)
 
       start_fixture("Prepare fixture", "prepare")
     end
@@ -57,8 +57,7 @@ describe "AllureLifecycle::Fixtures" do
     it "no running fixture" do
       start_test_container("Test container")
 
-      expect(logger).to receive(:error).with(/Could not stop fixture/).and_return(true)
-      expect(logger).to receive(:error).with(/Could not update fixture/).and_return(true)
+      expect_any_instance_of(Logger).to receive(:error).twice.and_return(true)
 
       lifecycle.update_fixture { |t| t.full_name = "Test" }
       lifecycle.stop_fixture

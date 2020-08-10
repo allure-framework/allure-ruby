@@ -22,6 +22,8 @@ module Allure
     # @return [Allure::TestResultContainer]
     def start_test_container(test_result_container)
       test_result_container.tap do |container|
+        logger.debug { "Starting test container: #{container.name}" }
+
         container.start = ResultUtils.timestamp
         @test_context.push(container)
       end
@@ -36,7 +38,7 @@ module Allure
     # @return [void]
     def update_test_container
       unless current_test_result_container
-        return logger.error("Could not update test container, no container is running.")
+        return logger.error { "Could not update test container, no container is running." }
       end
 
       yield(current_test_result_container)
@@ -46,10 +48,11 @@ module Allure
     # @return [void]
     def stop_test_container
       unless current_test_result_container
-        return logger.error("Could not stop test container, no container is running.")
+        return logger.error { "Could not stop test container, no container is running." }
       end
 
       current_test_result_container.tap do |container|
+        logger.debug { "Stopping container: #{container.name}" }
         container.stop = ResultUtils.timestamp
         file_writer.write_test_result_container(container)
         clear_last_test_container
@@ -62,9 +65,10 @@ module Allure
     def start_test_case(test_result)
       clear_step_context
       unless current_test_result_container
-        return logger.error("Could not start test case, test container is not started")
+        return logger.error { "Could not start test case, test container is not started" }
       end
 
+      logger.debug("Starting test case: #{test_result.full_name}")
       test_result.start = ResultUtils.timestamp
       test_result.stage = Stage::RUNNING
       test_result.labels.push(ResultUtils.thread_label, ResultUtils.host_label, ResultUtils.language_label)
@@ -80,7 +84,7 @@ module Allure
     # @yieldreturn [void]
     # @return [void]
     def update_test_case
-      return logger.error("Could not update test case, no test case running") unless @current_test_case
+      return logger.error { "Could not update test case, no test case running" } unless @current_test_case
 
       yield(@current_test_case)
     end
@@ -88,8 +92,9 @@ module Allure
     # Stop current test case and write result
     # @return [void]
     def stop_test_case
-      return logger.error("Could not stop test case, no test case is running") unless @current_test_case
+      return logger.error { "Could not stop test case, no test case is running" } unless @current_test_case
 
+      logger.debug { "Stopping test case: #{@current_test_case.name}" }
       @current_test_case.stop = ResultUtils.timestamp
       @current_test_case.stage = Stage::FINISHED
       file_writer.write_test_result(@current_test_case)
@@ -101,8 +106,9 @@ module Allure
     # @param [Allure::StepResult] step_result
     # @return [Allure::StepResult]
     def start_test_step(step_result)
-      return logger.error("Could not start test step, no test case is running") unless @current_test_case
+      return logger.error { "Could not start test step, no test case is running" } unless @current_test_case
 
+      logger.debug { "Starting test step: #{step_result.name}" }
       step_result.start = ResultUtils.timestamp
       step_result.stage = Stage::RUNNING
       add_test_step(step_result)
@@ -117,7 +123,7 @@ module Allure
     # @yieldreturn [void]
     # @return [void]
     def update_test_step
-      return logger.error("Could not update test step, no step is running") unless current_test_step
+      return logger.error { "Could not update test step, no step is running" } unless current_test_step
 
       yield(current_test_step)
     end
@@ -125,8 +131,9 @@ module Allure
     # Stop current test step
     # @return [void]
     def stop_test_step
-      return logger.error("Could not stop test step, no step is running") unless current_test_step
+      return logger.error { "Could not stop test step, no step is running" } unless current_test_step
 
+      logger.debug { "Stoping test step: #{current_test_step.stop}" }
       current_test_step.stop = ResultUtils.timestamp
       current_test_step.stage = Stage::FINISHED
       clear_last_test_step
@@ -160,6 +167,7 @@ module Allure
         return false
       end
 
+      logger.debug { "Starting fixture: #{fixture_result.name}" }
       fixture_result.start = ResultUtils.timestamp
       fixture_result.stage = Stage::RUNNING
     end
@@ -172,7 +180,7 @@ module Allure
     # @yieldreturn [void]
     # @return [void]
     def update_fixture
-      return logger.error("Could not update fixture, fixture is not started") unless @current_fixture
+      return logger.error { "Could not update fixture, fixture is not started" } unless @current_fixture
 
       yield(@current_fixture)
     end
@@ -180,8 +188,9 @@ module Allure
     # Stop current test fixture
     # @return [void]
     def stop_fixture
-      return logger.error("Could not stop fixture, fixture is not started") unless @current_fixture
+      return logger.error { "Could not stop fixture, fixture is not started" } unless @current_fixture
 
+      logger.debug { "Stopping fixture: #{@current_fixture.name}" }
       @current_fixture.stop = ResultUtils.timestamp
       @current_fixture.stage = Stage::FINISHED
       clear_current_fixture
@@ -196,12 +205,13 @@ module Allure
     # @return [void]
     def add_attachment(name:, source:, type:, test_case: false)
       attachment = ResultUtils.prepare_attachment(name, type) || begin
-        return logger.error("Can't add attachment, unrecognized mime type: #{type}")
+        return logger.error { "Can't add attachment, unrecognized mime type: #{type}" }
       end
       executable_item = (test_case && @current_test_case) || current_executable
       executable_item&.attachments&.push(attachment) || begin
-        return logger.error("Can't add attachment, no test, step or fixture is running")
+        return logger.error { "Can't add attachment, no test, step or fixture is running" }
       end
+      logger.debug { "Adding attachment '#{name}' to '#{executable_item.name}'" }
       write_attachment(source, attachment)
     end
 
