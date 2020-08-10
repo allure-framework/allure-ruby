@@ -68,7 +68,7 @@ module Allure
         return logger.error { "Could not start test case, test container is not started" }
       end
 
-      logger.debug("Starting test case: #{test_result.full_name}")
+      logger.debug("Starting test case: #{test_result.name}")
       test_result.start = ResultUtils.timestamp
       test_result.stage = Stage::RUNNING
       test_result.labels.push(ResultUtils.thread_label, ResultUtils.host_label, ResultUtils.language_label)
