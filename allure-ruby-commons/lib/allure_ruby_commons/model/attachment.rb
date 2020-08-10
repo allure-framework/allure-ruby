@@ -9,6 +9,8 @@ module Allure
     # @param [String] type attachment type, {Allure::ContentType}
     # @param [String] source attachment file name
     def initialize(name:, type:, source:)
+      super()
+
       @name = name
       @type = type
       @source = source

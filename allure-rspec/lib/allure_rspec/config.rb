@@ -22,6 +22,8 @@ module AllureRspec
       :results_directory=
 
     def initialize
+      super()
+
       @allure_config = Allure.configuration
     end
   end
