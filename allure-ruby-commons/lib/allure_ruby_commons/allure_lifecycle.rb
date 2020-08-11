@@ -228,7 +228,7 @@ module Allure
     # @return [void]
     def clean_results_dir
       Allure.configuration.tap do |c|
-        FileUtils.rm_f(Dir.glob("#{c.results_directory}/*")) if c.clean_results_directory
+        FileUtils.rm_f(Dir.glob("#{c.results_directory}/**/*")) if c.clean_results_directory
       end
     end
 
