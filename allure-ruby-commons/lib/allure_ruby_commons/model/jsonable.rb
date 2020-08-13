@@ -6,9 +6,9 @@ module Allure
   # General jsonable object implementation
   class JSONable
     # Return object has represantation
-    # @param [Hash] _options
+    # @param [Array<Object>] _options
     # @return [Hash]
-    def as_json(_options = {})
+    def as_json(*_options)
       instance_variables.each_with_object({}) do |var, map|
         key = camelcase(var.to_s.delete_prefix("@"))
         value = instance_variable_get(var)
@@ -20,7 +20,7 @@ module Allure
     # @param [Array<Object>] options
     # @return [String]
     def to_json(*options)
-      as_json(*options).to_json(*options)
+      as_json.to_json(*options)
     end
 
     # Object comparator
