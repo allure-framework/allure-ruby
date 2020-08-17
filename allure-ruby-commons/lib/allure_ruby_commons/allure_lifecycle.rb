@@ -133,7 +133,7 @@ module Allure
     def stop_test_step
       return logger.error { "Could not stop test step, no step is running" } unless current_test_step
 
-      logger.debug { "Stoping test step: #{current_test_step.stop}" }
+      logger.debug { "Stopping test step: #{current_test_step.name}" }
       current_test_step.stop = ResultUtils.timestamp
       current_test_step.stage = Stage::FINISHED
       clear_last_test_step
