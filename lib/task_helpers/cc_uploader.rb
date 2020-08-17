@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CodeClimateUploader
-  CC_REPORTER_VERSION = "0.7.0"
+  CC_REPORTER_VERSION = "0.8.0"
   CC_REPORTER_URL = "https://codeclimate.com/downloads/test-reporter/test-reporter-#{CC_REPORTER_VERSION}-linux-amd64"
   CC_REPORTER = "vendor/bundle/cc_reporter_#{CC_REPORTER_VERSION}"
   CC_JSON = "coverage/codeclimate.json"
