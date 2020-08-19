@@ -146,7 +146,7 @@ GEM
       simplecov
       terminal-table
     simplecov-html (0.12.2)
-    solargraph (0.39.14)
+    solargraph (0.39.15)
       backport (~> 1.1)
       benchmark
       bundler (>= 1.17.2)
@@ -193,7 +193,7 @@ DEPENDENCIES
   rubocop-performance (~> 1.7.1)
   simplecov (~> 0.19.0)
   simplecov-console (~> 0.7.2)
-  solargraph (~> 0.39.14)
+  solargraph (~> 0.39.15)
 
 BUNDLED WITH
    2.1.4
