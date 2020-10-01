@@ -30,7 +30,7 @@ jobs:
           restore-keys: ${{ matrix.ruby }}-gems-
 
       - name: Set up Ruby ${{ matrix.ruby }}
-        uses: actions/setup-ruby@v1.1.1
+        uses: actions/setup-ruby@v1.1.2
         with:
           ruby-version: ${{ matrix.ruby }}
 
