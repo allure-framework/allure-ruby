@@ -14,7 +14,7 @@ module AllureRspec
     ALLURE_STATUS ||= {
       failed: Allure::Status::FAILED,
       pending: Allure::Status::SKIPPED,
-      passed: Allure::Status::PASSED,
+      passed: Allure::Status::PASSED
     }.freeze
 
     # Transform example to <Allure::TestResult>
@@ -29,7 +29,7 @@ module AllureRspec
         full_name: example.full_description,
         labels: labels(example),
         links: links(example),
-        status_details: Allure::StatusDetails.new(**status_detail_tags(example.metadata)),
+        status_details: Allure::StatusDetails.new(**status_detail_tags(example.metadata))
       )
     end
 

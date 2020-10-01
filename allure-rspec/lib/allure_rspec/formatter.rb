@@ -18,7 +18,7 @@ module AllureRspec
       :example_group_started,
       :example_group_finished,
       :example_started,
-      :example_finished,
+      :example_finished
     )
 
     RSpec::Core::Example.class_eval do

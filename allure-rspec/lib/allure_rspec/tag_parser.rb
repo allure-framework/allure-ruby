@@ -38,9 +38,9 @@ module AllureRspec
     # @return [Hash<Symbol, Boolean>]
     def status_detail_tags(metadata)
       {
-        flaky: !!metadata[:flaky],
-        muted: !!metadata[:muted],
-        known: !!metadata[:known],
+        flaky: !metadata[:flaky].nil?,
+        muted: !metadata[:muted].nil?,
+        known: !metadata[:known].nil?
       }
     end
 

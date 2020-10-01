@@ -26,7 +26,7 @@ class TestTasks
   end
 
   def self.add_rubocop_task
-    RuboCop::RakeTask.new(:rubocop) do |task|
+    RuboCop::RakeTask.new do |task|
       task.options = %w[--parallel --color]
       task.verbose = false
     end
