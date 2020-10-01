@@ -76,7 +76,7 @@ class CucumberHelper
       nil,
       @stdout,
       @stderr,
-      @kernel,
+      @kernel
     ).execute!
   ensure
     write_file("#{tmp_dir}/cucumber_output.txt", all_output)

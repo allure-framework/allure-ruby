@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
     "changelog_uri" => "https://github.com/allure-framework/allure-ruby/releases",
     "documentation_uri" => "https://github.com/allure-framework/allure-ruby/blob/master/allure-ruby-commons/README.md",
     "source_code_uri" => "https://github.com/allure-framework/allure-ruby/tree/master/allure-ruby-commons",
-    "wiki_uri" => "https://github.com/allure-framework/allure-ruby/wiki",
+    "wiki_uri" => "https://github.com/allure-framework/allure-ruby/wiki"
   }
 
   s.required_ruby_version = ">= 2.5.0"
@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
   s.files = Dir["README.md", "lib/**/*"]
   s.require_path = "lib"
 
-  s.add_dependency "uuid", "~> 2.3"
-  s.add_dependency "require_all", ">= 2", "< 4"
   s.add_dependency "json", ">= 1.8", "< 3"
   s.add_dependency "mime-types", "~> 3.3"
+  s.add_dependency "require_all", ">= 2", "< 4"
+  s.add_dependency "uuid", "~> 2.3"
 end

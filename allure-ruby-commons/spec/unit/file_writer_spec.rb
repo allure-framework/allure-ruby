@@ -27,7 +27,7 @@ describe Allure::FileWriter do
     attachment = Allure::Attachment.new(
       name: "Test attachment",
       type: Allure::ContentType::TXT,
-      source: "#{UUID.generate}-attachment.txt",
+      source: "#{UUID.generate}-attachment.txt"
     )
     attachment_file = File.join(Allure.configuration.results_directory, attachment.source)
     file_writer.write_attachment("Test attachment", attachment)
@@ -39,7 +39,7 @@ describe Allure::FileWriter do
     attachment = Allure::Attachment.new(
       name: "Test attachment",
       type: Allure::ContentType::PNG,
-      source: "#{UUID.generate}-attachment.png",
+      source: "#{UUID.generate}-attachment.png"
     )
     source = File.new(File.join(Dir.pwd, "spec", "fixtures", "ruby-logo.png"))
     attachment_file = File.join(Allure.configuration.results_directory, attachment.source)
@@ -62,7 +62,7 @@ describe Allure::FileWriter do
   it "writes categories from argument" do
     categories_file = File.join(Allure.configuration.results_directory, "categories.json")
     file_writer.write_categories(
-      [Allure::Category.new(name: "Ignored test", matched_statuses: [Allure::Status::SKIPPED])],
+      [Allure::Category.new(name: "Ignored test", matched_statuses: [Allure::Status::SKIPPED])]
     )
 
     expect(File.exist?(categories_file)).to be_truthy, "Expected #{categories_file} to exist"

@@ -27,7 +27,7 @@ module Allure
     def write_test_result_container(test_container_result)
       write(
         "#{test_container_result.uuid}#{TEST_RESULT_CONTAINER_SUFFIX}",
-        JSON.generate(test_container_result, max_nesting: false),
+        JSON.generate(test_container_result, max_nesting: false)
       )
     end
 

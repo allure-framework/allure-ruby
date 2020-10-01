@@ -113,9 +113,9 @@ describe Allure, test: true do
 
     it "correctly handles custom step failure" do
       Allure.run_step("Custom step") do
-        raise StandardError.new("Error")
+        raise StandardError, "Error"
       end
-    rescue
+    rescue StandardError
       test_step = @test_case.steps.last
       aggregate_failures "custom step should be handled correctly" do
         expect(test_step.name).to eq("Custom step")

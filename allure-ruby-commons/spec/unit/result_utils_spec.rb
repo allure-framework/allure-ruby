@@ -60,7 +60,7 @@ describe Allure::ResultUtils do
 
   it "returns status details for simple error" do
     raise error
-  rescue => e
+  rescue StandardError => e
     status_details = Allure::ResultUtils.status_details(e)
     expect(status_details.message).to eq("Error")
     expect(status_details.trace).not_to be_empty

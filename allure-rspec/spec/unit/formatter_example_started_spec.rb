@@ -40,7 +40,7 @@ describe "example_started" do
           result_utils.framework_label("rspec"),
           result_utils.package_label("#{test_tmp_dir}/spec"),
           result_utils.test_class_label("test_spec"),
-          result_utils.tag_label("some_label"),
+          result_utils.tag_label("some_label")
         )
       end
     end
@@ -63,7 +63,7 @@ describe "example_started" do
         result_utils.tms_link("QA-123"),
         result_utils.tms_link("QA-124"),
         result_utils.issue_link("BUG-123"),
-        result_utils.issue_link("BUG-124"),
+        result_utils.issue_link("BUG-124")
       )
     end
   end
@@ -136,12 +136,12 @@ describe "example_started" do
       expect(examples.first.labels).to include(Allure::ResultUtils.suite_label("Suite"))
       expect(examples[1].labels).to include(
         Allure::ResultUtils.suite_label("Nested Suite 1"),
-        Allure::ResultUtils.parent_suite_label("Suite"),
+        Allure::ResultUtils.parent_suite_label("Suite")
       )
       expect(examples.last.labels).to include(
         Allure::ResultUtils.suite_label("Nested Suite 2"),
         Allure::ResultUtils.parent_suite_label("Suite"),
-        Allure::ResultUtils.sub_suite_label("Nested Suite 2:1:1 > Nested Suite 2:1"),
+        Allure::ResultUtils.sub_suite_label("Nested Suite 2:1:1 > Nested Suite 2:1")
       )
     end
   end

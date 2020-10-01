@@ -5,13 +5,13 @@ require "forwardable"
 
 module Allure
   # Main class for creating and writing allure results
-  class AllureLifecycle
+  class AllureLifecycle # rubocop:disable Metrics/ClassLength
     extend Forwardable
 
     def initialize
       @test_context = []
       @step_context = []
-      @logger = Logger.new(STDOUT, level: Config.instance.logging_level)
+      @logger = Logger.new($stdout, level: Config.instance.logging_level)
       @file_writer = FileWriter.new
     end
 

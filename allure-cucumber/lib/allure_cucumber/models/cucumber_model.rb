@@ -33,7 +33,7 @@ module AllureCucumber
         labels: labels(scenario),
         links: links(scenario),
         parameters: parameters(scenario),
-        status_details: Allure::StatusDetails.new(**status_detail_tags(scenario.tags)),
+        status_details: Allure::StatusDetails.new(**status_detail_tags(scenario.tags))
       )
     end
 
@@ -45,7 +45,7 @@ module AllureCucumber
       attachments = step_attachments(step)
       allure_step = Allure::StepResult.new(
         name: step.name,
-        attachments: attachments.map { |att| att[:allure_attachment] },
+        attachments: attachments.map { |att| att[:allure_attachment] }
       )
 
       { allure_step: allure_step, attachments: attachments }

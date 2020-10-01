@@ -45,7 +45,7 @@ describe "AllureLifecycle::TestCaseResult" do
       expect(@test_case.labels).to include(
         Allure::Label.new("thread", Thread.current.object_id),
         Allure::Label.new("host", Socket.gethostname),
-        Allure::Label.new("language", "ruby"),
+        Allure::Label.new("language", "ruby")
       )
     end
   end
