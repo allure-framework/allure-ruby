@@ -169,7 +169,7 @@ module Allure
       lifecycle.start_test_step(StepResult.new(name: name, stage: Stage::RUNNING))
       yield
       lifecycle.update_test_step { |step| step.status = Status::PASSED }
-    rescue => e
+    rescue StandardError => e
       lifecycle.update_test_step do |step|
         step.status = ResultUtils.status(e)
         step.status_details = ResultUtils.status_details(e)

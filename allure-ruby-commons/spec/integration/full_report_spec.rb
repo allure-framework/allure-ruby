@@ -22,11 +22,11 @@ describe "allure-ruby-commons" do
       test_case.links.push(
         Allure::Link.new("custom", "Custom Link", "http://www.custom-link.com"),
         Allure::ResultUtils.tms_link("QA-1"),
-        Allure::ResultUtils.issue_link("DEV-1"),
+        Allure::ResultUtils.issue_link("DEV-1")
       )
       test_case.labels.push(
         Allure::ResultUtils.suite_label("Some scenario"),
-        Allure::ResultUtils.severity_label("blocker"),
+        Allure::ResultUtils.severity_label("blocker")
       )
     end
 

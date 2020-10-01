@@ -8,7 +8,7 @@ describe "Lifecycle:Attachments" do
     {
       name: "Test Attachment",
       source: "string attachment",
-      type: Allure::ContentType::TXT,
+      type: Allure::ContentType::TXT
     }
   end
 
@@ -61,7 +61,7 @@ describe "Lifecycle:Attachments" do
     lifecycle.add_attachment(
       name: "Test xlsx attachment",
       source: File.new(File.join(Dir.pwd, "spec", "fixtures", "blank.xlsx")),
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
     attachment = @test_case.attachments.last
 
@@ -101,7 +101,7 @@ describe "Lifecycle:Attachments" do
     lifecycle.add_attachment(
       name: "Test Attachment",
       source: "string attachment",
-      type: "nonsence",
+      type: "nonsence"
     )
   end
 end
