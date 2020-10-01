@@ -39,12 +39,12 @@ describe "on_test_case_started" do
         expect(arg.links).to be_empty
         expect(arg.parameters).to be_empty
         expect(arg.history_id).to eq(
-          Digest::MD5.hexdigest("#<Cucumber::Core::Test::Case: #{test_tmp_dir}/features/test.feature:3>"),
+          Digest::MD5.hexdigest("#<Cucumber::Core::Test::Case: #{test_tmp_dir}/features/test.feature:3>")
         )
         expect(arg.labels).to include(
           result_utils.feature_label(feature),
           result_utils.story_label(scenario),
-          result_utils.framework_label("cucumber"),
+          result_utils.framework_label("cucumber")
         )
       end
     end
@@ -64,12 +64,12 @@ describe "on_test_case_started" do
       aggregate_failures "Should have correct args" do
         expect(arg.links).to contain_exactly(
           result_utils.tms_link("OAT-4444"),
-          result_utils.issue_link("BUG-22400"),
+          result_utils.issue_link("BUG-22400")
         )
         expect(arg.labels).to include(
           result_utils.tag_label("FeatureTag"),
           result_utils.tag_label("good"),
-          result_utils.severity_label("blocker"),
+          result_utils.severity_label("blocker")
         )
       end
     end
@@ -117,12 +117,12 @@ describe "on_test_case_started" do
       expect(examples[0].parameters).to contain_exactly(
         Allure::Parameter.new("num_a", "5"),
         Allure::Parameter.new("num_b", "10"),
-        Allure::Parameter.new("result", "15"),
+        Allure::Parameter.new("result", "15")
       )
       expect(examples[1].parameters).to contain_exactly(
         Allure::Parameter.new("num_a", "6"),
         Allure::Parameter.new("num_b", "7"),
-        Allure::Parameter.new("result", "13"),
+        Allure::Parameter.new("result", "13")
       )
     end
   end

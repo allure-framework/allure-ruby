@@ -10,13 +10,13 @@ module AllureCucumber
     # @return [Hash] hook handler methods
     HOOK_HANDLERS = {
       "Before hook" => :start_prepare_fixture,
-      "After hook" => :start_tear_down_fixture,
+      "After hook" => :start_tear_down_fixture
     }.freeze
     # @return [Hash] allure statuses mapping
     ALLURE_STATUS = {
       failed: Allure::Status::FAILED,
       skipped: Allure::Status::SKIPPED,
-      passed: Allure::Status::PASSED,
+      passed: Allure::Status::PASSED
     }.freeze
 
     # @param [Cucumber::Configuration] config

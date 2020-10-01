@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
     "changelog_uri" => "https://github.com/allure-framework/allure-ruby/releases",
     "documentation_uri" => "https://github.com/allure-framework/allure-ruby/blob/master/allure-cucumber/README.md",
     "source_code_uri" => "https://github.com/allure-framework/allure-ruby/tree/master/allure-cucumber",
-    "wiki_uri" => "https://github.com/allure-framework/allure-ruby/wiki",
+    "wiki_uri" => "https://github.com/allure-framework/allure-ruby/wiki"
   }
 
   s.required_ruby_version = ">= 2.5.0"
@@ -28,5 +28,5 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
 
   s.add_dependency "allure-ruby-commons", version
-  s.add_dependency "cucumber" , ">= 4.0.0"
+  s.add_dependency "cucumber", ">= 4.0.0"
 end

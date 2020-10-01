@@ -31,9 +31,8 @@ module AllureCucumber
     # @return [Allure::Label]
     def severity(tags)
       severity_pattern = reserved_patterns[:severity]
-      severity = tags
-        .detect { |tag| tag.match?(severity_pattern) }
-        &.match(severity_pattern)&.[](:severity) || "normal"
+      severity_tags = tags.detect { |tag| tag.match?(severity_pattern) }
+      severity = severity_tags&.match(severity_pattern)&.[](:severity) || "normal"
 
       Allure::ResultUtils.severity_label(severity)
     end
@@ -44,7 +43,7 @@ module AllureCucumber
       {
         flaky: tags.any? { |tag| tag.match?(reserved_patterns[:flaky]) },
         muted: tags.any? { |tag| tag.match?(reserved_patterns[:muted]) },
-        known: tags.any? { |tag| tag.match?(reserved_patterns[:known]) },
+        known: tags.any? { |tag| tag.match?(reserved_patterns[:known]) }
       }
     end
 
@@ -68,7 +67,7 @@ module AllureCucumber
         severity: /@#{AllureCucumber.configuration.severity_prefix}(?<severity>\S+)/,
         flaky: /@flaky/,
         muted: /@muted/,
-        known: /@known/,
+        known: /@known/
       }
     end
 
