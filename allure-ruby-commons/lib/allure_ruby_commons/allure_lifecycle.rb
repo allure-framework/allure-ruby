@@ -204,13 +204,13 @@ module Allure
     # @param [Boolean] test_case add attachment to current test case
     # @return [void]
     def add_attachment(name:, source:, type:, test_case: false)
-      attachment = ResultUtils.prepare_attachment(name, type) || begin
-        return logger.error { "Can't add attachment, unrecognized mime type: #{type}" }
-      end
-      executable_item = (test_case && @current_test_case) || current_executable
-      executable_item&.attachments&.push(attachment) || begin
-        return logger.error { "Can't add attachment, no test, step or fixture is running" }
-      end
+      attachment = ResultUtils.prepare_attachment(name, type)
+      return logger.error { "Can't add attachment, unrecognized mime type: #{type}" } unless attachment
+
+      executable_item = test_case ? @current_test_case : current_executable
+      return logger.error { "Can't add attachment, no test, step or fixture is running" } unless executable_item
+
+      executable_item.attachments.push(attachment)
       logger.debug { "Adding attachment '#{name}' to '#{executable_item.name}'" }
       write_attachment(source, attachment)
     end
