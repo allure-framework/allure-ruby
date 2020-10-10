@@ -210,7 +210,7 @@ module Allure
       executable_item = test_case ? @current_test_case : current_executable
       return logger.error { "Can't add attachment, no test, step or fixture is running" } unless executable_item
 
-      executable_item.attachments&.push(attachment)
+      executable_item.attachments.push(attachment)
       logger.debug { "Adding attachment '#{name}' to '#{executable_item.name}'" }
       write_attachment(source, attachment)
     end
