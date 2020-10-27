@@ -5,11 +5,11 @@ require "oj"
 module Allure
   # General jsonable object implementation
   class JSONable
-    Oj.default_options = { mode: :custom, use_as_json: true, ascii_only: true, circular: true }
+    Oj.default_options = { mode: :custom, use_to_hash: true, ascii_only: true }
 
     # Return object hash represantation
     # @return [Hash]
-    def as_json
+    def to_hash
       instance_variables.each_with_object({}) do |var, map|
         key = camelcase(var.to_s.delete_prefix("@"))
         value = instance_variable_get(var)
