@@ -18,17 +18,14 @@ module Allure
     # @param [Allure::TestResult] test_result
     # @return [void]
     def write_test_result(test_result)
-      write("#{test_result.uuid}#{TEST_RESULT_SUFFIX}", JSON.generate(test_result, max_nesting: false))
+      write("#{test_result.uuid}#{TEST_RESULT_SUFFIX}", Oj.dump(test_result))
     end
 
     # Write test result container
     # @param [Allure::TestResultContainer] test_container_result
     # @return [void]
     def write_test_result_container(test_container_result)
-      write(
-        "#{test_container_result.uuid}#{TEST_RESULT_CONTAINER_SUFFIX}",
-        JSON.generate(test_container_result, max_nesting: false)
-      )
+      write("#{test_container_result.uuid}#{TEST_RESULT_CONTAINER_SUFFIX}", Oj.dump(test_container_result))
     end
 
     # Write allure attachment file
@@ -55,7 +52,7 @@ module Allure
       if categories.is_a?(File)
         copy(categories.path, CATEGORIES_FILE)
       else
-        write(CATEGORIES_FILE, categories.to_json)
+        write(CATEGORIES_FILE, Oj.dump(categories))
       end
     end
 
