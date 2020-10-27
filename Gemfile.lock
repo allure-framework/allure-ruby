@@ -18,7 +18,7 @@ PATH
   specs:
     allure-ruby-commons (2.13.6.3)
       mime-types (>= 3.3)
-      oj (>= 3)
+      oj (>= 3.10)
       require_all (>= 2, < 4)
       uuid (>= 2.3)
 
