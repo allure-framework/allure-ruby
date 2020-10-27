@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "jsonable"
-
 module Allure
   # Allure model attachment object
   class Attachment < JSONable

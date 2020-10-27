@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "jsonable"
-
 module Allure
   # Defects category
   class Category < JSONable
