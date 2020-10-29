@@ -24,20 +24,12 @@ module Allure
     #
     # @return [Array<Hash>]
     def tests
-      return unless test_plan
-
-      Oj.load_file(test_plan, symbol_keys: true).fetch(:tests)
-    rescue Oj::ParseError
-      nil
-    end
-
-    private
-
-    def test_plan
       path = ENV.fetch("ALLURE_TESTPLAN_PATH")
       return unless path && File.exist?("#{path}/#{TEST_PLAN_JSON}")
 
-      "#{path}/#{TEST_PLAN_JSON}"
+      Oj.load_file("#{path}/#{TEST_PLAN_JSON}", symbol_keys: true).fetch(:tests)
+    rescue Oj::ParseError
+      nil
     end
   end
 end
