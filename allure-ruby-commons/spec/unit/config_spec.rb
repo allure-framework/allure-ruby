@@ -10,9 +10,11 @@ describe Allure::Config do
     ]
   end
 
-  before { allow(ENV).to receive(:fetch).with("ALLURE_TESTPLAN_PATH") { path } }
+  around do |example|
+    ClimateControl.modify(ALLURE_TESTPLAN_PATH: path) { example.run }
+  end
 
-  subject { described_class.instance }
+  subject { Class.new(described_class).instance }
 
   context "handles" do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/correct" }

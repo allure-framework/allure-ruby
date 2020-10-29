@@ -36,6 +36,7 @@ GEM
     backport (1.1.2)
     benchmark (0.1.0)
     builder (3.2.4)
+    climate_control (0.2.0)
     coderay (1.1.2)
     colorize (0.8.1)
     concurrent-ruby (1.1.7)
@@ -185,6 +186,7 @@ DEPENDENCIES
   allure-rspec!
   allure-ruby-commons!
   bundler (~> 2.1.2)
+  climate_control (~> 0.2.0)
   colorize (~> 0.8.1)
   lefthook (~> 0.7.2)
   pry (~> 0.13.1)
