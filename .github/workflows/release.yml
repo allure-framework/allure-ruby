@@ -6,30 +6,16 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
       
-      - name: Cache gems
-        uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: 2.7-gems-${{ hashFiles('Gemfile.lock') }}
-          restore-keys: 2.7-gems-
-      
       - name: Set up Ruby
-        uses: actions/setup-ruby@v1.1.2
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
-
-      - name: Install
-        run: |
-          gem install bundler -v 2.1.4 --no-document
-          bundle config path vendor/bundle
-          bundle install -j $(nproc)
-        env:
-          BUNDLE_SUPPRESS_INSTALL_USING_MESSAGES: 'true'
+          ruby-version: 2.7.2
+          bundler-cache: true
       
       - name: Test
         run: bundle exec rake
