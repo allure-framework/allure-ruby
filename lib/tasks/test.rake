@@ -44,7 +44,7 @@ class TestTasks
       ensure
         cc_resultset_json = "coverage/.resultset_cc.json"
         SimpleCovMerger.merge_coverage(cc_resultset_json)
-        CodeClimateUploader.upload(cc_resultset_json) if ENV["CI"] && ENV["RUBY_VERSION"] == "2.7.1"
+        CodeClimateUploader.upload(cc_resultset_json) if ENV["CI"] && ENV["RUBY_VERSION"].include?("2.7")
       end
     end
   end
