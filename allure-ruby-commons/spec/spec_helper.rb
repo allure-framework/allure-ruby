@@ -3,6 +3,7 @@
 require "simplecov"
 require "rspec"
 require "allure-ruby-commons"
+require "pry"
 
 SimpleCov.command_name("allure-ruby-commons")
 

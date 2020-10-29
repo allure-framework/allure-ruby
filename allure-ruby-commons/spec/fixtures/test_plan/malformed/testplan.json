@@ -1,0 +1,9 @@
+{
+  "version": "1.0"
+  "tests": [
+    {
+      "id": "test case id, aka allure id",
+      "selector": "some unique id or selector that can be used to run particular test case"
+    }
+  ]
+}
