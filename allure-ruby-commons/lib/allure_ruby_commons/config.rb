@@ -10,15 +10,17 @@ module Allure
 
     # @return [Array<String>] valid log levels
     LOGLEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
+    # @return [String] test plan path env var name
+    TESTPLAN_PATH = "ALLURE_TESTPLAN_PATH"
     # @return [String] test plan file name
-    TEST_PLAN_JSON = "testplan.json"
+    TESTPLAN_JSON = "testplan.json"
+
+    attr_accessor :results_directory, :logging_level, :link_tms_pattern, :link_issue_pattern, :clean_results_directory
 
     def initialize
       @results_directory = "reports/allure-results"
       @logging_level = LOGLEVELS.index(ENV.fetch("ALLURE_LOG_LEVEL", "INFO")) || Logger::INFO
     end
-
-    attr_accessor :results_directory, :logging_level, :link_tms_pattern, :link_issue_pattern, :clean_results_directory
 
     # Allure id's of executable tests
     #
@@ -41,9 +43,9 @@ module Allure
     # @return [Array<Hash>]
     def tests
       @tests ||= begin
-        return unless ENV["ALLURE_TESTPLAN_PATH"]
+        return unless ENV[TESTPLAN_PATH]
 
-        Oj.load_file("#{ENV['ALLURE_TESTPLAN_PATH']}/#{TEST_PLAN_JSON}", symbol_keys: true)&.fetch(:tests)
+        Oj.load_file("#{ENV[TESTPLAN_PATH]}/#{TESTPLAN_JSON}", symbol_keys: true)&.fetch(:tests)
       end
     rescue Oj::ParseError
       nil
