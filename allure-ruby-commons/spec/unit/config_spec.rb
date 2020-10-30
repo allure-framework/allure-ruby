@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
 describe Allure::Config do
-  let(:tests) do
-    [
-      {
-        id: "test case id, aka allure id",
-        selector: "some unique id or selector that can be used to run particular test case"
-      }
-    ]
-  end
+  let(:test_ids) { ["test case id, aka allure id"] }
+  let(:test_names) { ["some unique id or selector that can be used to run particular test case"] }
 
   around do |example|
     ClimateControl.modify(ALLURE_TESTPLAN_PATH: path) { example.run }
@@ -20,7 +14,10 @@ describe Allure::Config do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/correct" }
 
     it "correct testplan.json" do
-      expect(subject.tests).to eq(tests)
+      aggregate_failures do
+        expect(subject.test_ids).to eq(test_ids)
+        expect(subject.test_names).to eq(test_names)
+      end
     end
   end
 
@@ -28,7 +25,10 @@ describe Allure::Config do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/malformed" }
 
     it "malformed testplan.json" do
-      expect(subject.tests).to eq(nil)
+      aggregate_failures do
+        expect(subject.test_ids).to eq(nil)
+        expect(subject.test_names).to eq(nil)
+      end
     end
   end
 
@@ -36,7 +36,10 @@ describe Allure::Config do
     let(:path) { nil }
 
     it "missing testplan.json" do
-      expect(subject.tests).to eq(nil)
+      aggregate_failures do
+        expect(subject.test_ids).to eq(nil)
+        expect(subject.test_names).to eq(nil)
+      end
     end
   end
 end

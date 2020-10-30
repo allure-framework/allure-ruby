@@ -20,6 +20,22 @@ module Allure
 
     attr_accessor :results_directory, :logging_level, :link_tms_pattern, :link_issue_pattern, :clean_results_directory
 
+    # Allure id's of executable tests
+    #
+    # @return [Array]
+    def test_ids
+      @test_ids ||= tests&.map { |test| test[:id] }
+    end
+
+    # Test names of executable tests
+    #
+    # @return [Array]
+    def test_names
+      @test_names ||= tests&.map { |test| test[:selector] }
+    end
+
+    private
+
     # Tests to execute from allure testplan.json
     #
     # @return [Array<Hash>]
