@@ -28,9 +28,9 @@ module AllureRspec
     end
 
     RSpec.configure do |config|
-      Allure.configuration.tap do |allure|
-        ids = allure.test_ids
-        names = allure.test_names
+      Allure.configure do |allure_config|
+        ids = allure_config.test_ids
+        names = allure_config.test_names
 
         config.filter_run_when_matching(*ids.map { |id| { allure_id: id } }) if ids
         config.before(:example) { |ex| skip("Set by allure!") unless names.include?(ex.full_description) } if names

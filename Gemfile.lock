@@ -162,8 +162,8 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    sys-uname (1.2.1)
-      ffi (>= 1.0.0)
+    sys-uname (1.2.2)
+      ffi (~> 1.1)
     systemu (2.6.5)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
@@ -176,7 +176,7 @@ GEM
     uuid (2.3.9)
       macaddr (~> 1.0)
     yard (0.9.25)
-    zeitwerk (2.4.0)
+    zeitwerk (2.4.1)
 
 PLATFORMS
   ruby

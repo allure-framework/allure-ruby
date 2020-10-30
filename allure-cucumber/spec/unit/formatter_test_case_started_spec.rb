@@ -35,7 +35,7 @@ describe "on_test_case_started" do
       aggregate_failures "Should have correct args" do
         expect(arg.name).to eq(scenario)
         expect(arg.description).to eq("Simple scenario description")
-        expect(arg.full_name).to eq("#{feature}: #{scenario}")
+        expect(arg.full_name).to eq(scenario)
         expect(arg.links).to be_empty
         expect(arg.parameters).to be_empty
         expect(arg.history_id).to eq(
