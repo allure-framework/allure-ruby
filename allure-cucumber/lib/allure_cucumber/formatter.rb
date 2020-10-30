@@ -24,10 +24,7 @@ module AllureCucumber
       Allure.configure do |allure_config|
         allure_config.results_directory = config.out_stream if config.out_stream.is_a?(String)
 
-        ids = allure_config.test_ids
         names = allure_config.test_names
-
-        config.tag_expressions.push(*ids.map { |id| "@ALLURE_ID-#{id}" }) if ids
         config.name_regexps.push(*names.map { |name| /#{name}/ }) if names
       end
 
