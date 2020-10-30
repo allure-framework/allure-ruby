@@ -33,7 +33,7 @@ module AllureRspec
         names = allure_config.test_names
 
         config.filter_run_when_matching(*ids.map { |id| { allure_id: id } }) if ids
-        config.before(:example) { |ex| skip("Set by allure!") unless names.include?(ex.full_description) } if names
+        config.full_description = names if names
       end
     end
 
