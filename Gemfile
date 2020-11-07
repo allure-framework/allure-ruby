@@ -10,7 +10,6 @@ gem "allure-ruby-commons", path: "allure-ruby-commons"
 
 group :development do
   gem "colorize", "~> 0.8.1"
-  gem "lefthook", "~> 0.7.2"
   gem "pry", "~> 0.13.1"
   gem "rake", "~> 13.0.1"
   gem "solargraph", "~> 0.39.17"

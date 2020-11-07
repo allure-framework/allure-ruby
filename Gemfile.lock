@@ -77,7 +77,6 @@ GEM
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.4)
-    lefthook (0.7.2)
     macaddr (1.7.2)
       systemu (~> 2.6.5)
     maruku (0.7.3)
@@ -186,7 +185,6 @@ DEPENDENCIES
   allure-ruby-commons!
   bundler (~> 2.1.2)
   colorize (~> 0.8.1)
-  lefthook (~> 0.7.2)
   pry (~> 0.13.1)
   rake (~> 13.0.1)
   rspec (~> 3.10.0)
