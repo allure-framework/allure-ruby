@@ -10,11 +10,16 @@ We love pull requests from everyone.
 git clone git@github.com:your-username/allure-ruby.git
 ```
 
-**Install dependencies and setup rubocop git precommit hook (project requires ruby version 2.5):**
+**Install dependencies (project requires ruby version 2.5):**
 
 ```bash
 bundle install
-bundle exec lefthook install -f
+```
+
+**Optionally setup rubocop git [pre-commit](https://pre-commit.com) hook**
+
+```bash
+pre-commit install
 ```
 
 ## Testing

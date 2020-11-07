@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: rubocop
+        name: Rubocop
+        language: system
+        entry: bundle exec rubocop
+        types: [ruby]
+        exclude: \.lock
