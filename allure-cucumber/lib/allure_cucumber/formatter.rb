@@ -27,11 +27,11 @@ module AllureCucumber
 
       @cucumber_model = AllureCucumberModel.new(config)
 
-      config.on_event(:test_run_started, &method(:on_test_run_started))
-      config.on_event(:test_case_started, &method(:on_test_case_started))
-      config.on_event(:test_step_started, &method(:on_test_step_started))
-      config.on_event(:test_step_finished, &method(:on_test_step_finished))
-      config.on_event(:test_case_finished, &method(:on_test_case_finished))
+      config.on_event(:test_run_started) { |event| on_test_run_started(event) }
+      config.on_event(:test_case_started) { |event| on_test_case_started(event) }
+      config.on_event(:test_step_started) { |event| on_test_step_started(event) }
+      config.on_event(:test_step_finished) { |event| on_test_step_finished(event) }
+      config.on_event(:test_case_finished) { |event| on_test_case_finished(event) }
     end
 
     # Clean test result directory before starting run
