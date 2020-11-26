@@ -2,7 +2,9 @@
 
 require "simplecov"
 require "rspec"
+require "climate_control"
 require "allure-ruby-commons"
+require "pry"
 
 SimpleCov.command_name("allure-ruby-commons")
 

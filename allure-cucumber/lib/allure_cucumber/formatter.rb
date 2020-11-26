@@ -21,8 +21,11 @@ module AllureCucumber
 
     # @param [Cucumber::Configuration] config
     def initialize(config)
-      Allure.configure do |c|
-        c.results_directory = config.out_stream if config.out_stream.is_a?(String)
+      Allure.configure do |allure_config|
+        allure_config.results_directory = config.out_stream if config.out_stream.is_a?(String)
+
+        names = allure_config.test_names
+        config.name_regexps.push(*names.map { |name| /#{name}/ }) if names
       end
 
       @cucumber_model = AllureCucumberModel.new(config)

@@ -27,6 +27,16 @@ module AllureRspec
       end
     end
 
+    RSpec.configure do |config|
+      Allure.configure do |allure_config|
+        ids = allure_config.test_ids
+        names = allure_config.test_names
+
+        config.filter_run_when_matching(*ids.map { |id| { allure_id: id } }) if ids
+        config.full_description = names if names
+      end
+    end
+
     # Start test run
     # @param [RSpec::Core::Notifications::StartNotification] _start_notification
     # @return [void]

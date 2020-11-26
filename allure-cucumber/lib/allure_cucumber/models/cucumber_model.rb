@@ -29,7 +29,7 @@ module AllureCucumber
         description: scenario.description,
         description_html: scenario.description,
         history_id: scenario.id,
-        full_name: "#{scenario.feature_name}: #{scenario.name}",
+        full_name: scenario.name,
         labels: labels(scenario),
         links: links(scenario),
         parameters: parameters(scenario),
