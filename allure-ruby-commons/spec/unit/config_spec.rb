@@ -11,7 +11,7 @@ describe Allure::Config do
   subject { Class.new(described_class).instance }
 
   context "handles" do
-    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/correct" }
+    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/correct/testplan.json" }
 
     it "correct testplan.json" do
       aggregate_failures do
@@ -22,7 +22,7 @@ describe Allure::Config do
   end
 
   context "handles" do
-    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/malformed" }
+    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/malformed/testplan.json" }
 
     it "malformed testplan.json" do
       aggregate_failures do
