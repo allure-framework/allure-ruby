@@ -81,7 +81,7 @@ describe Allure, test: true do
     end
 
     it "adds environment" do
-      { PROP_1: "test", PROP_2: "test" }.tap do |env|
+      { PROP1: "test", PROP2: "test" }.tap do |env|
         expect(file_writer).to receive(:write_environment).with(env)
         Allure.add_environment(env)
       end

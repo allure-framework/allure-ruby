@@ -114,7 +114,7 @@ module AllureCucumber
       return unless step.data_table
 
       attachment = Allure::ResultUtils.prepare_attachment("data-table", Allure::ContentType::CSV)
-      csv = step.data_table.rows.each_with_object([]) { |row, arr| arr.push(row.cells.map(&:value).to_csv) }.join("")
+      csv = step.data_table.rows.each_with_object([]) { |row, arr| arr.push(row.cells.map(&:value).to_csv) }.join
       { source: csv, allure_attachment: attachment }
     end
 
