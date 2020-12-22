@@ -42,9 +42,8 @@ class TestTasks
         ENV["COVERAGE"] = "true"
         run_all_adaptors(:test)
       ensure
-        cc_resultset_json = "coverage/.resultset_cc.json"
-        SimpleCovMerger.merge_coverage(cc_resultset_json)
-        CodeClimateUploader.upload(cc_resultset_json) if ENV["CI"] && ENV["RUBY_VERSION"].include?("2.7")
+        SimpleCovMerger.merge_coverage
+        CodeClimateUploader.upload if ENV["CI"] && ENV["RUBY_VERSION"].include?("2.7")
       end
     end
   end
@@ -65,14 +64,15 @@ class TestTasks
     errors = adaptors.each_with_object([]) do |adaptor, a|
       puts "Executing #{task_name} for #{adaptor}".yellow
       run_single_adaptor(adaptor, task_name)
-    rescue
+    rescue StandardError
       a << adaptor
     end
-    raise StandardError.new("Errors in #{errors.join(', ')}") unless errors.empty?
+
+    raise StandardError, "Errors in #{errors.join(', ')}" unless errors.empty?
   end
 
   def run_single_adaptor(adaptor, task_name)
-    system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}") || (raise StandardError.new("Task failed!"))
+    system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}") || (raise StandardError, "Task failed!")
   end
 end
 
