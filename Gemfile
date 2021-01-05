@@ -20,6 +20,6 @@ group :test do
   gem "rspec", "~> 3.10.0"
   gem "rubocop", "~> 1.7.0"
   gem "rubocop-performance", "~> 1.9.2"
-  gem "simplecov", "~> 0.21.0"
+  gem "simplecov", "~> 0.21.1"
   gem "simplecov-console", "~> 0.8.0"
 end
