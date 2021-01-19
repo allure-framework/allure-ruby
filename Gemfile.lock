@@ -92,12 +92,12 @@ GEM
     mini_portile2 (2.5.0)
     minitest (5.14.2)
     multi_test (0.1.2)
-    nokogiri (1.11.0)
+    nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     oj (3.10.16)
     parallel (1.20.1)
-    parser (2.7.2.0)
+    parser (3.0.0.0)
       ast (~> 2.4.1)
     protobuf-cucumber (3.10.8)
       activesupport (>= 3.2)
@@ -154,7 +154,7 @@ GEM
       terminal-table
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
-    solargraph (0.40.1)
+    solargraph (0.40.2)
       backport (~> 1.1)
       benchmark
       bundler (>= 1.17.2)
@@ -162,7 +162,7 @@ GEM
       jaro_winkler (~> 1.5)
       kramdown (~> 2.3)
       kramdown-parser-gfm (~> 1.1)
-      parser (~> 2.3)
+      parser (~> 3.0)
       reverse_markdown (>= 1.0.5, < 3)
       rubocop (>= 0.52)
       thor (~> 1.0)
@@ -201,7 +201,7 @@ DEPENDENCIES
   rubocop-performance (~> 1.9.2)
   simplecov (~> 0.21.2)
   simplecov-console (~> 0.8.0)
-  solargraph (~> 0.40.1)
+  solargraph (~> 0.40.2)
 
 BUNDLED WITH
    2.1.4
