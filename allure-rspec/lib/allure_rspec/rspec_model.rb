@@ -11,7 +11,7 @@ module AllureRspec
     include TagParser
 
     # @return [Hash] allure statuses mapping
-    ALLURE_STATUS ||= {
+    ALLURE_STATUS = {
       failed: Allure::Status::FAILED,
       pending: Allure::Status::SKIPPED,
       passed: Allure::Status::PASSED
