@@ -148,7 +148,7 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
-    simplecov-console (0.9.0)
+    simplecov-console (0.9.1)
       ansi
       simplecov
       terminal-table
@@ -171,7 +171,7 @@ GEM
     sys-uname (1.2.2)
       ffi (~> 1.1)
     systemu (2.6.5)
-    terminal-table (2.0.0)
+    terminal-table (3.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     thor (1.0.1)
     thread_safe (0.3.6)
@@ -200,7 +200,7 @@ DEPENDENCIES
   rubocop (~> 1.8.1)
   rubocop-performance (~> 1.9.2)
   simplecov (~> 0.21.2)
-  simplecov-console (~> 0.9.0)
+  simplecov-console (~> 0.9.1)
   solargraph (~> 0.40.2)
 
 BUNDLED WITH
