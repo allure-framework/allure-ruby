@@ -154,7 +154,7 @@ GEM
       terminal-table
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
-    solargraph (0.40.2)
+    solargraph (0.40.3)
       backport (~> 1.1)
       benchmark
       bundler (>= 1.17.2)
@@ -173,7 +173,7 @@ GEM
     systemu (2.6.5)
     terminal-table (3.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
-    thor (1.0.1)
+    thor (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
     tzinfo (1.2.8)
@@ -201,7 +201,7 @@ DEPENDENCIES
   rubocop-performance (~> 1.9.2)
   simplecov (~> 0.21.2)
   simplecov-console (~> 0.9.1)
-  solargraph (~> 0.40.2)
+  solargraph (~> 0.40.3)
 
 BUNDLED WITH
    2.1.4
