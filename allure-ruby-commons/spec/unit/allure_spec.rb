@@ -100,11 +100,13 @@ describe Allure, test: true do
     end
 
     it "runs custom step" do
-      Allure.run_step("Custom step") do
+      result = Allure.run_step("Custom step") do
         1 + 1
       end
+
       test_step = @test_case.steps.last
       aggregate_failures "custom step should be handled correctly" do
+        expect(result).to eq(2)
         expect(test_step.name).to eq("Custom step")
         expect(test_step.status).to eq(Allure::Status::PASSED)
         expect(test_step.stage).to eq(Allure::Stage::FINISHED)

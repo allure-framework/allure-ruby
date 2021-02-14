@@ -162,14 +162,16 @@ module Allure
       lifecycle.stop_test_step
     end
 
-    # Run passed block as step with given name
+    # Run passed block as step with given name and return result of yield
     # @param [String] name
     # @yield [] step block
-    # @return [void]
+    # @return [Object]
     def run_step(name)
       lifecycle.start_test_step(StepResult.new(name: name, stage: Stage::RUNNING))
-      yield
+      result = yield
       lifecycle.update_test_step { |step| step.status = Status::PASSED }
+
+      result
     rescue StandardError => e
       lifecycle.update_test_step do |step|
         step.status = ResultUtils.status(e)
