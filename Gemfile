@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "bundler", "~> 2.1.2"
-
 gem "allure-cucumber", path: "allure-cucumber"
 gem "allure-rspec", path: "allure-rspec"
 gem "allure-ruby-commons", path: "allure-ruby-commons"
