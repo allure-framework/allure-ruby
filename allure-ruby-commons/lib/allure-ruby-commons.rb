@@ -8,28 +8,6 @@ require_rel "allure_ruby_commons/**/*rb"
 
 # Namespace for classes that handle allure report generation and different framework adaptors
 module Allure
-  # Mark method definition as allure step
-  #
-  # @param [String] step_name
-  # @return [void]
-  def step(step_name)
-    @allure_step = step_name
-  end
-
-  private
-
-  def method_added(method_name)
-    return super unless @allure_step
-
-    original_method = instance_method(method_name)
-    step_name = @allure_step
-    @allure_step = nil
-
-    define_method(method_name) do |*args, &block|
-      Allure.run_step(step_name) { original_method.bind(self).call(*args, &block) }
-    end
-  end
-
   class << self
     # Get thread specific allure lifecycle object
     # @return [AllureLifecycle]
