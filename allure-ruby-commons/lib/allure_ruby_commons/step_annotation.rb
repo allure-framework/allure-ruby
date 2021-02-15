@@ -2,7 +2,7 @@
 
 # Adds support for annotating methods as allure steps
 #
-module AllureStepAnnotations
+module AllureStepAnnotation
   # Mark method definition as allure step
   #
   # @param [String] step_name
