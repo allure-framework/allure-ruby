@@ -56,8 +56,8 @@ Allure.add_link(name: "Custom Url", url: "http://www.github.com")
 
 ## Steps
 
-It possible to mark method definitions to be automatically added to report as steps. The class just needs to extend `AllureStepAnnotation` and
-use `step` method before the method definition.
+It is possible to mark method definitions to be automatically added to report as steps. The class just needs to extend `AllureStepAnnotation`
+and `step` method needs to be used before the method definition.
 
 ```ruby
 class TestHelper
