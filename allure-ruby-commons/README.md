@@ -54,6 +54,23 @@ Allure.add_attachment(name: "attachment", source: "/path/to/test.txt", type: All
 Allure.add_link(name: "Custom Url", url: "http://www.github.com")
 ```
 
+## Steps
+
+It possible to mark method definitions to be automatically added to report as steps. The class just needs to extend `AllureStepAnnotation` and
+use `step` method before the method definition.
+
+```ruby
+class TestHelper
+  extend AllureStepAnnotation
+
+  step("Singleton step")
+  def self.class_method; end
+
+  step("Standard step")
+  def standard_method; end
+end
+```
+
 ## Testing
 
 Install dependencies:
