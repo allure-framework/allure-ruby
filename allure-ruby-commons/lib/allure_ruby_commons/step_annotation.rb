@@ -7,7 +7,7 @@ module AllureStepAnnotation
   #
   # @param [String] step_name
   # @return [void]
-  def step(step_name)
+  def step(step_name = "")
     @allure_step = step_name
   end
 
@@ -17,7 +17,7 @@ module AllureStepAnnotation
     return super unless @allure_step
 
     original_method = singleton_method(method_name)
-    step_name = @allure_step
+    step_name = @allure_step.empty? ? method_name.to_s : @allure_step
     @allure_step = nil
 
     define_singleton_method(method_name) do |*args, &block|
@@ -29,7 +29,7 @@ module AllureStepAnnotation
     return super unless @allure_step
 
     original_method = instance_method(method_name)
-    step_name = @allure_step
+    step_name = @allure_step.empty? ? method_name.to_s : @allure_step
     @allure_step = nil
 
     define_method(method_name) do |*args, &block|

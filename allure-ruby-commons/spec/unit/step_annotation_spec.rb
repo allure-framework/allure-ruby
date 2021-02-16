@@ -8,6 +8,9 @@ class TestHelper
 
   step("Standard step")
   def standard_method; end
+
+  step
+  def default_name_method; end
 end
 
 describe AllureStepAnnotation do
@@ -27,5 +30,11 @@ describe AllureStepAnnotation do
     test_helper.standard_method
 
     expect(Allure).to have_received(:run_step).with("Standard step")
+  end
+
+  it "Creates step with default method name" do
+    test_helper.default_name_method
+
+    expect(Allure).to have_received(:run_step).with("default_name_method")
   end
 end
