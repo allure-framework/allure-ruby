@@ -145,6 +145,10 @@ it "some test case" do |e|
 end
 ```
 
+### Steps
+
+[Step annotations](../allure-ruby-commons/README.md#steps)
+
 ### Example project
 
 [RSpec Example](https://github.com/allure-examples/allure-rspec-example)

@@ -105,6 +105,8 @@ Allure.add_attachment(name: "attachment", source: "Some string", type: Allure::C
 Allure.add_link("Custom Url", "http://www.github.com")
 ```
 
+It's possible to mark methods so those are included as allure steps: [Step annotations](../allure-ruby-commons/README.md#steps)
+
 ### Example project
 
 [Cucumber Example](https://github.com/allure-examples/allure-cucumber-example)
