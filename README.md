@@ -18,7 +18,7 @@ gem "allure-ruby-commons"
 
 Allure lifecycle implementation to be used by other testing frameworks to generate allure reports
 
-Interaction and usage of allure lifecycle is described in [allure-ruby-commons docs](https://github.com/allure-framework/allure-ruby/blob/master/allure-ruby-commons/README.md)
+Interaction and usage of allure lifecycle is described in [allure-ruby-commons docs](allure-ruby-commons/README.md)
 
 ## allure-cucumber
 
@@ -31,7 +31,7 @@ gem "allure-cucumber"
 
 Implementation of allure adapter for [Cucumber](https://github.com/cucumber/cucumber-ruby) testing framework
 
-Detailed usage and setup instruction can be found in [allure-cucumber docs](https://github.com/allure-framework/allure-ruby/blob/master/allure-cucumber/README.md)
+Detailed usage and setup instruction can be found in [allure-cucumber docs](allure-cucumber/README.md)
 
 ## allure-rspec
 
@@ -44,4 +44,4 @@ gem "allure-rspec"
 
 Implementation of allure adapter for [RSpec](https://github.com/rspec/rspec) testing framework
 
-Detailed usage and setup instruction can be found in [allure-rspec docs](https://github.com/allure-framework/allure-ruby/blob/master/allure-rspec/README.md)
+Detailed usage and setup instruction can be found in [allure-rspec docs](allure-rspec/README.md)

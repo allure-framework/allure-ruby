@@ -35,5 +35,4 @@ Style/StringLiterals:
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always
-  SupportedStyles:
-    - always
+  SafeAutoCorrect: true
