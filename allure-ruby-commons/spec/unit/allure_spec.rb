@@ -47,7 +47,7 @@ describe Allure, test: true do
       Allure.suite("Test Suite")
       expect(@test_case.labels.last).to eq(Allure::Label.new("suite", "Test Suite"))
     end
-    
+
     it "adds tag label" do
       Allure.suite("Test Tag")
       expect(@test_case.labels.last).to eq(Allure::Label.new("tag", "Test Tag"))
