@@ -64,6 +64,13 @@ module Allure
       label(ResultUtils::SUITE_LABEL_NAME, value)
     end
 
+    # Add tag to current test case
+    # @param [String] value
+    # @return [void]
+    def tag(value)
+      label(ResultUtils::TAG_LABEL_NAME, value)
+    end
+
     # Add label to current test case
     # @param [String] name
     # @param [String] value
