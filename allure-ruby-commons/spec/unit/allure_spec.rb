@@ -49,7 +49,7 @@ describe Allure, test: true do
     end
 
     it "adds tag label" do
-      Allure.suite("Test Tag")
+      Allure.tag("Test Tag")
       expect(@test_case.labels.last).to eq(Allure::Label.new("tag", "Test Tag"))
     end
 
