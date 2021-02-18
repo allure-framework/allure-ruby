@@ -7,9 +7,9 @@ module AllureRspec
     # @param [Hash] metadata
     # @return [Array<Allure::Label>]
     def tag_labels(metadata)
-      return [] unless metadata.keys.any? { |k| allure?(k) }
-
-      metadata.select { |k| allure?(k) }.values.map { |v| Allure::ResultUtils.tag_label(v) }
+      metadata.reject { |k| RSPEC_IGNORED_METADATA.include?(k) }.map do |k, v|
+        allure?(k) ? Allure::ResultUtils.tag_label(v) : Allure::ResultUtils.tag_label(k.to_s)
+      end
     end
 
     # Get tms links
@@ -45,6 +45,28 @@ module AllureRspec
     end
 
     private
+
+    RSPEC_IGNORED_METADATA = %i[
+      absolute_file_path
+      block
+      described_class
+      description
+      description_args
+      example_group
+      execution_result
+      file_path
+      full_description
+      last_run_status
+      line_number
+      location
+      rerun_file_path
+      retry
+      retry_attempts
+      retry_exceptions
+      scoped_id
+      shared_group_inclusion_backtrace
+      type
+    ].freeze
 
     # @param [Hash] metadata
     # @param [Symbol] type

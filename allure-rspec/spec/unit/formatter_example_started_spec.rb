@@ -20,7 +20,7 @@ describe "example_started" do
           e.step(name: "After hook")
         end
 
-        it "#{spec}", allure: "some_label" do |e|
+        it "#{spec}", :rspec_tag_1, rspec_tag_2: true, allure: "some_label" do |e|
           e.step(name: "test body")
         end
       end
@@ -40,7 +40,9 @@ describe "example_started" do
           result_utils.framework_label("rspec"),
           result_utils.package_label("#{test_tmp_dir}/spec"),
           result_utils.test_class_label("test_spec"),
-          result_utils.tag_label("some_label")
+          result_utils.tag_label("some_label"),
+          result_utils.tag_label("rspec_tag_1"),
+          result_utils.tag_label("rspec_tag_2")
         )
       end
     end
