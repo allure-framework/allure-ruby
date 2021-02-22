@@ -11,6 +11,8 @@ categories:
     label: 'type:dependency'
   - title: '📄 Documentation updates'
     label: 'type:documentation'
+  - title: '🛠️ Maintenance'
+    label: 'type:chore'
 
 change-template: '* $TITLE (via #$NUMBER) - @$AUTHOR'
 template: |

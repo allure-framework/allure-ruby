@@ -9,27 +9,23 @@ on:
       - master
 
 jobs:
-  test:
-    name: Test
+  rspec:
     runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        ruby: ['2.5.8', '2.6.6', '2.7.2', '3.0.0']
+        ruby: ["2.5", "2.6", "2.7", "3.0"]
       fail-fast: false
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
 
       - name: Set up Ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      
-      - name: Lint
-        run: bundle exec rake rubocop
 
       - name: Test
         run: bundle exec rake test_with_coverage
