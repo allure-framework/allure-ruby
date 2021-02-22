@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  test:
+  rspec:
     runs-on: ubuntu-20.04
 
     strategy:

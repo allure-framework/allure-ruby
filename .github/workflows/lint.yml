@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  test:
+  rubocop:
     runs-on: ubuntu-20.04
 
     steps:
