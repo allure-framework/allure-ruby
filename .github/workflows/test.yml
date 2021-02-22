@@ -10,12 +10,11 @@ on:
 
 jobs:
   test:
-    name: Test
     runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        ruby: ['2.5.8', '2.6.6', '2.7.2', '3.0.0']
+        ruby: ["2.5.8", "2.6.6", "2.7.2", "3.0.0"]
       fail-fast: false
 
     steps:
@@ -27,9 +26,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      
-      - name: Lint
-        run: bundle exec rake rubocop
 
       - name: Test
         run: bundle exec rake test_with_coverage
