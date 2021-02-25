@@ -64,6 +64,24 @@ describe "on_test_step_started" do
         end
       end
     end
+
+    it "for afterstep hook is started" do
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        @after_step
+        Scenario: Add a to b
+          Simple scenario description
+          Given a is 5
+      FEATURE
+
+      aggregate_failures do
+        steps = []
+
+        expect(lifecycle).to(have_received(:start_test_step).twice) { |step| steps << step.name }
+        expect(steps).to match_array(["Given a is 5", "AfterStep hook (env.rb:22)"])
+      end
+    end
   end
 
   context "fixture" do
@@ -78,7 +96,7 @@ describe "on_test_step_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_prepare_fixture).once do |fixture|
-        expect(fixture.name).to eq("env.rb:8")
+        expect(fixture.name).to eq("Before hook (env.rb:8)")
       end
     end
 
@@ -93,7 +111,7 @@ describe "on_test_step_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_tear_down_fixture).once do |fixture|
-        expect(fixture.name).to eq("env.rb:15")
+        expect(fixture.name).to eq("After hook (env.rb:15)")
       end
     end
   end

@@ -67,10 +67,8 @@ module AllureCucumber
         step.stage = Allure::Stage::FINISHED
         step.status = ALLURE_STATUS.fetch(event.result.to_sym, Allure::Status::BROKEN)
       end
-      step_type = event.test_step.hook? ? "fixture" : "test_step"
 
-      lifecycle.public_send("update_#{step_type}", &update_block)
-      lifecycle.public_send("stop_#{step_type}")
+      event.test_step.hook? ? handle_hook_finished(event.test_step, update_block) : handle_step_finished(update_block)
     end
 
     # Handle test case finished event
@@ -100,6 +98,13 @@ module AllureCucumber
       Allure.lifecycle
     end
 
+    # Is hook fixture like Before, After or Step as AfterStep
+    # @param [String] text
+    # @return [boolean]
+    def fixture_hook?(text)
+      HOOK_HANDLERS.key?(text)
+    end
+
     # @param [Cucumber::Core::Test::Step] test_step
     # @return [void]
     def handle_step_started(test_step)
@@ -111,9 +116,27 @@ module AllureCucumber
     # @param [Cucumber::Core::Test::HookStep] hook_step
     # @return [void]
     def handle_hook_started(hook_step)
-      return unless HOOK_HANDLERS.key?(hook_step.text)
+      result = cucumber_model.fixture_result(hook_step)
+      return lifecycle.start_test_step(result) unless fixture_hook?(hook_step.text)
 
-      lifecycle.public_send(HOOK_HANDLERS[hook_step.text], cucumber_model.fixture_result(hook_step))
+      lifecycle.public_send(HOOK_HANDLERS[hook_step.text], result)
+    end
+
+    # @param [Proc] update_block
+    # @return [void]
+    def handle_step_finished(update_block)
+      lifecycle.update_test_step(&update_block)
+      lifecycle.stop_test_step
+    end
+
+    # @param [Cucumber::Core::Test::HookStep] hook_step
+    # @param [Proc] update_block
+    # @return [void]
+    def handle_hook_finished(hook_step, update_block)
+      return handle_step_finished(update_block) unless fixture_hook?(hook_step.text)
+
+      lifecycle.update_fixture(&update_block)
+      lifecycle.stop_fixture
     end
   end
 end

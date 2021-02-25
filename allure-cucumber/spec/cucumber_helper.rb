@@ -24,6 +24,13 @@ class CucumberHelper
 
     After("@after") do
     end
+
+    Around("@around") do |scenario, block|
+      block.call
+    end
+
+    AfterStep("@after_step") do
+    end
   RUBY
 
   STEPS = <<~RUBY
