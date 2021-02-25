@@ -36,8 +36,8 @@ describe "on_test_step_finished" do
 
       expect(lifecycle).to have_received(:update_test_step).with(no_args).once do |&arg|
         arg.call(@step)
-        expect(@step.status).to eq(Allure::Status::FAILED)
       end
+      expect(@step.status).to eq(Allure::Status::FAILED)
     end
 
     it "with skipped status is updated" do
@@ -64,6 +64,19 @@ describe "on_test_step_finished" do
       FEATURE
 
       expect(lifecycle).to have_received(:stop_test_step).with(no_args).once
+    end
+
+    it "for afterstep hook is stopped" do
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Simple feature
+
+        @after_step
+        Scenario: Add a to b
+          Simple scenario description
+          Given a is 5
+      FEATURE
+
+      expect(lifecycle).to have_received(:stop_test_step).twice
     end
   end
 

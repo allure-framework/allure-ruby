@@ -9,7 +9,7 @@ describe "allure cucumber" do
     run_cucumber_cli(<<~FEATURE)
       Feature: Simple scenario outline feature
 
-      @before @after
+      @before @after @after_step
       Scenario Outline: Add a to b
         Simple scenario description
         Given a input is
@@ -40,7 +40,7 @@ describe "allure cucumber" do
       expect(container_json[:name]).to eq("Add a to b")
       expect(result_json[:name]).to match(/Add a to b, Examples \(#\d\)/)
       expect(result_json[:description]).to eq("Simple scenario description")
-      expect(result_json[:steps].size).to eq(4)
+      expect(result_json[:steps].size).to eq(8)
     end
   end
 end

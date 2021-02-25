@@ -55,7 +55,7 @@ module AllureCucumber
     # @param [Cucumber::Core::Test::HookStep] hook_step
     # @return [Allure::StepResult]
     def fixture_result(hook_step)
-      Allure::FixtureResult.new(name: hook_step.location.to_s.split("/").last)
+      Allure::FixtureResult.new(name: "#{hook_step.text} (#{hook_step.location.to_s.split('/').last})")
     end
 
     # Get failure details
