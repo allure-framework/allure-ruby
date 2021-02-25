@@ -111,6 +111,8 @@ module AllureCucumber
     # @param [Cucumber::Core::Test::HookStep] hook_step
     # @return [void]
     def handle_hook_started(hook_step)
+      return unless HOOK_HANDLERS.key?(hook_step.text)
+
       lifecycle.public_send(HOOK_HANDLERS[hook_step.text], cucumber_model.fixture_result(hook_step))
     end
   end
