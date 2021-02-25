@@ -7,9 +7,9 @@ module AllureRspec
     # @param [Hash] metadata
     # @return [Array<Allure::Label>]
     def tag_labels(metadata)
-      metadata.reject { |k| RSPEC_IGNORED_METADATA.include?(k) }.map do |k, v|
-        allure?(k) ? Allure::ResultUtils.tag_label(v) : Allure::ResultUtils.tag_label(k.to_s)
-      end
+      metadata
+        .reject { |k| RSPEC_IGNORED_METADATA.include?(k) || special_metadata_tag?(k) }
+        .map { |k, v| allure?(k) ? Allure::ResultUtils.tag_label(v) : Allure::ResultUtils.tag_label(k.to_s) }
     end
 
     # Get tms links
@@ -68,18 +68,24 @@ module AllureRspec
       type
     ].freeze
 
+    # tms and issue links
     # @param [Hash] metadata
     # @param [Symbol] type
     # @return [Array<Allure::Link>]
     def matching_links(metadata, type)
-      unless AllureRspec.configuration.public_send("link_#{type}_pattern") &&
-             metadata.keys.any? { |k| __send__("#{type}?", k) }
-        return []
-      end
+      return [] unless AllureRspec.configuration.public_send("link_#{type}_pattern")
 
       metadata
         .select { |k| __send__("#{type}?", k) }.values
         .map { |v| Allure::ResultUtils.public_send("#{type}_link", v) }
+    end
+
+    # Special allure metadata tags
+    #
+    # @param [Symbol] key
+    # @return [boolean]
+    def special_metadata_tag?(key)
+      tms?(key) || issue?(key) || key == :severity
     end
 
     # Does key match custom allure label

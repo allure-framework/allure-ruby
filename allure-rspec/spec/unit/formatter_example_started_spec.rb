@@ -5,11 +5,21 @@ describe "example_started" do
   include_context "rspec runner"
 
   let(:result_utils) { Allure::ResultUtils }
+  let(:suite) { "suite" }
+  let(:spec) { "spec" }
+  let(:normal_label) { result_utils.severity_label("normal") }
+  let(:default_labels) do
+    [
+      result_utils.feature_label(suite),
+      result_utils.suite_label(suite),
+      result_utils.story_label(spec),
+      result_utils.framework_label("rspec"),
+      result_utils.package_label("#{test_tmp_dir}/spec"),
+      result_utils.test_class_label("test_spec")
+    ]
+  end
 
   it "starts test case with correct default arguments" do
-    suite = "Suite"
-    spec = "spec"
-
     run_rspec(<<~SPEC)
       describe "#{suite}" do
         before(:each) do |e|
@@ -20,7 +30,7 @@ describe "example_started" do
           e.step(name: "After hook")
         end
 
-        it "#{spec}", :rspec_tag_1, rspec_tag_2: true, allure: "some_label" do |e|
+        it "#{spec}" do |e|
           e.step(name: "test body")
         end
       end
@@ -34,17 +44,41 @@ describe "example_started" do
         expect(arg.links).to be_empty
         expect(arg.parameters).to be_empty
         expect(arg.history_id).to eq(Digest::MD5.hexdigest("./#{test_tmp_dir}/spec/test_spec.rb[1:1]"))
-        expect(arg.labels).to include(
-          result_utils.feature_label(suite),
-          result_utils.story_label(spec),
-          result_utils.framework_label("rspec"),
-          result_utils.package_label("#{test_tmp_dir}/spec"),
-          result_utils.test_class_label("test_spec"),
-          result_utils.tag_label("some_label"),
-          result_utils.tag_label("rspec_tag_1"),
-          result_utils.tag_label("rspec_tag_2")
-        )
+        expect(arg.labels).to match_array([*default_labels, normal_label])
       end
+    end
+  end
+
+  it "skips special tags" do
+    run_rspec(<<~SPEC)
+      describe "#{suite}" do
+        it "#{spec}", tms_2: "QA-124", issue: "BUG-123", severity: "critical" do
+        end
+      end
+    SPEC
+
+    expect(lifecycle).to have_received(:start_test_case).once do |arg|
+      expect(arg.labels).to match_array([*default_labels, result_utils.severity_label("critical")])
+    end
+  end
+
+  it "adds custom tags" do
+    run_rspec(<<~SPEC)
+      describe "#{suite}" do
+        it "#{spec}", :rspec_tag1, rspec_tag2: true do
+        end
+      end
+    SPEC
+
+    expect(lifecycle).to have_received(:start_test_case).once do |arg|
+      expect(arg.labels).to match_array(
+        [
+          *default_labels,
+          normal_label,
+          result_utils.tag_label("rspec_tag1"),
+          result_utils.tag_label("rspec_tag2")
+        ]
+      )
     end
   end
 
@@ -61,11 +95,13 @@ describe "example_started" do
     SPEC
 
     expect(lifecycle).to have_received(:start_test_case).once do |arg|
-      expect(arg.links).to contain_exactly(
-        result_utils.tms_link("QA-123"),
-        result_utils.tms_link("QA-124"),
-        result_utils.issue_link("BUG-123"),
-        result_utils.issue_link("BUG-124")
+      expect(arg.links).to match_array(
+        [
+          result_utils.tms_link("QA-123"),
+          result_utils.tms_link("QA-124"),
+          result_utils.issue_link("BUG-123"),
+          result_utils.issue_link("BUG-124")
+        ]
       )
     end
   end
