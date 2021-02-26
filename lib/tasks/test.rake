@@ -5,7 +5,6 @@ require "rubocop/rake_task"
 
 require_relative "../task_helpers/util"
 require_relative "../task_helpers/simplecov_merger"
-require_relative "../task_helpers/cc_uploader"
 
 class TestTasks
   include Rake::DSL
@@ -43,7 +42,6 @@ class TestTasks
         run_all_adaptors(:test)
       ensure
         SimpleCovMerger.merge_coverage
-        CodeClimateUploader.upload if ENV["CI"] && ENV["RUBY_VERSION"].include?("3.0")
       end
     end
   end

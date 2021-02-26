@@ -10,44 +10,54 @@ on:
 
 jobs:
   rubocop:
+    name: Rubocop lint
     runs-on: ubuntu-20.04
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Set up Ruby 3.0
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0
           bundler-cache: true
-
       - name: Lint
         run: bundle exec rake rubocop
 
   rspec:
+    name: Test with ${{ matrix.ruby }} ruby
     runs-on: ubuntu-20.04
     needs: rubocop
-
     strategy:
       matrix:
-        ruby: ["2.5", "2.6", "2.7", "3.0"]
+        ruby: ["2.5", "2.6", "2.7"]
       fail-fast: false
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Set up Ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-
       - name: Test
-        run: bundle exec rake test_with_coverage
+        run: bundle exec rake test
+  
+  rspec_coverage:
+    name: Test with coverage
+    runs-on: ubuntu-20.04
+    needs: rubocop
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v2.7.5
         env:
-          CI: "true"
           CC_TEST_REPORTER_ID: be263ef9412dc65a7aa8dfb6e8162d5c7cfb3307fae0a444cde9dd6ca6f52848
-          CONTEXT: ${{ toJson(github) }}
-          RUBY_VERSION: ${{ matrix.ruby }}
+        with:
+          coverageCommand: bundle exec rake test_with_coverage
+          coverageLocations: coverage/coverage.json:simplecov
