@@ -2,8 +2,8 @@
 # frozen_string_literal: true
 
 require "allure-ruby-commons"
-require "allure_rspec/config"
-require "allure_rspec/formatter"
+
+require_rel "allure_rspec/**/*.rb"
 
 module AllureRspec
   class << self
