@@ -16,6 +16,10 @@ describe Allure::ResultUtils do
     expect(utils.framework_label("rspec")).to eq(Allure::Label.new("framework", "rspec"))
   end
 
+  it "returns epic label" do
+    expect(utils.epic_label("epic")).to eq(Allure::Label.new("epic", "epic"))
+  end
+
   it "returns feature label" do
     expect(utils.feature_label("feature")).to eq(Allure::Label.new("feature", "feature"))
   end
