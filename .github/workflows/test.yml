@@ -61,4 +61,3 @@ jobs:
         with:
           coverageCommand: bundle exec rake test_with_coverage
           coverageLocations: coverage/coverage.json:simplecov
-          debug: true
