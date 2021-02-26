@@ -10,6 +10,7 @@ on:
 
 jobs:
   rubocop:
+    name: Rubocop lint
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -23,9 +24,9 @@ jobs:
         run: bundle exec rake rubocop
 
   rspec:
+    name: Test with ${{ matrix.ruby }} ruby
     runs-on: ubuntu-20.04
     needs: rubocop
-    name: Test with ${{ matrix.ruby }} ruby
     strategy:
       matrix:
         ruby: ["2.5", "2.6", "2.7"]
@@ -42,9 +43,9 @@ jobs:
         run: bundle exec rake test
   
   rspec_coverage:
+    name: Test with coverage
     runs-on: ubuntu-20.04
     needs: rubocop
-    name: Test with coverage
     steps:
       - name: Checkout
         uses: actions/checkout@v2
