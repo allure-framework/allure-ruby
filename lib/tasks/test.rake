@@ -43,7 +43,6 @@ class TestTasks
         run_all_adaptors(:test)
       ensure
         SimpleCovMerger.merge_coverage
-        CodeClimateUploader.upload if ENV["CI"] && ENV["RUBY_VERSION"].include?("3.0")
       end
     end
   end
