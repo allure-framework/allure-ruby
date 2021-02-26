@@ -7,7 +7,7 @@ describe "allure rspec" do
 
   it "generates allure json results files", integration: true do
     run_rspec(<<~RUBY)
-      describe do
+      describe "integration test", epic: "testing", feature: "integration feature" do
         before(:each) do |e|
           e.step(name: "Before hook")
         end
@@ -16,7 +16,7 @@ describe "allure rspec" do
           e.step(name: "After hook")
         end
 
-        it "spec", allure: "some_label" do |e|
+        it "spec", allure: "some_label", story: "user story" do |e|
           e.step(name: "test body")
         end
       end
@@ -33,7 +33,7 @@ describe "allure rspec" do
     container_json = JSON.parse(File.read(container), symbolize_names: true)
     result_json = JSON.parse(File.read(result), symbolize_names: true)
     aggregate_failures "Json results should contain valid data" do
-      expect(container_json[:name]).to eq("Anonymous")
+      expect(container_json[:name]).to eq("integration test")
       expect(result_json[:name]).to eq("spec")
       expect(result_json[:description]).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
       expect(result_json[:steps].size).to eq(3)

@@ -131,6 +131,24 @@ it "some test case", allure_1: "visual_test", allure_2: "core_functionality" do
 end
 ```
 
+### Behavior driven test grouping
+
+Marking tests with tags `:story, :feature, :story`, will group tests accordingly in Behavior report tab:
+
+```ruby
+context "context", feature: "my feature"  do
+  it "some test case", story: "user story" do
+    # test
+  end
+end
+
+context "context 2", feature: "my feature" do
+it "some test case 2", story: "user story" do
+    # test
+  end
+end
+```
+
 ### Custom actions
 
 Rspec example object has access to [Allure](https://www.rubydoc.info/github/allure-framework/allure-ruby/Allure) helper methods.
