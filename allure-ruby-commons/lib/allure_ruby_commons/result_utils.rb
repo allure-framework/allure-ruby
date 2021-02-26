@@ -59,11 +59,25 @@ module Allure
         Label.new(FRAMEWORK_LABEL_NAME, value)
       end
 
+      # Epic label
+      # @param [String] value
+      # @return [Allure::Label]
+      def epic_label(value)
+        Label.new(EPIC_LABEL_NAME, value)
+      end
+
       # Feature label
       # @param [String] value
       # @return [Allure::Label]
       def feature_label(value)
         Label.new(FEATURE_LABEL_NAME, value)
+      end
+
+      # Story label
+      # @param [String] value
+      # @return [Allure::Label]
+      def story_label(value)
+        Label.new(STORY_LABEL_NAME, value)
       end
 
       # Package label
@@ -92,13 +106,6 @@ module Allure
       # @return [Allure::Label]
       def sub_suite_label(value)
         Label.new(SUB_SUITE_LABEL_NAME, value)
-      end
-
-      # Story label
-      # @param [String] value
-      # @return [Allure::Label]
-      def story_label(value)
-        Label.new(STORY_LABEL_NAME, value)
       end
 
       # Test case label
