@@ -44,6 +44,21 @@ module AllureRspec
       }
     end
 
+    # @param [RSpec::Core::Example] example
+    # @return [Array<Allure::Label>]
+    def behavior_labels(example)
+      metadata = example.metadata
+      epic = metadata[:epic] || Pathname.new(strip_relative(example.file_path)).parent.to_s
+      feature = metadata[:feature] || example.example_group.description
+      story = metadata[:story] || example.description
+
+      [
+        Allure::ResultUtils.epic_label(epic),
+        Allure::ResultUtils.feature_label(feature),
+        Allure::ResultUtils.story_label(story)
+      ]
+    end
+
     private
 
     RSPEC_IGNORED_METADATA = %i[
@@ -85,7 +100,7 @@ module AllureRspec
     # @param [Symbol] key
     # @return [boolean]
     def special_metadata_tag?(key)
-      tms?(key) || issue?(key) || key == :severity
+      tms?(key) || issue?(key) || %i[severity epic feature story].include?(key)
     end
 
     # Does key match custom allure label
