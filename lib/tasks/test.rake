@@ -5,7 +5,6 @@ require "rubocop/rake_task"
 
 require_relative "../task_helpers/util"
 require_relative "../task_helpers/simplecov_merger"
-require_relative "../task_helpers/cc_uploader"
 
 class TestTasks
   include Rake::DSL
