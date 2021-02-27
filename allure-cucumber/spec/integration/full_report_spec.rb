@@ -7,9 +7,10 @@ describe "allure cucumber" do
 
   it "generates allure json results files", integration: true do
     run_cucumber_cli(<<~FEATURE)
+      @FEATURE:custom-feature
       Feature: Simple scenario outline feature
 
-      @before @after @after_step
+      @before @after @after_step @STORY:user-story
       Scenario Outline: Add a to b
         Simple scenario description
         Given a input is

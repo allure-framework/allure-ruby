@@ -8,16 +8,21 @@ describe "on_test_case_started" do
   let(:feature) { "Simple feature" }
   let(:scenario) { "Add a to b" }
   let(:severity_label) { result_utils.severity_label("normal") }
+  let(:behavior_labels) do
+    [
+      result_utils.epic_label("features"),
+      result_utils.feature_label(feature),
+      result_utils.story_label(scenario)
+    ]
+  end
   let(:labels) do
     [
       result_utils.framework_label("cucumber"),
       result_utils.package_label("features"),
       result_utils.test_class_label("test"),
       result_utils.suite_label(feature),
-      result_utils.feature_label(feature),
-      result_utils.story_label(scenario),
-      severity_label
-      # result_utils.epic_label("#{test_tmp_dir}/spec")
+      severity_label,
+      *behavior_labels
     ]
   end
 
@@ -101,6 +106,31 @@ describe "on_test_case_started" do
     end
   end
 
+  context "behavior tags" do
+    let(:behavior_labels) do
+      [
+        result_utils.epic_label("custom-epic"),
+        result_utils.feature_label("custom-feature"),
+        result_utils.story_label("custom-story")
+      ]
+    end
+
+    it "are parsed correctly" do
+      run_cucumber_cli(<<~FEATURE)
+        @EPIC:custom-epic @FEATURE:custom-feature
+        Feature: #{feature}
+
+        @STORY:custom-story
+        Scenario: #{scenario}
+          Given a is 5
+      FEATURE
+
+      expect(lifecycle).to have_received(:start_test_case).once do |arg|
+        expect(arg.labels).to match_array(labels)
+      end
+    end
+  end
+
   context "tms and issue tags" do
     it "are parsed correctly" do
       run_cucumber_cli(<<~FEATURE)
@@ -123,7 +153,7 @@ describe "on_test_case_started" do
   end
 
   context "status detail tags" do
-    it "sets status details from tags" do
+    it "set status details" do
       run_cucumber_cli(<<~FEATURE)
         @flaky
         Feature: #{feature}

@@ -14,9 +14,8 @@ module AllureCucumber
         Allure::ResultUtils.package_label(scenario.feature_folder),
         Allure::ResultUtils.test_class_label(scenario.feature_file_name),
         Allure::ResultUtils.suite_label(scenario.feature_name),
-        Allure::ResultUtils.feature_label(scenario.feature_name),
-        Allure::ResultUtils.story_label(scenario.name),
         severity,
+        *behavior_labels,
         *tag_labels
       ]
     end
@@ -36,11 +35,7 @@ module AllureCucumber
 
     # @return [Allure::Label]
     def severity
-      severity_pattern = reserved_patterns[:severity]
-      severity_tags = tags.detect { |tag| tag.match?(severity_pattern) }
-      severity = severity_tags&.match(severity_pattern)&.[](:severity) || "normal"
-
-      Allure::ResultUtils.severity_label(severity)
+      Allure::ResultUtils.severity_label(tag_value(:severity) || "normal")
     end
 
     # @return [Array<Allure::Parameter>]
@@ -55,6 +50,20 @@ module AllureCucumber
         muted: tags.any? { |tag| tag.match?(reserved_patterns[:muted]) },
         known: tags.any? { |tag| tag.match?(reserved_patterns[:known]) }
       )
+    end
+
+    # Get behavior labels
+    # @return [Array<Allure::Label>]
+    def behavior_labels
+      epic = tag_value(:epic) || scenario.feature_folder
+      feature = tag_value(:feature) || scenario.feature_name
+      story = tag_value(:story) || scenario.name
+
+      [
+        Allure::ResultUtils.epic_label(epic),
+        Allure::ResultUtils.feature_label(feature),
+        Allure::ResultUtils.story_label(story)
+      ]
     end
 
     private
@@ -111,6 +120,18 @@ module AllureCucumber
     # @return [Boolean]
     def reserved?(tag)
       reserved_patterns.values.any? { |pattern| tag.match?(pattern) }
+    end
+
+    # Get specific tag value
+    #
+    # @param [Symbol] type
+    # @return [String]
+    def tag_value(type)
+      pattern = reserved_patterns[type]
+      tag = tags.detect { |t| t.match?(pattern) }
+      return unless tag
+
+      tag.match(pattern)[type]
     end
   end
 end
