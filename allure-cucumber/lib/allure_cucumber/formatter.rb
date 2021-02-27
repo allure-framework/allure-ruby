@@ -2,8 +2,6 @@
 
 require "cucumber/core"
 
-require_relative "models/cucumber_model"
-
 module AllureCucumber
   # Main formatter class. Translates cucumber event to allure lifecycle
   class CucumberFormatter
