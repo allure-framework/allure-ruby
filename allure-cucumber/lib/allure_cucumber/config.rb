@@ -15,6 +15,12 @@ module AllureCucumber
     DEFAULT_ISSUE_PREFIX = "ISSUE:"
     # @return [String] default severity tag prefix
     DEFAULT_SEVERITY_PREFIX = "SEVERITY:"
+    # @return [String] default epic tag prefix
+    DEFAULT_EPIC_PREFIX = "EPIC:"
+    # @return [String] default feature tag prefix
+    DEFAULT_FEATURE_PREFIX = "FEATURE:"
+    # @return [String] default story tag prefix
+    DEFAULT_STORY_PREFIX = "STORY:"
 
     def_delegators :@allure_config,
                    :clean_results_directory,
@@ -49,6 +55,21 @@ module AllureCucumber
     # @return [String]
     def severity_prefix
       @severity_prefix || DEFAULT_SEVERITY_PREFIX
+    end
+
+    # @return [String]
+    def epic_prefix
+      @epic_prefix || DEFAULT_EPIC_PREFIX
+    end
+
+    # @return [String]
+    def feature_prefix
+      @feature_prefix || DEFAULT_FEATURE_PREFIX
+    end
+
+    # @return [String]
+    def story_prefix
+      @story_prefix || DEFAULT_STORY_PREFIX
     end
   end
 end

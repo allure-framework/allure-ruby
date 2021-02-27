@@ -3,8 +3,7 @@
 
 require "allure-ruby-commons"
 
-require "allure_cucumber/config"
-require "allure_cucumber/formatter"
+require_rel "allure_cucumber"
 
 # Main allure-cucumber module providing configuration methods
 module AllureCucumber
