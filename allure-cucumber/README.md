@@ -52,18 +52,24 @@ AllureCucumber.configure do |config|
 end
 ```
 
-By default, allure-cucumber will analyze your cucumber tags looking for Test Management, Issue Management, and Severity tag. Links to TMS and ISSUE and test severity will be displayed in the report. By default these prefixes are used:
+By default, allure-cucumber will analyze your cucumber tags looking for Test Management, Issue Management, and Severity tag as well
+as custom tags for grouping tests in to epics, features and stories in Behavior tab of report. Links to TMS and ISSUE and test severity will be displayed in the report.
+
+By default these prefixes are used:
 
 ```ruby
     DEFAULT_TMS_PREFIX      = 'TMS:'
     DEFAULT_ISSUE_PREFIX    = 'ISSUE:'
     DEFAULT_SEVERITY_PREFIX = 'SEVERITY:'
+    DEFAULT_EPIC_PREFIX     = 'EPIC:'
+    DEFAULT_FEATURE_PREFIX  = 'FEATURE:'
+    DEFAULT_STORY_PREFIX    = 'STORY:'
 ```
 
 Example:
 
 ```gherkin
-  @SEVERITY:trivial @ISSUE:YZZ-100 @TMS:9901
+  @SEVERITY:trivial @ISSUE:YZZ-100 @TMS:9901 @EPIC:custom-epic
   Scenario: Leave First Name Blank
     When I register an account without a first name
     Then exactly (1) [validation_error] should be visible
@@ -76,13 +82,16 @@ AllureCucumber.configure do |config|
   config.tms_prefix      = 'HIPTEST--'
   config.issue_prefix    = 'JIRA++'
   config.severity_prefix = 'URGENCY:'
+  config.epic_prefix = 'epic:'
+  config.feature_prefix = 'feature:'
+  config.story_prefix = 'story:'
 end
 ```
 
 Example:
 
 ```gherkin
-  @URGENCY:critical @JIRA++YZZ-100 @HIPTEST--9901
+  @URGENCY:critical @JIRA++YZZ-100 @HIPTEST--9901 @epic:custom-epic
   Scenario: Leave First Name Blank
     When I register an account without a first name
     Then exactly (1) [validation_error] should be visible
