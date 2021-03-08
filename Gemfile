@@ -14,7 +14,7 @@ group :development do
 end
 
 group :test do
-  gem "climate_control", "~> 0.2.0"
+  gem "climate_control", "~> 1.0.0"
   gem "rspec", "~> 3.10.0"
   gem "rubocop", "~> 1.11.0"
   gem "rubocop-performance", "~> 1.10.1"
