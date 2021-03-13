@@ -17,7 +17,7 @@ module AllureCucumber
         severity,
         *behavior_labels,
         *tag_labels
-      ]
+      ].select(&:value)
     end
 
     # @return [Array<Allure::Label>]
@@ -57,7 +57,7 @@ module AllureCucumber
     def behavior_labels
       epic = tag_value(:epic) || scenario.feature_folder
       feature = tag_value(:feature) || scenario.feature_name
-      story = tag_value(:story) || scenario.name
+      story = tag_value(:story)
 
       [
         Allure::ResultUtils.epic_label(epic),
