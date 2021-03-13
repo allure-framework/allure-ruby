@@ -90,7 +90,7 @@ module AllureRspec
         *tag_labels,
         *behavior_labels,
         *suite_labels
-      ]
+      ].select(&:value)
     end
 
     # Get attachable links
@@ -166,7 +166,7 @@ module AllureRspec
       metadata = example.metadata
       epic = metadata[:epic] || Pathname.new(strip_relative(example.file_path)).parent.to_s
       feature = metadata[:feature] || example.example_group.description
-      story = metadata[:story] || example.description
+      story = metadata[:story]
 
       [
         Allure::ResultUtils.epic_label(epic),

@@ -16,7 +16,7 @@ describe "allure rspec" do
           e.step(name: "After hook")
         end
 
-        it "spec", allure: "some_label", story: "user story" do |e|
+        it "spec", allure: "some_label" do |e|
           e.step(name: "test body")
         end
       end

@@ -15,8 +15,7 @@ describe "example_started" do
       result_utils.test_class_label("test_spec"),
       result_utils.severity_label("normal"),
       result_utils.epic_label("#{test_tmp_dir}/spec"),
-      result_utils.feature_label(suite),
-      result_utils.story_label(spec)
+      result_utils.feature_label(suite)
     ]
   end
 

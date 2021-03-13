@@ -10,7 +10,7 @@ describe "allure cucumber" do
       @FEATURE:custom-feature
       Feature: Simple scenario outline feature
 
-      @before @after @after_step @STORY:user-story
+      @before @after @after_step
       Scenario Outline: Add a to b
         Simple scenario description
         Given a input is

@@ -11,8 +11,7 @@ describe "on_test_case_started" do
   let(:behavior_labels) do
     [
       result_utils.epic_label("features"),
-      result_utils.feature_label(feature),
-      result_utils.story_label(scenario)
+      result_utils.feature_label(feature)
     ]
   end
   let(:labels) do
