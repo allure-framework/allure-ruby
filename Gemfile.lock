@@ -1,22 +1,22 @@
 PATH
   remote: allure-cucumber
   specs:
-    allure-cucumber (2.13.8.4)
-      allure-ruby-commons (= 2.13.8.4)
+    allure-cucumber (2.13.8.5)
+      allure-ruby-commons (= 2.13.8.5)
       cucumber (>= 4.0.0, < 6)
 
 PATH
   remote: allure-rspec
   specs:
-    allure-rspec (2.13.8.4)
-      allure-ruby-commons (= 2.13.8.4)
+    allure-rspec (2.13.8.5)
+      allure-ruby-commons (= 2.13.8.5)
       rspec-core (>= 3.8, < 4)
       ruby2_keywords (~> 0.0.2)
 
 PATH
   remote: allure-ruby-commons
   specs:
-    allure-ruby-commons (2.13.8.4)
+    allure-ruby-commons (2.13.8.5)
       mime-types (>= 3.3, < 4)
       oj (>= 3.10, < 4)
       require_all (>= 2, < 4)
