@@ -133,7 +133,7 @@ end
 
 ### Behavior driven test grouping
 
-Marking tests with tags `:story, :feature, :story`, will group tests accordingly in Behavior report tab:
+Marking tests with tags `:epic, :feature, :story`, will group tests accordingly in Behavior report tab:
 
 ```ruby
 context "context", feature: "my feature"  do
