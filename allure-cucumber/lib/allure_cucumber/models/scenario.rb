@@ -34,9 +34,7 @@ module AllureCucumber
     # Scenario description or it's location
     # @return [String]
     def description
-      @description ||= begin
-        scenario.description.empty? ? "Location - #{test_case.location}" : scenario.description.strip
-      end
+      @description ||= scenario.description.empty? ? "Location - #{test_case.location}" : scenario.description.strip
     end
 
     # Scenario outline row parameters
@@ -86,7 +84,9 @@ module AllureCucumber
     # @return [String]
     def example_row
       @example_row ||= begin
-        "Examples (##{scenario_source.examples.table_body.index { |row| row.id == scenario_source.row.id } + 1})"
+        scneario_examples = scenario_source.examples.table_body.index { |row| row.id == scenario_source.row.id } + 1
+
+        "Examples (##{scneario_examples})"
       end
     end
 
