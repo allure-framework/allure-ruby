@@ -104,7 +104,7 @@ GEM
       middleware
       thor
       thread_safe
-    pry (0.14.0)
+    pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
     racc (1.5.2)
@@ -193,7 +193,7 @@ DEPENDENCIES
   allure-ruby-commons!
   climate_control (~> 1.0.0)
   colorize (~> 0.8.1)
-  pry (~> 0.14.0)
+  pry (~> 0.14.1)
   rake (~> 13.0.3)
   rspec (~> 3.10.0)
   rubocop (~> 1.12.1)
