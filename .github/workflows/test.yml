@@ -43,7 +43,7 @@ jobs:
         run: bundle exec rake test
   
   rspec_coverage:
-    name: Test with coverage
+    name: Test with 3.0 ruby
     runs-on: ubuntu-20.04
     needs: rubocop
     steps:
