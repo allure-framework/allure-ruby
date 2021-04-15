@@ -3,7 +3,7 @@ PATH
   specs:
     allure-cucumber (2.13.8.5)
       allure-ruby-commons (= 2.13.8.5)
-      cucumber (>= 4.0.0, < 6)
+      cucumber (>= 4.0.0, < 7)
 
 PATH
   remote: allure-rspec
@@ -203,4 +203,4 @@ DEPENDENCIES
   solargraph (~> 0.40.4)
 
 BUNDLED WITH
-   2.2.9
+   2.2.15
