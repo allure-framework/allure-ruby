@@ -4,6 +4,7 @@
 ![Workflow status](https://github.com/allure-framework/allure-ruby/workflows/Test/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/3190a4c9e68f20dd82ec/maintainability)](https://codeclimate.com/github/allure-framework/allure-ruby/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3190a4c9e68f20dd82ec/test_coverage)](https://codeclimate.com/github/allure-framework/allure-ruby/test_coverage)
+[![Total Downloads](https://img.shields.io/gem/dt/allure-ruby-commons?color=blue)](https://rubygems.org/gems/allure-ruby-commons)
 
 Ruby testing framework adaptors for generating allure compatible test reports.
 
