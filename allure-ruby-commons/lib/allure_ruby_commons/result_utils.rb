@@ -133,14 +133,26 @@ module Allure
       # @param [String] value
       # @return [Allure::Link]
       def tms_link(value)
-        Link.new(TMS_LINK_TYPE, value, tms_url(value))
+        url = tms_url(value)
+        unless url
+          logger.error("Missing tms link configuration")
+          return
+        end
+
+        Link.new(TMS_LINK_TYPE, value, url)
       end
 
       # Issue link
       # @param [String] value
       # @return [Allure::Link]
       def issue_link(value)
-        Link.new(ISSUE_LINK_TYPE, value, issue_url(value))
+        url = issue_url(value)
+        unless url
+          logger.error("Missing issue link configuration")
+          return
+        end
+
+        Link.new(ISSUE_LINK_TYPE, value, url)
       end
 
       # Get status based on exception type
@@ -170,11 +182,15 @@ module Allure
       private
 
       def tms_url(value)
-        Allure.configuration.link_tms_pattern.sub("{}", value)
+        Allure.configuration.link_tms_pattern&.sub("{}", value)
       end
 
       def issue_url(value)
-        Allure.configuration.link_issue_pattern.sub("{}", value)
+        Allure.configuration.link_issue_pattern&.sub("{}", value)
+      end
+
+      def logger
+        Logger.new($stdout, level: Config.instance.logging_level)
       end
     end
   end
