@@ -10,11 +10,6 @@ require "pry"
 
 SimpleCov.command_name("allure-ruby-commons")
 
-Allure.configure do |conf|
-  conf.link_issue_pattern = "http://jira.com/{}"
-  conf.link_tms_pattern = "http://jira.com/{}"
-end
-
 RSpec.shared_context("lifecycle") do
   let(:lifecycle) { Allure::AllureLifecycle.new }
 

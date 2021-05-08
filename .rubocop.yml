@@ -25,6 +25,10 @@ Metrics/MethodLength:
   Enabled: true
   Max: 15
 
+Metrics/ModuleLength:
+  Enabled: true
+  Max: 150
+
 Style/Documentation:
   Enabled: false
 
