@@ -74,16 +74,12 @@ describe "AllureLifecycle::TestStepResult" do
 
   context "logs error" do
     it "no running test case" do
-      expect_any_instance_of(Logger).to receive(:error)
-
       start_test_step(name: "Step name", descrption: "step description")
     end
 
     it "no running test step" do
       start_test_container("Test Container")
       start_test_case(name: "Test case", full_name: "Full name")
-
-      expect_any_instance_of(Logger).to receive(:error).twice
 
       lifecycle.update_test_step { |step| step.name = "Test" }
       lifecycle.stop_test_step

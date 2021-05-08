@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ENV["ALLURE_LOG_LEVEL"] = "FATAL"
+
 require "simplecov"
 require "rspec"
 require "climate_control"

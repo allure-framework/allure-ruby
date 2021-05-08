@@ -52,15 +52,11 @@ describe "AllureLifecycle::TestCaseResult" do
 
   context "logs error" do
     it "no running container" do
-      expect_any_instance_of(Logger).to receive(:error)
-
       start_test_case(name: "Test Case")
     end
 
     it "no running test" do
       start_test_container("Test Container")
-
-      expect_any_instance_of(Logger).to receive(:error).twice
 
       lifecycle.update_test_case { |t| t.full_name = "Test" }
       lifecycle.stop_test_case
