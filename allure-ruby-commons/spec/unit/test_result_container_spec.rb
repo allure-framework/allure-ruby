@@ -34,8 +34,6 @@ describe "AllureLifecycle::TestResultContainer" do
   it "logs error when stopping or updating test result container" do
     allow(file_writer).to receive(:write_test_result_container)
 
-    expect_any_instance_of(Logger).to receive(:error).twice
-
     lifecycle.stop_test_container
 
     lifecycle.update_test_container { |c| c.description = "Test" }

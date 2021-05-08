@@ -49,15 +49,11 @@ describe "AllureLifecycle::Fixtures" do
 
   context "logs error message" do
     it "no running container" do
-      expect_any_instance_of(Logger).to receive(:error).and_return(true)
-
       start_fixture("Prepare fixture", "prepare")
     end
 
     it "no running fixture" do
       start_test_container("Test container")
-
-      expect_any_instance_of(Logger).to receive(:error).twice.and_return(true)
 
       lifecycle.update_fixture { |t| t.full_name = "Test" }
       lifecycle.stop_fixture
