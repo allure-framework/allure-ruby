@@ -79,7 +79,7 @@ describe "on_test_step_started" do
         steps = []
 
         expect(lifecycle).to(have_received(:start_test_step).twice) { |step| steps << step.name }
-        expect(steps).to match_array(["Given a is 5", "AfterStep hook (env.rb:22)"])
+        expect(steps).to match_array(["Given a is 5", "AfterStep hook (env.rb:17)"])
       end
     end
   end
@@ -96,7 +96,7 @@ describe "on_test_step_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_prepare_fixture).once do |fixture|
-        expect(fixture.name).to eq("Before hook (env.rb:8)")
+        expect(fixture.name).to eq("Before hook (env.rb:3)")
       end
     end
 
@@ -111,7 +111,7 @@ describe "on_test_step_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_tear_down_fixture).once do |fixture|
-        expect(fixture.name).to eq("After hook (env.rb:15)")
+        expect(fixture.name).to eq("After hook (env.rb:10)")
       end
     end
   end

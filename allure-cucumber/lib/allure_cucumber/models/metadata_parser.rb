@@ -112,12 +112,12 @@ module AllureCucumber
     # @return [Hash<Symbol, Regexp>]
     def reserved_patterns
       @reserved_patterns ||= {
-        tms: /@#{AllureCucumber.configuration.tms_prefix}(?<tms>\S+)/,
-        issue: /@#{AllureCucumber.configuration.issue_prefix}(?<issue>\S+)/,
-        severity: /@#{AllureCucumber.configuration.severity_prefix}(?<severity>\S+)/,
-        epic: /@#{AllureCucumber.configuration.epic_prefix}(?<epic>\S+)/,
-        feature: /@#{AllureCucumber.configuration.feature_prefix}(?<feature>\S+)/,
-        story: /@#{AllureCucumber.configuration.story_prefix}(?<story>\S+)/,
+        tms: /@#{config.tms_prefix}(?<tms>\S+)/,
+        issue: /@#{config.issue_prefix}(?<issue>\S+)/,
+        severity: /@#{config.severity_prefix}(?<severity>\S+)/,
+        epic: /@#{config.epic_prefix}(?<epic>\S+)/,
+        feature: /@#{config.feature_prefix}(?<feature>\S+)/,
+        story: /@#{config.story_prefix}(?<story>\S+)/,
         flaky: /@flaky/,
         muted: /@muted/,
         known: /@known/

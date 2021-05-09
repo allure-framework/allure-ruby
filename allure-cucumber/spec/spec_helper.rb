@@ -15,7 +15,7 @@ end
 
 RSpec.shared_context("allure mock") do
   let(:config) do
-    AllureCucumber.configuration.tap do |conf|
+    AllureCucumber::CucumberConfig.send(:new).tap do |conf|
       conf.link_tms_pattern = "http://www.jira.com/tms/{}"
       conf.link_issue_pattern = "http://www.jira.com/issue/{}"
     end
@@ -23,7 +23,7 @@ RSpec.shared_context("allure mock") do
   let(:lifecycle) { spy("lifecycle", config: config) }
 
   before do
-    allow_any_instance_of(AllureCucumber::CucumberFormatter).to receive(:lifecycle) { lifecycle }
+    allow(Allure::AllureLifecycle).to receive(:new) { lifecycle }
   end
 end
 

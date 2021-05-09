@@ -10,11 +10,6 @@ class CucumberHelper
   ENV = <<~RUBY
     require "allure-cucumber"
 
-    AllureCucumber.configure do |config|
-      config.link_tms_pattern = "http://www.jira.com/tms/{}"
-      config.link_issue_pattern = "http://www.jira.com/issue/{}"
-    end
-
     Before("@before") do
     end
 
