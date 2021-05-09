@@ -43,7 +43,7 @@ module AllureRspec
     def initialize(output)
       super
 
-      @lifecycle = Allure.lifecycle
+      @lifecycle = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration))
       @config = @lifecycle.config
     end
 

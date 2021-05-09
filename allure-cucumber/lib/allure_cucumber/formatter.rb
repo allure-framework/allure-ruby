@@ -27,7 +27,7 @@ module AllureCucumber
       end
 
       @lifecycle = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureCucumber.configuration))
-      @cucumber_model = AllureCucumberModel.new(config, AllureCucumber.configuration)
+      @cucumber_model = AllureCucumberModel.new(config, @lifecycle.config)
 
       config.on_event(:test_run_started) { |event| on_test_run_started(event) }
       config.on_event(:test_case_started) { |event| on_test_case_started(event) }
