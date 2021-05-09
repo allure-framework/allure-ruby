@@ -69,23 +69,22 @@ jobs:
         run: |
           docker pull -q ghcr.io/andrcuns/allure-report-publisher:latest; \
           docker run --rm \
-            -v $GITHUB_WORKSPACE:/workspace \
-            -v $GITHUB_EVENT_PATH:$GITHUB_EVENT_PATH \
-            -e GITHUB_WORKFLOW=$GITHUB_WORKFLOW \
-            -e GITHUB_EVENT_NAME=$GITHUB_EVENT_NAME \
-            -e GITHUB_SERVER_URL=$GITHUB_SERVER_URL \
-            -e GITHUB_API_URL=$GITHUB_API_URL \
-            -e GITHUB_REPOSITORY=$GITHUB_REPOSITORY \
-            -e GITHUB_JOB=$GITHUB_JOB \
-            -e GITHUB_RUN_ID=$GITHUB_RUN_ID \
-            -e GITHUB_AUTH_TOKEN=$GITHUB_AUTH_TOKEN \
-            -e GITHUB_EVENT_PATH=$GITHUB_EVENT_PATH \
-            -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-            -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+            -v "$GITHUB_WORKSPACE":/workspace \
+            -v "$GITHUB_EVENT_PATH":"$GITHUB_EVENT_PATH" \
+            -e GITHUB_WORKFLOW="$GITHUB_WORKFLOW" \
+            -e GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            -e GITHUB_SERVER_URL="$GITHUB_SERVER_URL" \
+            -e GITHUB_API_URL="$GITHUB_API_URL" \
+            -e GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+            -e GITHUB_JOB="$GITHUB_JOB" \
+            -e GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            -e GITHUB_AUTH_TOKEN="$GITHUB_AUTH_TOKEN" \
+            -e GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" \
+            -e GOOGLE_CLOUD_CREDENTIALS_JSON="$GOOGLE_CLOUD_CREDENTIALS_JSON" \
             ghcr.io/andrcuns/allure-report-publisher:latest \
             upload gcs \
               --results-glob="/workspace/*/reports/allure-results/*" \
-              --bucket='allure-test-reports' \
+              --bucket="allure-test-reports" \
               --prefix="allure-ruby/$GITHUB_REF" \
               --update-pr \
               --copy-latest \
