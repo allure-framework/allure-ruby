@@ -2,5 +2,5 @@
 
 load("../lib/tasks/test.rake")
 
-TestTasks.add_rspec_task(without_allure: true)
+TestTasks.add_rspec_task
 TestTasks.add_rubocop_task

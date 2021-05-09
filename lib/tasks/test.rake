@@ -15,7 +15,7 @@ class TestTasks
     add_all_adaptors_tasks
   end
 
-  def self.add_rspec_task(without_allure: false)
+  def self.add_rspec_task
     RSpec::Core::RakeTask.new(:test, :tag) do |task, args|
       tag = args[:tag]
       rspec_opts = [
@@ -24,7 +24,7 @@ class TestTasks
         "--require spec_helper",
         "--format documentation"
       ]
-      rspec_opts << "--format AllureRspecFormatter" if without_allure
+      rspec_opts << "--format AllureRspecFormatter"
       rspec_opts << "--tag #{tag}" if tag
 
       task.rspec_opts = rspec_opts.join(" ")
