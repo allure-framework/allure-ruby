@@ -15,12 +15,20 @@ class TestTasks
     add_all_adaptors_tasks
   end
 
-  def self.add_rspec_task
+  def self.add_rspec_task(without_allure: false)
     RSpec::Core::RakeTask.new(:test, :tag) do |task, args|
-      args[:tag].tap do |tag|
-        task.rspec_opts = "--color --tty --require spec_helper --format documentation #{tag ? "--tag #{tag}" : ''}"
-        task.verbose = false
-      end
+      tag = args[:tag]
+      rspec_opts = [
+        "--color",
+        "--tty",
+        "--require spec_helper",
+        "--format documentation"
+      ]
+      rspec_opts << "--format AllureRspecFormatter" if without_allure
+      rspec_opts << "--tag #{tag}" if tag
+
+      task.rspec_opts = rspec_opts.join(" ")
+      task.verbose = false
     end
   end
 
@@ -34,15 +42,18 @@ class TestTasks
   private
 
   def add_all_adaptors_tasks
-    namespace :all do
-      task(:rubocop) { run_all_adaptors(:rubocop) }
-      task(:test) { run_all_adaptors(:test) }
-      task(:test_with_coverage) do
-        ENV["COVERAGE"] = "true"
-        run_all_adaptors(:test)
-      ensure
-        SimpleCovMerger.merge_coverage
-      end
+    desc "Run rubocop for all adaptors"
+    task(:rubocop) { run_all_adaptors(:rubocop) }
+
+    desc "Run tests for all adaptors"
+    task(:test) { run_all_adaptors(:test) }
+
+    desc "Run all tests and generate SimpleCov report"
+    task("test:coverage") do
+      ENV["COVERAGE"] = "true"
+      run_all_adaptors(:test)
+    ensure
+      SimpleCovMerger.merge_coverage
     end
   end
 

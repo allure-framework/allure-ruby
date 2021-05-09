@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 require "simplecov"
-require "allure-cucumber"
 require "rspec"
+require "allure-cucumber"
+require "allure-rspec"
 
 require_relative "cucumber_helper"
 
 SimpleCov.command_name("allure-cucumber")
+
+AllureRspec.configure do |c|
+  c.clean_results_directory = true
+end
 
 RSpec.shared_context("allure mock") do
   let(:config) do

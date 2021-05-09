@@ -10,8 +10,6 @@ SimpleCov.command_name("allure-rspec")
 
 AllureRspec.configure do |c|
   c.clean_results_directory = true
-  c.link_tms_pattern = "http://www.jira.com/tms/{}"
-  c.link_issue_pattern = "http://www.jira.com/issue/{}"
 end
 
 RSpec.shared_context("allure mock") do

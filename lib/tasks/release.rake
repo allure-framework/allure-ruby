@@ -44,11 +44,14 @@ class ReleaseTasks
   end
 
   def add_build_tasks
-    namespace :all do
-      task clean: adaptors.map { |adaptor| "#{adaptor}:clean" }
-      task build: adaptors.map { |adaptor| "#{adaptor}:build" }
-      task release: adaptors.map { |adaptor| "#{adaptor}:release" }
-    end
+    desc "Clean gem files from pkg folder"
+    task clean: adaptors.map { |adaptor| "#{adaptor}:clean" }
+
+    desc "Build ruby gems for all adaptors"
+    task build: adaptors.map { |adaptor| "#{adaptor}:build" }
+
+    desc "Build and push ruby gems to registry for all adaptors"
+    task release: adaptors.map { |adaptor| "#{adaptor}:release" }
   end
 end
 

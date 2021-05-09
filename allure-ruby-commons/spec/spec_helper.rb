@@ -6,9 +6,13 @@ require "simplecov"
 require "rspec"
 require "climate_control"
 require "allure-ruby-commons"
-require "pry"
+require "allure-rspec"
 
 SimpleCov.command_name("allure-ruby-commons")
+
+AllureRspec.configure do |c|
+  c.clean_results_directory = true
+end
 
 RSpec.shared_context("lifecycle") do
   let(:config) { Allure::Config.send(:new).tap { |conf| conf.results_directory = "spec/allure-results" } }
