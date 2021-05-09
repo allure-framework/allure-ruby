@@ -8,8 +8,9 @@ module AllureCucumber
   # Support class for transforming cucumber test entities in to allure model entities
   class AllureCucumberModel
     # @param [Cucumber::Configuration] config
-    def initialize(config)
+    def initialize(config, allure_config)
       @ast_lookup = Cucumber::Formatter::AstLookup.new(config)
+      @config = allure_config
     end
 
     # Convert to allure test result
@@ -17,7 +18,7 @@ module AllureCucumber
     # @return [Allure::TestResult]
     def test_result(test_case)
       scenario = Scenario.new(test_case, ast_lookup)
-      parser = MetadataParser.new(scenario)
+      parser = MetadataParser.new(scenario, config)
 
       Allure::TestResult.new(
         name: scenario.name,
@@ -65,7 +66,7 @@ module AllureCucumber
 
     private
 
-    attr_reader :ast_lookup, :lifecycle
+    attr_reader :ast_lookup, :config
 
     # @param [Step] step
     # @return [Array<Allure::Attachment>]

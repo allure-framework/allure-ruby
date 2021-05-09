@@ -15,7 +15,14 @@ AllureRspec.configure do |c|
 end
 
 RSpec.shared_context("allure mock") do
-  let(:lifecycle) { spy("lifecycle") }
+  let(:config) do
+    AllureRspec.configuration.tap do |conf|
+      conf.link_tms_pattern = "http://www.jira.com/tms/{}"
+      conf.link_issue_pattern = "http://www.jira.com/issue/{}"
+    end
+  end
+
+  let(:lifecycle) { spy("lifecycle", config: config) }
 
   before do
     allow(Allure).to receive(:lifecycle).and_return(lifecycle)

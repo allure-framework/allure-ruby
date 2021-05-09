@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 describe Allure::FileWriter do
-  let(:file_writer) { Allure::FileWriter.new }
+  subject(:file_writer) { described_class.new(results_dir) }
+
+  let(:results_dir) { "spec/allure-results" }
 
   before(:all) do
     clean_results_dir
@@ -9,7 +11,7 @@ describe Allure::FileWriter do
 
   it "writes test result container" do
     test_result_container = Allure::TestResultContainer.new
-    json_file = File.join(Allure.configuration.results_directory, "#{test_result_container.uuid}-container.json")
+    json_file = File.join(results_dir, "#{test_result_container.uuid}-container.json")
     file_writer.write_test_result_container(test_result_container)
 
     expect(File.exist?(json_file)).to be_truthy, "Expected file to exist"
@@ -17,7 +19,7 @@ describe Allure::FileWriter do
 
   it "writes test result" do
     test_result = Allure::TestResult.new
-    json_file = File.join(Allure.configuration.results_directory, "#{test_result.uuid}-result.json")
+    json_file = File.join(results_dir, "#{test_result.uuid}-result.json")
     file_writer.write_test_result(test_result)
 
     expect(File.exist?(json_file)).to be_truthy, "Expected file to exist"
@@ -29,7 +31,7 @@ describe Allure::FileWriter do
       type: Allure::ContentType::TXT,
       source: "#{UUID.generate}-attachment.txt"
     )
-    attachment_file = File.join(Allure.configuration.results_directory, attachment.source)
+    attachment_file = File.join(results_dir, attachment.source)
     file_writer.write_attachment("Test attachment", attachment)
 
     expect(File.exist?(attachment_file)).to be_truthy, "Expected #{attachment_file} to exist"
@@ -42,14 +44,14 @@ describe Allure::FileWriter do
       source: "#{UUID.generate}-attachment.png"
     )
     source = File.new(File.join(Dir.pwd, "spec", "fixtures", "ruby-logo.png"))
-    attachment_file = File.join(Allure.configuration.results_directory, attachment.source)
+    attachment_file = File.join(results_dir, attachment.source)
     file_writer.write_attachment(source, attachment)
 
     expect(File.exist?(attachment_file)).to be_truthy, "Expected #{attachment_file} to exist"
   end
 
   it "writes environment properties" do
-    environment_file = File.join(Allure.configuration.results_directory, "environment.properties")
+    environment_file = File.join(results_dir, "environment.properties")
     file_writer.write_environment(PROP1: "test", PROP2: "test_2")
 
     expect(File.exist?(environment_file)).to be_truthy, "Expected #{environment_file} to exist"
@@ -60,7 +62,7 @@ describe Allure::FileWriter do
   end
 
   it "writes categories from argument" do
-    categories_file = File.join(Allure.configuration.results_directory, "categories.json")
+    categories_file = File.join(results_dir, "categories.json")
     file_writer.write_categories(
       [Allure::Category.new(name: "Ignored test", matched_statuses: [Allure::Status::SKIPPED])]
     )
@@ -70,7 +72,7 @@ describe Allure::FileWriter do
   end
 
   it "writes categories from file" do
-    categories_file = File.join(Allure.configuration.results_directory, "categories.json")
+    categories_file = File.join(results_dir, "categories.json")
     file_writer.write_categories(File.new(File.join(Dir.pwd, "spec", "fixtures", "categories.json")))
 
     expect(File.exist?(categories_file)).to be_truthy, "Expected #{categories_file} to exist"

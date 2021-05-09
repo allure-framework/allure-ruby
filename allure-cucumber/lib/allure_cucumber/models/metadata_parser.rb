@@ -3,8 +3,13 @@
 module AllureCucumber
   # Cucumber tag parser helper methods
   class MetadataParser
-    def initialize(scenario)
+    # Metadata parser instance
+    #
+    # @param [AllureCucumber::Scenario] scenario
+    # @param [AllureCucumber::CucumberConfig] config
+    def initialize(scenario, config)
       @scenario = scenario
+      @config = config
     end
 
     # @return [Array<Allure::Label>]
@@ -68,8 +73,7 @@ module AllureCucumber
 
     private
 
-    # @return [AllureCucumber::Scenario]
-    attr_reader :scenario
+    attr_reader :scenario, :config
 
     # Get scenario tags
     #
@@ -80,14 +84,14 @@ module AllureCucumber
 
     # @return [Array<Allure::Link>]
     def tms_links
-      return [] unless AllureCucumber.configuration.link_tms_pattern
+      return [] unless config.link_tms_pattern
 
       matching_links(:tms)
     end
 
     # @return [Array<Allure::Link>]
     def issue_links
-      return [] unless AllureCucumber.configuration.link_issue_pattern
+      return [] unless config.link_issue_pattern
 
       matching_links(:issue)
     end
@@ -96,9 +100,13 @@ module AllureCucumber
     # @return [Array<Allure::Link>]
     def matching_links(type)
       pattern = reserved_patterns[type]
+      link_pattern = config.public_send("link_#{type}_pattern")
+
       tags
         .select { |tag| tag.match?(pattern) }
-        .map { |tag| tag.match(pattern) { |match| Allure::ResultUtils.public_send("#{type}_link", match[type]) } }
+        .map do |tag|
+          tag.match(pattern) { |match| Allure::ResultUtils.public_send("#{type}_link", match[type], link_pattern) }
+        end
     end
 
     # @return [Hash<Symbol, Regexp>]

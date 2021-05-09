@@ -7,6 +7,8 @@ describe "example_started" do
   let(:result_utils) { Allure::ResultUtils }
   let(:suite) { "suite" }
   let(:spec) { "spec" }
+  let(:link_tms_pattern) { "http://www.jira.com/tms/{}" }
+  let(:link_issue_pattern) { "http://www.jira.com/issue/{}" }
   let(:labels) do
     [
       result_utils.suite_label(suite),
@@ -108,10 +110,10 @@ describe "example_started" do
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
         expect(arg.links).to match_array(
           [
-            result_utils.tms_link("QA-123"),
-            result_utils.tms_link("QA-124"),
-            result_utils.issue_link("BUG-123"),
-            result_utils.issue_link("BUG-124")
+            result_utils.tms_link("QA-123", link_tms_pattern),
+            result_utils.tms_link("QA-124", link_tms_pattern),
+            result_utils.issue_link("BUG-123", link_issue_pattern),
+            result_utils.issue_link("BUG-124", link_issue_pattern)
           ]
         )
       end

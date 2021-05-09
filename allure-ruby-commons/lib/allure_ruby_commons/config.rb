@@ -10,8 +10,6 @@ module Allure
 
     # @return [Array<String>] valid log levels
     LOGLEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
-    # @return [String] test plan path env var name
-    TESTPLAN_PATH = "ALLURE_TESTPLAN_PATH"
 
     attr_accessor :results_directory, :logging_level, :link_tms_pattern, :link_issue_pattern, :clean_results_directory
 
@@ -20,29 +18,11 @@ module Allure
       @logging_level = LOGLEVELS.index(ENV.fetch("ALLURE_LOG_LEVEL", "INFO")) || Logger::INFO
     end
 
-    # Allure id's of executable tests
+    # Logger instance
     #
-    # @return [Array]
-    def test_ids
-      @test_ids ||= tests&.map { |test| test[:id] }
-    end
-
-    # Test names of executable tests
-    #
-    # @return [Array]
-    def test_names
-      @test_names ||= tests&.map { |test| test[:selector] }
-    end
-
-    private
-
-    # Tests to execute from allure testplan.json
-    #
-    # @return [Array<Hash>]
-    def tests
-      @tests ||= Oj.load_file(ENV[TESTPLAN_PATH], symbol_keys: true)&.fetch(:tests) if ENV[TESTPLAN_PATH]
-    rescue Oj::ParseError
-      nil
+    # @return [Logger]
+    def logger
+      @logger ||= Logger.new($stdout, level: logging_level)
     end
   end
 end

@@ -19,14 +19,15 @@ module AllureCucumber
 
     # @param [Cucumber::Configuration] config
     def initialize(config)
-      Allure.configure do |allure_config|
+      AllureCucumber.configure do |allure_config|
         allure_config.results_directory = config.out_stream if config.out_stream.is_a?(String)
 
-        names = allure_config.test_names
+        names = Allure::TestPlan.test_names
         config.name_regexps.push(*names.map { |name| /#{name}/ }) if names
       end
 
-      @cucumber_model = AllureCucumberModel.new(config)
+      @lifecycle = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureCucumber.configuration))
+      @cucumber_model = AllureCucumberModel.new(config, AllureCucumber.configuration)
 
       config.on_event(:test_run_started) { |event| on_test_run_started(event) }
       config.on_event(:test_case_started) { |event| on_test_case_started(event) }
@@ -88,13 +89,7 @@ module AllureCucumber
 
     private
 
-    attr_accessor :cucumber_model
-
-    # Get thread specific lifecycle
-    # @return [Allure::AllureLifecycle]
-    def lifecycle
-      Allure.lifecycle
-    end
+    attr_reader :cucumber_model, :lifecycle
 
     # Is hook fixture like Before, After or Step as AfterStep
     # @param [String] text

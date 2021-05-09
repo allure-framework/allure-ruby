@@ -11,7 +11,8 @@ require "pry"
 SimpleCov.command_name("allure-ruby-commons")
 
 RSpec.shared_context("lifecycle") do
-  let(:lifecycle) { Allure::AllureLifecycle.new }
+  let(:config) { Allure::Config.send(:new).tap { |conf| conf.results_directory = "spec/allure-results" } }
+  let(:lifecycle) { Allure::AllureLifecycle.new(config) }
 
   def start_test_container(name)
     lifecycle.start_test_container(Allure::TestResultContainer.new(name: name))
@@ -47,5 +48,5 @@ RSpec.shared_context("lifecycle mocks") do
 end
 
 def clean_results_dir
-  FileUtils.remove_dir(Allure.configuration.results_directory) if File.exist?(Allure.configuration.results_directory)
+  FileUtils.remove_dir("spec/allure-results") if File.exist?("spec/allure-results")
 end

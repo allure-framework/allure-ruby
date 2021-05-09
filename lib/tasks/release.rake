@@ -2,7 +2,7 @@
 
 require "rake"
 
-require_relative "../task_helpers/util.rb"
+require_relative "../task_helpers/util"
 
 class ReleaseTasks
   include Rake::DSL

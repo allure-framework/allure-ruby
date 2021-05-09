@@ -18,3 +18,4 @@ doc
 coverage
 vendor/bundle
 tmp
+allure-results
