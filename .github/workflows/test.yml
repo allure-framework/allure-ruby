@@ -59,5 +59,5 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: be263ef9412dc65a7aa8dfb6e8162d5c7cfb3307fae0a444cde9dd6ca6f52848
         with:
-          coverageCommand: bundle exec rake test_with_coverage
+          coverageCommand: bundle exec rake test:coverage
           coverageLocations: coverage/coverage.json:simplecov
