@@ -44,7 +44,6 @@ module AllureRspec
       super
 
       @lifecycle = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration))
-      @config = @lifecycle.config
     end
 
     # Start test run
@@ -88,13 +87,13 @@ module AllureRspec
 
     private
 
-    attr_reader :lifecycle, :config
+    attr_reader :lifecycle
 
     # Transform example to <Allure::TestResult>
     # @param [RSpec::Core::Example] example
     # @return [Allure::TestResult]
     def test_result(example)
-      parser = RspecMetadataParser.new(example, config)
+      parser = RspecMetadataParser.new(example, lifecycle.config)
 
       Allure::TestResult.new(
         name: example.description,
