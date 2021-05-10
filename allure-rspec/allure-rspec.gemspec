@@ -29,5 +29,4 @@ Gem::Specification.new do |s|
 
   s.add_dependency "allure-ruby-commons", version
   s.add_dependency "rspec-core", ">= 3.8", "< 4"
-  s.add_dependency "ruby2_keywords", "~> 0.0.2"
 end
