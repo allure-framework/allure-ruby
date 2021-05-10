@@ -9,6 +9,7 @@ module AllureRspec
   # Main rspec formatter class translating rspec events to allure lifecycle
   class RSpecFormatter < RSpec::Core::Formatters::BaseFormatter
     include Utils
+    include Allure
 
     # @return [Hash] allure statuses mapping
     ALLURE_STATUS = {
@@ -26,12 +27,6 @@ module AllureRspec
       :example_finished
     )
 
-    RSpec::Core::Example.class_eval do
-      Allure.singleton_methods.each do |method|
-        ruby2_keywords define_method(method) { |*args, &block| Allure.__send__(method, *args, &block) }
-      end
-    end
-
     RSpec.configure do |config|
       ids = Allure::TestPlan.test_ids
       names = Allure::TestPlan.test_names
@@ -43,13 +38,17 @@ module AllureRspec
     def initialize(output)
       super
 
-      @lifecycle = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration))
+      # rubocop:disable Style/ClassVars
+      @lifecycle = @@lifecycle = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration))
+      # rubocop:enable Style/ClassVars
     end
 
     # Start test run
     # @param [RSpec::Core::Notifications::StartNotification] _start_notification
     # @return [void]
     def start(_start_notification)
+      inject_helpers
+
       lifecycle.clean_results_dir
     end
 
@@ -128,6 +127,17 @@ module AllureRspec
       return Allure::ResultUtils.status(result.exception) if result.status == :failed
 
       ALLURE_STATUS[result.status]
+    end
+
+    # Include helper methods in rspec example
+    #
+    # @return [void]
+    def inject_helpers
+      RSpec::Core::Example.class_eval do
+        include Allure
+
+        define_method(:lifecycle) { @@lifecycle }
+      end
     end
   end
 end
