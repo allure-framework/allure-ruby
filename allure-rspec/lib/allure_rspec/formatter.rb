@@ -8,7 +8,6 @@ module AllureRspec
   # Main rspec formatter class translating rspec events to allure lifecycle
   class RSpecFormatter < RSpec::Core::Formatters::BaseFormatter
     include Utils
-    include Allure
 
     # @return [Hash] allure statuses mapping
     ALLURE_STATUS = {
@@ -37,9 +36,7 @@ module AllureRspec
     def initialize(output)
       super
 
-      # rubocop:disable Style/ClassVars
-      @lifecycle = @@lifecycle = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration))
-      # rubocop:enable Style/ClassVars
+      @lifecycle = Thread.current[to_s] = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration))
     end
 
     # Start test run
@@ -132,11 +129,13 @@ module AllureRspec
     #
     # @return [void]
     def inject_helpers
-      RSpec::Core::Example.class_eval do
-        include Allure
+      RSpec::Core::Example.class_eval(<<~EVAL, __FILE__, __LINE__ + 1) # rubocop:disable Style/DocumentDynamicEvalDefinition
+        include Allure;
 
-        define_method(:lifecycle) { @@lifecycle }
-      end
+        def lifecycle
+          Thread.current['#{self}']
+        end
+      EVAL
     end
   end
 end
