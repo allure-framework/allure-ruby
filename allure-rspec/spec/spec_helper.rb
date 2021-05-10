@@ -12,6 +12,12 @@ AllureRspec.configure do |c|
   c.clean_results_directory = true
 end
 
+RSpec.configure do |config|
+  config.before do |example|
+    example.epic("allure-rspec")
+  end
+end
+
 RSpec.shared_context("allure mock") do
   let(:config) do
     AllureRspec::RspecConfig.send(:new).tap do |conf|
