@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "ruby2_keywords"
 require "rspec/core"
 require "rspec/core/formatters/base_formatter"
 
