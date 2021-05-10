@@ -41,28 +41,28 @@ module Allure
   # @param [String] value
   # @return [void]
   def epic(value)
-    label(ResultUtils::EPIC_LABEL_NAME, value)
+    replace_label(ResultUtils::EPIC_LABEL_NAME, value)
   end
 
   # Add feature to current test case
   # @param [String] value
   # @return [void]
   def feature(value)
-    label(ResultUtils::FEATURE_LABEL_NAME, value)
+    replace_label(ResultUtils::FEATURE_LABEL_NAME, value)
   end
 
   # Add story to current test case
   # @param [String] value
   # @return [void]
   def story(value)
-    label(ResultUtils::STORY_LABEL_NAME, value)
+    replace_label(ResultUtils::STORY_LABEL_NAME, value)
   end
 
   # Add suite to current test case
   # @param [String] value
   # @return [void]
   def suite(value)
-    label(ResultUtils::SUITE_LABEL_NAME, value)
+    replace_label(ResultUtils::SUITE_LABEL_NAME, value)
   end
 
   # Add tag to current test case
@@ -79,6 +79,20 @@ module Allure
   def label(name, value)
     lifecycle.update_test_case do |test_case|
       test_case.labels.push(Label.new(name, value))
+    end
+  end
+
+  # Replace label in current test case
+  #
+  # @param [String] name
+  # @param [String] value
+  # @return [void]
+  def replace_label(name, value)
+    lifecycle.update_test_case do |test_case|
+      present = test_case.labels.detect { |l| l.name == name }
+      return label(name, value) unless present
+
+      test_case.labels.map! { |l| l.name == name ? Label.new(name, value) : l }
     end
   end
 

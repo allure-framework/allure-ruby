@@ -14,6 +14,12 @@ AllureRspec.configure do |c|
   c.clean_results_directory = true
 end
 
+RSpec.configure do |config|
+  config.before do |example|
+    example.epic("allure-ruby-commons")
+  end
+end
+
 RSpec.shared_context("lifecycle") do
   let(:config) { Allure::Config.send(:new).tap { |conf| conf.results_directory = "spec/allure-results" } }
   let(:lifecycle) { Allure::AllureLifecycle.new(config) }
