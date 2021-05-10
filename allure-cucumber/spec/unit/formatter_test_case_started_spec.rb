@@ -8,6 +8,8 @@ describe "on_test_case_started" do
   let(:feature) { "Simple feature" }
   let(:scenario) { "Add a to b" }
   let(:severity_label) { result_utils.severity_label("normal") }
+  let(:link_tms_pattern) { "http://www.jira.com/tms/{}" }
+  let(:link_issue_pattern) { "http://www.jira.com/issue/{}" }
   let(:behavior_labels) do
     [
       result_utils.epic_label("features"),
@@ -143,8 +145,8 @@ describe "on_test_case_started" do
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
         expect(arg.links).to match_array(
           [
-            result_utils.tms_link("OAT-4444"),
-            result_utils.issue_link("BUG-22400")
+            result_utils.tms_link("OAT-4444", link_tms_pattern),
+            result_utils.issue_link("BUG-22400", link_issue_pattern)
           ]
         )
       end

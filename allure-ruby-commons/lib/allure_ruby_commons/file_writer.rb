@@ -14,6 +14,13 @@ module Allure
     # @return [String] categories definition json
     CATEGORIES_FILE = "categories.json"
 
+    # File writer instance
+    #
+    # @param [String] results_directory
+    def initialize(results_directory)
+      @results_directory = results_directory
+    end
+
     # Write test result
     # @param [Allure::TestResult] test_result
     # @return [void]
@@ -58,8 +65,10 @@ module Allure
 
     private
 
+    attr_reader :results_directory
+
     def output_dir
-      @output_dir ||= FileUtils.mkpath(Config.instance.results_directory).first
+      @output_dir ||= FileUtils.mkpath(results_directory).first
     end
 
     def write(name, source)

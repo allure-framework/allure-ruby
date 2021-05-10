@@ -8,12 +8,18 @@ module Allure
   class AllureLifecycle # rubocop:disable Metrics/ClassLength
     extend Forwardable
 
-    def initialize
+    # Allure lifecycle instance
+    #
+    # @param [Allure::Config] configuration
+    def initialize(config = Config.instance)
       @test_context = []
       @step_context = []
-      @logger = Logger.new($stdout, level: Config.instance.logging_level)
-      @file_writer = FileWriter.new
+      @config = config
+      @logger = config.logger
+      @file_writer = FileWriter.new(config.results_directory)
     end
+
+    attr_reader :config
 
     def_delegators :file_writer, :write_attachment, :write_environment, :write_categories
 
@@ -227,14 +233,12 @@ module Allure
     # Clean results directory
     # @return [void]
     def clean_results_dir
-      Allure.configuration.tap do |c|
-        FileUtils.rm_f(Dir.glob("#{c.results_directory}/**/*")) if c.clean_results_directory
-      end
+      FileUtils.rm_f(Dir.glob("#{config.results_directory}/**/*")) if config.clean_results_directory
     end
 
     private
 
-    attr_accessor :logger, :file_writer
+    attr_reader :logger, :file_writer
 
     def current_executable
       current_test_step || @current_fixture || @current_test_case

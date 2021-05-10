@@ -59,5 +59,33 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: be263ef9412dc65a7aa8dfb6e8162d5c7cfb3307fae0a444cde9dd6ca6f52848
         with:
-          coverageCommand: bundle exec rake test_with_coverage
+          coverageCommand: bundle exec rake test:coverage
           coverageLocations: coverage/coverage.json:simplecov
+      - name: Publish allure report
+        if: always()
+        env:
+          GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker pull -q ghcr.io/andrcuns/allure-report-publisher:latest; \
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE":/workspace \
+            -v "$GITHUB_EVENT_PATH":"$GITHUB_EVENT_PATH" \
+            -e GITHUB_WORKFLOW="$GITHUB_WORKFLOW" \
+            -e GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
+            -e GITHUB_SERVER_URL="$GITHUB_SERVER_URL" \
+            -e GITHUB_API_URL="$GITHUB_API_URL" \
+            -e GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+            -e GITHUB_JOB="$GITHUB_JOB" \
+            -e GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            -e GITHUB_AUTH_TOKEN="$GITHUB_AUTH_TOKEN" \
+            -e GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" \
+            -e GOOGLE_CLOUD_CREDENTIALS_JSON="$GOOGLE_CLOUD_CREDENTIALS_JSON" \
+            ghcr.io/andrcuns/allure-report-publisher:latest \
+            upload gcs \
+              --results-glob="/workspace/*/reports/allure-results/*" \
+              --bucket="allure-test-reports" \
+              --prefix="allure-ruby/$GITHUB_REF" \
+              --update-pr \
+              --copy-latest \
+              --color || true

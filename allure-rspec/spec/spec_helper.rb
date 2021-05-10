@@ -10,15 +10,20 @@ SimpleCov.command_name("allure-rspec")
 
 AllureRspec.configure do |c|
   c.clean_results_directory = true
-  c.link_tms_pattern = "http://www.jira.com/tms/{}"
-  c.link_issue_pattern = "http://www.jira.com/issue/{}"
 end
 
 RSpec.shared_context("allure mock") do
-  let(:lifecycle) { spy("lifecycle") }
+  let(:config) do
+    AllureRspec::RspecConfig.send(:new).tap do |conf|
+      conf.link_tms_pattern = "http://www.jira.com/tms/{}"
+      conf.link_issue_pattern = "http://www.jira.com/issue/{}"
+    end
+  end
+
+  let(:lifecycle) { spy("lifecycle", config: config) }
 
   before do
-    allow(Allure).to receive(:lifecycle).and_return(lifecycle)
+    allow(Allure::AllureLifecycle).to receive(:new) { lifecycle }
   end
 end
 

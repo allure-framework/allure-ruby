@@ -48,6 +48,14 @@ describe Allure::ResultUtils do
     expect(utils.tag_label("tag")).to eq(Allure::Label.new("tag", "tag"))
   end
 
+  it "returns tms link" do
+    expect(utils.tms_link("123", "http://jira.com/{}")).to eq(Allure::Link.new("tms", "123", "http://jira.com/123"))
+  end
+
+  it "returns issue link" do
+    expect(utils.issue_link("123", "http://jira.com/{}")).to eq(Allure::Link.new("issue", "123", "http://jira.com/123"))
+  end
+
   it "returns correct status for expectation error" do
     expect(Allure::ResultUtils.status(rspec_error)).to eq(Allure::Status::FAILED)
   end
