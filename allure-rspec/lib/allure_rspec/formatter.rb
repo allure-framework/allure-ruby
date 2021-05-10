@@ -33,6 +33,10 @@ module AllureRspec
       config.full_description = names if names
     end
 
+    RSpec::Core::Example.class_eval do
+      include Allure
+    end
+
     def initialize(output)
       super
 
@@ -43,8 +47,6 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::StartNotification] _start_notification
     # @return [void]
     def start(_start_notification)
-      inject_helpers
-
       lifecycle.clean_results_dir
     end
 
@@ -62,6 +64,7 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
     # @return [void]
     def example_started(example_notification)
+      inject_lifecycle(example_notification.example)
       lifecycle.start_test_case(test_result(example_notification.example))
     end
 
@@ -125,13 +128,12 @@ module AllureRspec
       ALLURE_STATUS[result.status]
     end
 
-    # Include helper methods in rspec example
+    # Add formatter specific lifecycle to example instance
     #
+    # @param [RSpec::Core::Example] example
     # @return [void]
-    def inject_helpers
-      RSpec::Core::Example.class_eval(<<~EVAL, __FILE__, __LINE__ + 1) # rubocop:disable Style/DocumentDynamicEvalDefinition
-        include Allure;
-
+    def inject_lifecycle(example)
+      example.instance_eval(<<~EVAL, __FILE__, __LINE__ + 1) # rubocop:disable Style/DocumentDynamicEvalDefinition
         def lifecycle
           Thread.current['#{self}']
         end
