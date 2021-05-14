@@ -24,7 +24,7 @@ module AllureCucumber
       Allure.lifecycle = Allure::AllureLifecycle.new(AllureCucumber.configuration)
       AllureCucumber.configuration.results_directory = config.out_stream if config.out_stream.is_a?(String)
 
-      @cucumber_model ||= AllureCucumberModel.new(config, lifecycle.config)
+      @cucumber_model ||= AllureCucumberModel.new(config, AllureCucumber.configuration)
 
       names = Allure::TestPlan.test_names
       config.name_regexps.push(*names.map { |name| /#{name}/ }) if names
