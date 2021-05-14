@@ -8,6 +8,7 @@ module AllureRspec
   # Main rspec formatter class translating rspec events to allure lifecycle
   class RSpecFormatter < RSpec::Core::Formatters::BaseFormatter
     include Utils
+    extend Forwardable
 
     # @return [Hash] allure statuses mapping
     ALLURE_STATUS = {
@@ -33,14 +34,10 @@ module AllureRspec
       config.full_description = names if names
     end
 
-    RSpec::Core::Example.class_eval do
-      include Allure
-    end
-
     def initialize(output)
       super
 
-      @lifecycle = Thread.current[to_s] = (Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration))
+      Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration)
     end
 
     # Start test run
@@ -48,6 +45,10 @@ module AllureRspec
     # @return [void]
     def start(_start_notification)
       lifecycle.clean_results_dir
+
+      RSpec::Core::Example.class_eval do
+        include Allure
+      end
     end
 
     # Starts example group
@@ -64,7 +65,6 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
     # @return [void]
     def example_started(example_notification)
-      inject_lifecycle(example_notification.example)
       lifecycle.start_test_case(test_result(example_notification.example))
     end
 
@@ -85,7 +85,7 @@ module AllureRspec
 
     private
 
-    attr_reader :lifecycle
+    def_delegator :Allure, :lifecycle
 
     # Transform example to <Allure::TestResult>
     # @param [RSpec::Core::Example] example
@@ -126,18 +126,6 @@ module AllureRspec
       return Allure::ResultUtils.status(result.exception) if result.status == :failed
 
       ALLURE_STATUS[result.status]
-    end
-
-    # Add formatter specific lifecycle to example instance
-    #
-    # @param [RSpec::Core::Example] example
-    # @return [void]
-    def inject_lifecycle(example)
-      example.instance_eval(<<~EVAL, __FILE__, __LINE__ + 1) # rubocop:disable Style/DocumentDynamicEvalDefinition
-        def lifecycle
-          Thread.current['#{self}']
-        end
-      EVAL
     end
   end
 end

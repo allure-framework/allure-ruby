@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 describe "AllureLifecycle::TestStepResult" do
-  include_context "lifecycle"
   include_context "lifecycle mocks"
 
   context "without exceptions" do
@@ -9,8 +8,6 @@ describe "AllureLifecycle::TestStepResult" do
       @result_container = start_test_container("Test Container")
       @test_case = start_test_case(name: "Test case", full_name: "Full name")
       @test_step = start_test_step(name: "Step name", descrption: "step description")
-
-      allow(Allure::FileWriter).to receive(:new).and_return(file_writer)
     end
 
     it "starts test step" do
@@ -65,7 +62,7 @@ describe "AllureLifecycle::TestStepResult" do
       lifecycle.stop_test_step
       lifecycle.stop_test_step
 
-      aggregate_failures "should have stopped both step" do
+      aggregate_failures "should have stopped both steps" do
         expect(@test_step.steps.last.stage).to eq(Allure::Stage::FINISHED)
         expect(@test_step.stage).to eq(Allure::Stage::FINISHED)
       end

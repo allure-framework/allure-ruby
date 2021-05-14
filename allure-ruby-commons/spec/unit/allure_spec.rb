@@ -1,134 +1,167 @@
 # frozen_string_literal: true
 
-describe Allure, test: true do
-  include_context "lifecycle"
+describe Allure do
   include_context "lifecycle mocks"
 
-  context "lifecycle" do
-    it "returns thread specific object" do
-      lifecycle = Allure.lifecycle
-      thr = Thread.new { @lifecycle = Allure.lifecycle }
-      thr.join
-
-      expect(lifecycle).not_to eq(@lifecycle)
-    end
-
-    it "sets custom lifecycle object" do
-      lifecycle = Allure::AllureLifecycle.new
-      Allure.lifecycle = lifecycle
-
-      expect(lifecycle).to eq(Allure.lifecycle)
+  let(:allure_mock) do
+    Class.new do
+      include Allure
     end
   end
 
-  context "utilities" do
-    before(:each) do
-      Allure.lifecycle = lifecycle
-      start_test_container("Result Container")
-      @test_case = start_test_case(name: "Some scenario", full_name: "feature: Some scenario")
+  let(:allure) { allure_mock.new }
+
+  before do
+    Thread.current[:test_lifecycle] = lifecycle
+    allure.instance_eval(<<~EVAL, __FILE__, __LINE__ + 1)
+      def lifecycle
+        Thread.current[:test_lifecycle]
+      end
+    EVAL
+
+    start_test_container("Result Container")
+    @test_case = start_test_case(name: "Some scenario", full_name: "feature: Some scenario")
+  end
+
+  context "with config helpers" do
+    it "yields allure configuration" do
+      expect { |b| allure.configure(&b) }.to yield_with_args(Allure::Config.instance)
+    end
+  end
+
+  context "with label helpers" do
+    let(:labels) { @test_case.labels }
+    let(:label) { labels.last }
+
+    it "adds single epic label" do
+      allure.epic("Test Epic 1")
+      allure.epic("Test Epic")
+
+      aggregate_failures do
+        expect(label).to eq(Allure::Label.new("epic", "Test Epic"))
+        expect(labels.count { |it| it.name == "epic" }).to eq(1)
+      end
     end
 
-    it "adds epic label" do
-      Allure.epic("Test Epic")
-      expect(@test_case.labels.last).to eq(Allure::Label.new("epic", "Test Epic"))
+    it "adds single feature label" do
+      allure.feature("Test Feature 1")
+      allure.feature("Test Feature")
+
+      aggregate_failures do
+        expect(label).to eq(Allure::Label.new("feature", "Test Feature"))
+        expect(labels.count { |it| it.name == "feature" }).to eq(1)
+      end
     end
 
-    it "adds feature label" do
-      Allure.feature("Test Feature")
-      expect(@test_case.labels.last).to eq(Allure::Label.new("feature", "Test Feature"))
+    it "adds single story label" do
+      allure.story("Test Story 1")
+      allure.story("Test Story")
+
+      aggregate_failures do
+        expect(label).to eq(Allure::Label.new("story", "Test Story"))
+        expect(labels.count { |it| it.name == "story" }).to eq(1)
+      end
     end
 
-    it "adds story label" do
-      Allure.story("Test Story")
-      expect(@test_case.labels.last).to eq(Allure::Label.new("story", "Test Story"))
-    end
+    it "adds single suite label" do
+      allure.suite("Test Suite 1")
+      allure.suite("Test Suite")
 
-    it "adds suite label" do
-      Allure.suite("Test Suite")
-      expect(@test_case.labels.last).to eq(Allure::Label.new("suite", "Test Suite"))
+      aggregate_failures do
+        expect(label).to eq(Allure::Label.new("suite", "Test Suite"))
+        expect(labels.count { |it| it.name == "suite" }).to eq(1)
+      end
     end
 
     it "adds tag label" do
-      Allure.tag("Test Tag")
-      expect(@test_case.labels.last).to eq(Allure::Label.new("tag", "Test Tag"))
+      allure.tag("Test Tag")
+      expect(label).to eq(Allure::Label.new("tag", "Test Tag"))
     end
+  end
 
+  context "with description helpers" do
     it "sets test case description" do
-      Allure.add_description("Test description")
+      allure.add_description("Test description")
       expect(@test_case.description).to eq("Test description")
     end
 
     it "sets test case description_html" do
-      Allure.description_html("Test description_html")
+      allure.description_html("Test description_html")
       expect(@test_case.description_html).to eq("Test description_html")
     end
+  end
 
+  context "with parameter helpers" do
     it "adds test parameter" do
-      Allure.parameter("name", "value")
+      allure.parameter("name", "value")
       expect(@test_case.parameters.last).to eq(Allure::Parameter.new("name", "value"))
     end
+  end
 
+  context "with link helpers" do
     it "adds tms link" do
-      Allure.tms("QA", "http://jira.com/tms/QA-123")
+      allure.tms("QA", "http://jira.com/tms/QA-123")
       expect(@test_case.links.last).to eq(Allure::Link.new("tms", "QA", "http://jira.com/tms/QA-123"))
     end
 
     it "adds issue link" do
-      Allure.issue("BUG", "http://jira.com/bug/QA-123")
+      allure.issue("BUG", "http://jira.com/bug/QA-123")
       expect(@test_case.links.last).to eq(Allure::Link.new("issue", "BUG", "http://jira.com/bug/QA-123"))
     end
+  end
 
+  context "with file creation helpers" do
     it "adds attachment" do
-      { name: "Test attach", source: "Some string", type: Allure::ContentType::TXT }.tap do |args|
-        expect(file_writer).to receive(:write_attachment).with(args[:source], kind_of(Allure::Attachment))
-        Allure.add_attachment(**args)
-      end
+      args = { name: "Test attach", source: "Some string", type: Allure::ContentType::TXT }
+      allure.add_attachment(**args)
+
+      expect(file_writer).to have_received(:write_attachment).with(args[:source], kind_of(Allure::Attachment))
     end
 
     it "adds environment" do
-      { PROP1: "test", PROP2: "test" }.tap do |env|
-        expect(file_writer).to receive(:write_environment).with(env)
-        Allure.add_environment(env)
-      end
+      env = { PROP1: "test", PROP2: "test" }
+      allure.add_environment(env)
+
+      expect(file_writer).to have_received(:write_environment).with(env)
     end
 
     it "adds categories" do
-      [Allure::Category.new(name: "Ignored test", matched_statuses: [Allure::Status::SKIPPED])].tap do |cat|
-        expect(file_writer).to receive(:write_categories).with(cat)
-        Allure.add_categories(cat)
-      end
+      categories = [Allure::Category.new(name: "Ignored test", matched_statuses: [Allure::Status::SKIPPED])]
+      allure.add_categories(categories)
+
+      expect(file_writer).to have_received(:write_categories).with(categories)
     end
+  end
+
+  context "with step helpers" do
+    let(:last_step) { @test_case.steps.last }
 
     it "adds custom step" do
-      test_step = Allure.step(name: "Custom step", status: Allure::Status::FAILED)
-      expect(@test_case.steps.last).to eq(test_step)
+      test_step = allure.step(name: "Custom step", status: Allure::Status::FAILED)
+      expect(last_step).to eq(test_step)
     end
 
     it "runs custom step" do
-      result = Allure.run_step("Custom step") do
+      result = allure.run_step("Custom step") do
         1 + 1
       end
 
-      test_step = @test_case.steps.last
       aggregate_failures "custom step should be handled correctly" do
         expect(result).to eq(2)
-        expect(test_step.name).to eq("Custom step")
-        expect(test_step.status).to eq(Allure::Status::PASSED)
-        expect(test_step.stage).to eq(Allure::Stage::FINISHED)
+        expect(last_step.name).to eq("Custom step")
+        expect(last_step.status).to eq(Allure::Status::PASSED)
+        expect(last_step.stage).to eq(Allure::Stage::FINISHED)
       end
     end
 
     it "correctly handles custom step failure" do
-      Allure.run_step("Custom step") do
-        raise StandardError, "Error"
-      end
-    rescue StandardError
-      test_step = @test_case.steps.last
+      expect { allure.run_step("Custom step") { raise(StandardError, "Error") } }.to raise_error("Error")
+
       aggregate_failures "custom step should be handled correctly" do
-        expect(test_step.name).to eq("Custom step")
-        expect(test_step.status).to eq(Allure::Status::BROKEN)
-        expect(test_step.stage).to eq(Allure::Stage::FINISHED)
-        expect(test_step.status_details.message).to eq("Error")
+        expect(last_step.name).to eq("Custom step")
+        expect(last_step.status).to eq(Allure::Status::BROKEN)
+        expect(last_step.stage).to eq(Allure::Stage::FINISHED)
+        expect(last_step.status_details.message).to eq("Error")
       end
     end
   end

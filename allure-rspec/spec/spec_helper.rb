@@ -34,8 +34,7 @@ RSpec.shared_context("allure mock") do
 end
 
 RSpec.shared_context("rspec runner") do
-  let(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
-  let(:rspec_runner) { RspecRunner.new(test_tmp_dir) }
+  let!(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
 
   before do
     configuration = RSpec::Core::Configuration.new
@@ -46,6 +45,6 @@ RSpec.shared_context("rspec runner") do
   end
 
   def run_rspec(spec)
-    rspec_runner.run(spec)
+    Thread.new { RspecRunner.new(test_tmp_dir).run(spec) }.join
   end
 end
