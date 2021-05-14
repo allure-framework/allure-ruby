@@ -20,9 +20,24 @@ RSpec.configure do |config|
   end
 end
 
-RSpec.shared_context("lifecycle") do
-  let(:config) { Allure::Config.send(:new).tap { |conf| conf.results_directory = "spec/allure-results" } }
+RSpec.shared_context("lifecycle mocks") do
   let(:lifecycle) { Allure::AllureLifecycle.new(config) }
+  let(:config) { Allure::Config.send(:new).tap { |conf| conf.results_directory = "spec/allure-results" } }
+
+  let(:file_writer) do
+    instance_double(
+      "FileWriter",
+      write_attachment: nil,
+      write_categories: nil,
+      write_environment: nil,
+      write_test_result: nil,
+      write_test_result_container: nil
+    )
+  end
+
+  before do
+    allow(Allure::FileWriter).to receive(:new).and_return(file_writer)
+  end
 
   def start_test_container(name)
     lifecycle.start_test_container(Allure::TestResultContainer.new(name: name))
@@ -46,14 +61,6 @@ RSpec.shared_context("lifecycle") do
 
   def start_test_step(**options)
     lifecycle.start_test_step(Allure::StepResult.new(**options))
-  end
-end
-
-RSpec.shared_context("lifecycle mocks") do
-  let(:file_writer) { double("FileWriter") }
-
-  before do
-    allow(Allure::FileWriter).to receive(:new).and_return(file_writer)
   end
 end
 

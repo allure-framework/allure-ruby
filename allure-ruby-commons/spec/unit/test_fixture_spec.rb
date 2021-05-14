@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 describe "AllureLifecycle::Fixtures" do
-  include_context "lifecycle"
   include_context "lifecycle mocks"
 
   context "without exceptions" do

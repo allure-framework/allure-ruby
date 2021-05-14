@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 describe "AllureLifecycle::TestResultContainer" do
-  include_context "lifecycle"
   include_context "lifecycle mocks"
 
   before do
@@ -19,24 +18,11 @@ describe "AllureLifecycle::TestResultContainer" do
   end
 
   it "stops test result container" do
-    allow(file_writer).to receive(:write_test_result_container)
     lifecycle.stop_test_container
 
-    expect(@result_container.stop).to be_a(Numeric)
-  end
-
-  it "calls file writer on stop" do
-    expect(file_writer).to receive(:write_test_result_container).with(@result_container)
-
-    lifecycle.stop_test_container
-  end
-
-  it "logs error when stopping or updating test result container" do
-    allow(file_writer).to receive(:write_test_result_container)
-
-    lifecycle.stop_test_container
-
-    lifecycle.update_test_container { |c| c.description = "Test" }
-    lifecycle.stop_test_container
+    aggregate_failures do
+      expect(@result_container.stop).to be_a(Numeric)
+      expect(file_writer).to have_received(:write_test_result_container).with(@result_container)
+    end
   end
 end

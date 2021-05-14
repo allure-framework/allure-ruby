@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 describe "AllureLifecycle::TestCaseResult" do
-  include_context "lifecycle"
   include_context "lifecycle mocks"
 
   context "without exceptions" do
@@ -25,8 +24,6 @@ describe "AllureLifecycle::TestCaseResult" do
     end
 
     it "stops test" do
-      allow(file_writer).to receive(:write_test_result)
-
       lifecycle.stop_test_case
 
       aggregate_failures "Should update parameters" do
@@ -36,9 +33,9 @@ describe "AllureLifecycle::TestCaseResult" do
     end
 
     it "calls file writer on stop" do
-      expect(file_writer).to receive(:write_test_result).with(@test_case)
-
       lifecycle.stop_test_case
+
+      expect(file_writer).to have_received(:write_test_result).with(@test_case)
     end
 
     it "adds default labels" do

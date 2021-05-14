@@ -34,10 +34,9 @@ RSpec.shared_context("allure mock") do
 end
 
 RSpec.shared_context("cucumber runner") do
-  let(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
-  let(:cucumber) { CucumberHelper.new(test_tmp_dir) }
+  let!(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
 
   def run_cucumber_cli(feature)
-    cucumber.execute(feature)
+    Thread.new { CucumberHelper.new(test_tmp_dir).execute(feature) }.join
   end
 end
