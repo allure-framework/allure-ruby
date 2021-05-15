@@ -60,7 +60,7 @@ describe "example_started" do
       ClimateControl.modify(ALLURE_ENVIRONMENT: environment) { example.run }
     end
 
-    it "prefixes test name with environment", :test do
+    it "prefixes test name with environment" do
       run_rspec(<<~SPEC)
         describe "#{suite}" do
           it "#{spec}" do

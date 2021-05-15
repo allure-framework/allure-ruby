@@ -67,7 +67,7 @@ describe "on_test_case_started" do
     end
   end
 
-  context "with allure environment", :test do
+  context "with allure environment" do
     let(:environment) { "test" }
 
     around do |example|
