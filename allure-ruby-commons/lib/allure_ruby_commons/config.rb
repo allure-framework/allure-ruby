@@ -11,7 +11,7 @@ module Allure
     # @return [Array<String>] valid log levels
     LOGLEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
 
-    attr_writer :environmnet
+    attr_writer :environment
 
     attr_accessor :results_directory,
                   :logging_level,
