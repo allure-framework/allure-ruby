@@ -8,13 +8,13 @@ require_rel "allure_rspec/**/*.rb"
 module AllureRspec
   class << self
     # Get allure cucumber configuration
-    # @return [RspecConfig]
+    # @return [AllureRspec::RspecConfig]
     def configuration
       RspecConfig.instance
     end
 
     # Set allure configuration
-    # @yieldparam [RspecConfig]
+    # @yieldparam [AllureRspec::RspecConfig]
     # @yieldreturn [void]
     # @return [void]
     def configure

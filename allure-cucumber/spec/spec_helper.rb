@@ -4,6 +4,7 @@ require "simplecov"
 require "rspec"
 require "allure-cucumber"
 require "allure-rspec"
+require "climate_control"
 
 require_relative "cucumber_helper"
 
@@ -22,6 +23,9 @@ end
 RSpec.shared_context("allure mock") do
   let(:config) do
     AllureCucumber::CucumberConfig.send(:new).tap do |conf|
+      conf.instance_variable_set(:@allure_config, Allure::Config.send(:new))
+
+      conf.results_directory = "tmp/allure-results"
       conf.link_tms_pattern = "http://www.jira.com/tms/{}"
       conf.link_issue_pattern = "http://www.jira.com/issue/{}"
     end

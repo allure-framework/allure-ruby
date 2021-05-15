@@ -3,8 +3,23 @@
 require "singleton"
 
 module AllureCucumber
-  # Allure cucumber configuration
-  class CucumberConfig < Allure::Config
+  # Allure Cucumber configuration class
+  #
+  # @!attribute results_directory
+  #   @return [String]
+  # @!attribute clean_results_directory
+  #   @return [Boolean]
+  # @!attribute link_issue_pattern
+  #   @return [String]
+  # @!attribute link_tms_pattern
+  #   @return [String]
+  # @!attribute logging_level
+  #   @return [Integer]
+  # @!attribute [r] logger
+  #   @return [Logger]
+  # @!attribute environment
+  #   @return [String]
+  class CucumberConfig
     include Singleton
     extend Forwardable
 
@@ -30,6 +45,7 @@ module AllureCucumber
                    :link_tms_pattern=,
                    :logging_level,
                    :logging_level=,
+                   :logger,
                    :results_directory,
                    :results_directory=,
                    :environment,
@@ -38,8 +54,6 @@ module AllureCucumber
     attr_writer :tms_prefix, :issue_prefix, :severity_prefix
 
     def initialize
-      super()
-
       @allure_config = Allure.configuration
     end
 

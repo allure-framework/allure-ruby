@@ -3,8 +3,23 @@
 require "singleton"
 
 module AllureRspec
-  # Shorthand configuration class
-  class RspecConfig < Allure::Config
+  # Allure RSpec configuration class
+  #
+  # @!attribute results_directory
+  #   @return [String]
+  # @!attribute clean_results_directory
+  #   @return [Boolean]
+  # @!attribute link_issue_pattern
+  #   @return [String]
+  # @!attribute link_tms_pattern
+  #   @return [String]
+  # @!attribute logging_level
+  #   @return [Integer]
+  # @!attribute [r] logger
+  #   @return [Logger]
+  # @!attribute environment
+  #   @return [String]
+  class RspecConfig
     include Singleton
     extend Forwardable
 
@@ -17,14 +32,13 @@ module AllureRspec
                    :link_tms_pattern=,
                    :logging_level,
                    :logging_level=,
+                   :logger,
                    :results_directory,
                    :results_directory=,
                    :environment,
                    :environment=
 
     def initialize
-      super()
-
       @allure_config = Allure.configuration
     end
   end

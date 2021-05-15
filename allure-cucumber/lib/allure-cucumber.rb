@@ -9,13 +9,13 @@ require_rel "allure_cucumber"
 module AllureCucumber
   class << self
     # Get allure cucumber configuration
-    # @return [Allure::CucumberConfig]
+    # @return [AllureCucumber::CucumberConfig]
     def configuration
       CucumberConfig.instance
     end
 
     # Set allure configuration
-    # @yieldparam [Allure::CucumberConfig]
+    # @yieldparam [AllureCucumber::CucumberConfig]
     # @yieldreturn [void]
     # @return [void]
     def configure
