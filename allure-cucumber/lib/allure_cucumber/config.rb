@@ -31,7 +31,9 @@ module AllureCucumber
                    :logging_level,
                    :logging_level=,
                    :results_directory,
-                   :results_directory=
+                   :results_directory=,
+                   :environment,
+                   :environment=
 
     attr_writer :tms_prefix, :issue_prefix, :severity_prefix
 

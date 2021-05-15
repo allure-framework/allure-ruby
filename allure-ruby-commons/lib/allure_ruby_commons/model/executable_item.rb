@@ -27,9 +27,16 @@ module Allure
       @parameters = options[:parameters] || []
     end
 
-    attr_accessor(
-      :name, :status, :status_details, :stage, :description, :description_html,
-      :steps, :attachments, :parameters, :start, :stop
-    )
+    attr_accessor :name,
+                  :status,
+                  :status_details,
+                  :stage,
+                  :description,
+                  :description_html,
+                  :steps,
+                  :attachments,
+                  :parameters,
+                  :start,
+                  :stop
   end
 end

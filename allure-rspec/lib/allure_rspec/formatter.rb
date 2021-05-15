@@ -101,7 +101,8 @@ module AllureRspec
         full_name: example.full_description,
         labels: parser.labels,
         links: parser.links,
-        status_details: parser.status_details
+        status_details: parser.status_details,
+        environment: lifecycle.config.environment
       )
     end
 

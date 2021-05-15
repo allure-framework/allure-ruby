@@ -18,7 +18,9 @@ module AllureRspec
                    :logging_level,
                    :logging_level=,
                    :results_directory,
-                   :results_directory=
+                   :results_directory=,
+                   :environment,
+                   :environment=
 
     def initialize
       super()

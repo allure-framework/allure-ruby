@@ -11,11 +11,26 @@ module Allure
     # @return [Array<String>] valid log levels
     LOGLEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
 
-    attr_accessor :results_directory, :logging_level, :link_tms_pattern, :link_issue_pattern, :clean_results_directory
+    attr_writer :environmnet
+
+    attr_accessor :results_directory,
+                  :logging_level,
+                  :link_tms_pattern,
+                  :link_issue_pattern,
+                  :clean_results_directory
 
     def initialize
       @results_directory = "reports/allure-results"
       @logging_level = LOGLEVELS.index(ENV.fetch("ALLURE_LOG_LEVEL", "INFO")) || Logger::INFO
+    end
+
+    # Allure environment
+    #
+    # @return [String]
+    def environment
+      return(@environment) if defined?(@environment)
+
+      @environment ||= ENV["ALLURE_ENVIRONMENT"]
     end
 
     # Logger instance

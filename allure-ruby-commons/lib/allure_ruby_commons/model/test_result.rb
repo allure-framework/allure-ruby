@@ -5,6 +5,7 @@ module Allure
   class TestResult < ExecutableItem
     # @param [String] uuid
     # @param [String] history_id
+    # @param [String] environment
     # @param [Hash] options
     # @option options [String] :name
     # @option options [String] :full_name
@@ -18,8 +19,10 @@ module Allure
     # @option options [Array<Allure::Link>] :links ([])
     # @option options [Array<Allure::Attachment>] :attachments ([])
     # @option options [Array<Allure::Parameter>] :parameters ([])
-    def initialize(uuid: UUID.generate, history_id: UUID.generate, **options)
+    def initialize(uuid: UUID.generate, history_id: UUID.generate, environment: nil, **options)
       super
+
+      @name = test_name(options[:name], environment)
       @uuid = uuid
       @history_id = history_id
       @full_name = options[:full_name] || "Unnamed"
@@ -27,6 +30,23 @@ module Allure
       @links = options[:links] || []
     end
 
-    attr_accessor :uuid, :history_id, :full_name, :labels, :links
+    attr_accessor :uuid,
+                  :history_id,
+                  :full_name,
+                  :labels,
+                  :links
+
+    private
+
+    # Test name prefixed with allure environment
+    #
+    # @param [String] name
+    # @param [String] environment
+    # @return [String]
+    def test_name(name, environment)
+      return name unless environment
+
+      "#{environment}: #{name}"
+    end
   end
 end
