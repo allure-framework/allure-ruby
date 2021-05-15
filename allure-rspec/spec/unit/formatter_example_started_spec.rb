@@ -53,6 +53,29 @@ describe "example_started" do
     end
   end
 
+  context "allure environment" do
+    let(:environment) { "test" }
+
+    around do |example|
+      ClimateControl.modify(ALLURE_ENVIRONMENT: environment) { example.run }
+    end
+
+    it "prefixes test name with environment", :test do
+      run_rspec(<<~SPEC)
+        describe "#{suite}" do
+          it "#{spec}" do
+          end
+        end
+      SPEC
+
+      expect(lifecycle).to have_received(:start_test_case).once do |arg|
+        aggregate_failures "Should have correct args" do
+          expect(arg.name).to eq("#{environment}: spec")
+        end
+      end
+    end
+  end
+
   context "special rspec tags" do
     it "are skipped in test case generic labels" do
       run_rspec(<<~SPEC)

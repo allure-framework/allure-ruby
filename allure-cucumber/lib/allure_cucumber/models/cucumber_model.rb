@@ -29,7 +29,8 @@ module AllureCucumber
         labels: parser.labels,
         links: parser.links,
         parameters: parser.parameters,
-        status_details: parser.status_details
+        status_details: parser.status_details,
+        environment: config.environment
       )
     end
 
