@@ -20,9 +20,11 @@ Following configuration options are supported:
 
 ```ruby
     Allure.configure do |config|
-      config.results_directory = "/whatever/you/like"
+      config.results_directory = "report/allure-results"
       config.clean_results_directory = true
       config.logging_level = Logger::INFO
+      config.environment = "staging"
+
       # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
       config.link_tms_pattern = "http://www.jira.com/browse/{}"
       config.link_issue_pattern = "http://www.jira.com/browse/{}"
@@ -34,6 +36,13 @@ Getting the configuration object:
 ```ruby
 Allure.configuration
 ```
+
+### Allure environment
+
+It is possible to set up custom allure environment which will be used to prefix test case names. This is useful if you run same tests on different environments and generate single report. This way different runs are not put as retry. Environment can be configured in following ways:
+
+* via `ALLURE_ENVIRONMENT` environment variable
+* via `configure` method
 
 ### Log level
 
