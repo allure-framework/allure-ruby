@@ -46,6 +46,7 @@ module AllureCucumber
                    :logging_level,
                    :logging_level=,
                    :logger,
+                   :logger=,
                    :results_directory,
                    :results_directory=,
                    :environment,
