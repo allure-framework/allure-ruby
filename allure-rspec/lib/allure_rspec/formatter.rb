@@ -8,7 +8,6 @@ module AllureRspec
   # Main rspec formatter class translating rspec events to allure lifecycle
   class RSpecFormatter < RSpec::Core::Formatters::BaseFormatter
     include Utils
-    extend Forwardable
 
     # @return [Hash] allure statuses mapping
     ALLURE_STATUS = {
@@ -37,7 +36,8 @@ module AllureRspec
     def initialize(output)
       super
 
-      Allure.lifecycle = Allure::AllureLifecycle.new(AllureRspec.configuration)
+      @allure_config = AllureRspec.configuration
+      Allure.lifecycle = @lifecycle = Allure::AllureLifecycle.new(@allure_config)
     end
 
     # Start test run
@@ -85,13 +85,13 @@ module AllureRspec
 
     private
 
-    def_delegator :Allure, :lifecycle
+    attr_reader :lifecycle, :allure_config
 
     # Transform example to <Allure::TestResult>
     # @param [RSpec::Core::Example] example
     # @return [Allure::TestResult]
     def test_result(example)
-      parser = RspecMetadataParser.new(example, lifecycle.config)
+      parser = RspecMetadataParser.new(example, allure_config)
 
       Allure::TestResult.new(
         name: example.description,
@@ -102,7 +102,7 @@ module AllureRspec
         labels: parser.labels,
         links: parser.links,
         status_details: parser.status_details,
-        environment: lifecycle.config.environment
+        environment: allure_config.environment
       )
     end
 
