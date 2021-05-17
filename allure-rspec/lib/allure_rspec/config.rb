@@ -56,7 +56,12 @@ module AllureRspec
       @allure_config = Allure.configuration
     end
 
-    attr_writer :tms_tag, :issue_tag, :severity_tag, :epic_tag, :feature_tag, :story_tag
+    attr_writer :tms_tag,
+                :issue_tag,
+                :severity_tag,
+                :epic_tag,
+                :feature_tag,
+                :story_tag
 
     # @return [Symbol]
     def tms_tag
