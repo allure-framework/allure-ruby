@@ -69,7 +69,11 @@ module AllureRspec
 
     private
 
-    attr_reader :example, :config
+    # @return [RSpec::Core::Example]
+    attr_reader :example
+
+    # @return [AllureRspec::RspecConfig]
+    attr_reader :config
 
     # Example metadata
     #
@@ -100,7 +104,7 @@ module AllureRspec
     # Get severity
     # @return [String]
     def severity
-      Allure::ResultUtils.severity_label(metadata[:severity] || "normal")
+      Allure::ResultUtils.severity_label(metadata[config.severity_tag] || "normal")
     end
 
     # Get test suite labels
@@ -121,9 +125,9 @@ module AllureRspec
     # @return [Array<Allure::Label>]
     def behavior_labels
       metadata = example.metadata
-      epic = metadata[:epic] || Pathname.new(strip_relative(example.file_path)).parent.to_s
-      feature = metadata[:feature] || example.example_group.description
-      story = metadata[:story]
+      epic = metadata[config.epic_tag] || Pathname.new(strip_relative(example.file_path)).parent.to_s
+      feature = metadata[config.feature_tag] || example.example_group.description
+      story = metadata[config.story_tag]
 
       [
         Allure::ResultUtils.epic_label(epic),
@@ -149,7 +153,12 @@ module AllureRspec
     # @param [Symbol] key
     # @return [boolean]
     def special_metadata_tag?(key)
-      tms?(key) || issue?(key) || %i[severity epic feature story].include?(key)
+      tms?(key) || issue?(key) || [
+        config.severity_tag,
+        config.epic_tag,
+        config.feature_tag,
+        config.story_tag
+      ].include?(key)
     end
 
     # Does key match custom allure label
@@ -163,14 +172,14 @@ module AllureRspec
     # @param [Symbol] key
     # @return [boolean]
     def tms?(key)
-      key.to_s.match?(/tms(_\d+)?/i)
+      key.to_s.match?(/#{config.tms_tag}(_\d+)?/i)
     end
 
     # Does key match issue pattern
     # @param [Symbol] key
     # @return [boolean]
     def issue?(key)
-      key.to_s.match?(/issue(_\d+)?/i)
+      key.to_s.match?(/#{config.issue_tag}(_\d+)?/i)
     end
   end
 end
