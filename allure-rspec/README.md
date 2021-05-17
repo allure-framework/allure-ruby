@@ -56,11 +56,12 @@ end
 
 ### Adding tms links
 
-Configure tms link pattern:
+Configure tms link pattern and rspec tag:
 
 ```ruby
 AllureRspec.configure do |config|
   config.link_tms_pattern = "http://www.jira.com/browse/{}"
+  config.tms_tag = :tms
 end
 ```
 
@@ -87,6 +88,7 @@ Configure issue link pattern:
 ```ruby
 AllureRspec.configure do |config|
   config.link_issue_pattern = "http://www.jira.com/browse/{}"
+  config.issue_tag = :issue
 end
 ```
 
@@ -108,7 +110,15 @@ end
 
 ### Adding custom severity and status details
 
-Test severity (`normal` by default) can be changed via `severity` tag:
+Configure severity tag:
+
+```ruby
+AllureRspec.configure do |config|
+  config.severity_tag = :severity
+end
+```
+
+Test severity is set to `normal` by default:
 
 ```ruby
 it "some test case", severity: :critical do
@@ -134,9 +144,20 @@ it "some test case", allure_1: "visual_test", allure_2: "core_functionality" do
 end
 ```
 
+All rspec metadata tags will also be added as labels in test report.
+
 ### Behavior driven test grouping
 
-Marking tests with tags `:epic, :feature, :story`, will group tests accordingly in Behavior report tab:
+Marking tests with tags `:epic, :feature, :story`, will group tests accordingly in Behavior report tab.\
+Tag values can also be configured:
+
+```ruby
+AllureRspec.configure do |config|
+  config.epic_tag = :epic
+  config.feature_tag = :feature
+  config.story_tag = :story
+end
+```
 
 ```ruby
 context "context", feature: "my feature"  do
