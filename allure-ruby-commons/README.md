@@ -23,6 +23,7 @@ Following configuration options are supported:
       config.results_directory = "report/allure-results"
       config.clean_results_directory = true
       config.logging_level = Logger::INFO
+      config.logger = Logger.new($stdout, Logger::DEBUG)
       config.environment = "staging"
 
       # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
