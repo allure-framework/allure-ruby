@@ -52,7 +52,12 @@ module AllureCucumber
                    :environment,
                    :environment=
 
-    attr_writer :tms_prefix, :issue_prefix, :severity_prefix
+    attr_writer :tms_prefix,
+                :issue_prefix,
+                :severity_prefix,
+                :epic_prefix,
+                :feature_prefix,
+                :story_prefix
 
     def initialize
       @allure_config = Allure.configuration
