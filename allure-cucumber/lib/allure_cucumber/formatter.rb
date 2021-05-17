@@ -5,8 +5,6 @@ require "cucumber/core"
 module AllureCucumber
   # Main formatter class. Translates cucumber event to allure lifecycle
   class CucumberFormatter
-    extend Forwardable
-
     # @return [Hash] hook handler methods
     HOOK_HANDLERS = {
       "Before hook" => :start_prepare_fixture,
@@ -21,10 +19,12 @@ module AllureCucumber
 
     # @param [Cucumber::Configuration] config
     def initialize(config)
-      Allure.lifecycle = Allure::AllureLifecycle.new(AllureCucumber.configuration)
-      AllureCucumber.configuration.results_directory = config.out_stream if config.out_stream.is_a?(String)
+      allure_config = AllureCucumber.configuration
 
-      @cucumber_model ||= AllureCucumberModel.new(config, Allure.lifecycle.config)
+      Allure.lifecycle = @lifecycle = Allure::AllureLifecycle.new(allure_config)
+      allure_config.results_directory = config.out_stream if config.out_stream.is_a?(String)
+
+      @cucumber_model ||= AllureCucumberModel.new(config, allure_config)
 
       names = Allure::TestPlan.test_names
       config.name_regexps.push(*names.map { |name| /#{name}/ }) if names
@@ -89,9 +89,7 @@ module AllureCucumber
 
     private
 
-    def_delegator :Allure, :lifecycle
-
-    attr_reader :cucumber_model
+    attr_reader :lifecycle, :cucumber_model
 
     # Is hook fixture like Before, After or Step as AfterStep
     # @param [String] text

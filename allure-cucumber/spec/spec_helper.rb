@@ -30,10 +30,11 @@ RSpec.shared_context("allure mock") do
       conf.link_issue_pattern = "http://www.jira.com/issue/{}"
     end
   end
-  let(:lifecycle) { spy("lifecycle", config: config) }
+  let(:lifecycle) { spy("lifecycle") }
 
   before do
     allow(Allure::AllureLifecycle).to receive(:new) { lifecycle }
+    allow(AllureCucumber).to receive(:configuration) { config }
   end
 end
 

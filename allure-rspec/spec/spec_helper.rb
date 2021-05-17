@@ -30,10 +30,11 @@ RSpec.shared_context("allure mock") do
     end
   end
 
-  let(:lifecycle) { spy("lifecycle", config: config) }
+  let(:lifecycle) { spy("lifecycle") }
 
   before do
     allow(Allure::AllureLifecycle).to receive(:new) { lifecycle }
+    allow(AllureRspec).to receive(:configuration) { config }
   end
 end
 
