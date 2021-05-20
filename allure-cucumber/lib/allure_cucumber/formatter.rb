@@ -20,9 +20,9 @@ module AllureCucumber
     # @param [Cucumber::Configuration] config
     def initialize(config)
       allure_config = AllureCucumber.configuration
+      allure_config.results_directory = config.out_stream if config.out_stream.is_a?(String)
 
       Allure.lifecycle = @lifecycle = Allure::AllureLifecycle.new(allure_config)
-      allure_config.results_directory = config.out_stream if config.out_stream.is_a?(String)
 
       @cucumber_model ||= AllureCucumberModel.new(config, allure_config)
 
