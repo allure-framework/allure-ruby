@@ -80,6 +80,7 @@ jobs:
             -e GITHUB_RUN_ID="$GITHUB_RUN_ID" \
             -e GITHUB_AUTH_TOKEN="$GITHUB_AUTH_TOKEN" \
             -e GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" \
+            -e ALLURE_JOB_NAME="rspec-3.0" \
             -e GOOGLE_CLOUD_CREDENTIALS_JSON="$GOOGLE_CLOUD_CREDENTIALS_JSON" \
             ghcr.io/andrcuns/allure-report-publisher:latest \
             upload gcs \
