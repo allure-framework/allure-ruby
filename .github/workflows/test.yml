@@ -67,7 +67,7 @@ jobs:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker pull -q ghcr.io/andrcuns/allure-report-publisher:latest; \
+          docker pull -q andrcuns/allure-report-publisher:0.1.0; \
           docker run --rm \
             -v "$GITHUB_WORKSPACE":/workspace \
             -v "$GITHUB_EVENT_PATH":"$GITHUB_EVENT_PATH" \
@@ -86,6 +86,6 @@ jobs:
               --results-glob="/workspace/*/reports/allure-results/*" \
               --bucket="allure-test-reports" \
               --prefix="allure-ruby/$GITHUB_REF" \
-              --update-pr \
+              --update-pr="comment" \
               --copy-latest \
               --color || true
