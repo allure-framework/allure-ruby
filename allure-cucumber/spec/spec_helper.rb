@@ -25,7 +25,6 @@ RSpec.shared_context("allure mock") do
     AllureCucumber::CucumberConfig.send(:new).tap do |conf|
       conf.instance_variable_set(:@allure_config, Allure::Config.send(:new))
 
-      conf.results_directory = "tmp/allure-results"
       conf.link_tms_pattern = "http://www.jira.com/tms/{}"
       conf.link_issue_pattern = "http://www.jira.com/issue/{}"
     end
