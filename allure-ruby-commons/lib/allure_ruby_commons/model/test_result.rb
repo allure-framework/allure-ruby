@@ -22,31 +22,33 @@ module Allure
     def initialize(uuid: UUID.generate, history_id: UUID.generate, environment: nil, **options)
       super
 
-      @name = test_name(options[:name], environment)
+      @name = options[:name]
       @uuid = uuid
-      @history_id = history_id
+      @history_id = Digest::MD5.hexdigest("#{history_id}#{environment}")
       @full_name = options[:full_name] || "Unnamed"
       @labels = options[:labels] || []
       @links = options[:links] || []
+      @parameters = updated_parameters(options[:parameters] || [], environment)
     end
 
     attr_accessor :uuid,
                   :history_id,
                   :full_name,
                   :labels,
-                  :links
+                  :links,
+                  :parameters
 
     private
 
     # Test name prefixed with allure environment
     #
-    # @param [String] name
+    # @param [Array] parameters
     # @param [String] environment
-    # @return [String]
-    def test_name(name, environment)
-      return name unless environment
+    # @return [Array]
+    def updated_parameters(parameters, environment)
+      return parameters unless environment
 
-      "#{environment}: #{name}"
+      parameters << Parameter.new("environment", environment)
     end
   end
 end

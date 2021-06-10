@@ -51,7 +51,7 @@ describe "AllureLifecycle::TestCaseResult" do
     let(:environment) { "test" }
 
     it "starts test case in allure environment" do
-      expect(test_case.name).to eq("test: Test Case")
+      expect(test_case.parameters).to include(Allure::Parameter.new("environment", environment))
     end
   end
 end
