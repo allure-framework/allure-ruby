@@ -70,7 +70,7 @@ describe "example_started" do
 
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
         aggregate_failures "Should have correct args" do
-          expect(arg.name).to eq("#{environment}: spec")
+          expect(arg.parameters).to include(Allure::Parameter.new("environment", environment))
         end
       end
     end

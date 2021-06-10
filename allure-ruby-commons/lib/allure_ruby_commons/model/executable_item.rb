@@ -24,7 +24,6 @@ module Allure
       @stage = options[:stage] || Stage::SCHEDULED
       @steps = options[:steps] || []
       @attachments = options[:attachments] || []
-      @parameters = options[:parameters] || []
     end
 
     attr_accessor :name,
@@ -35,7 +34,6 @@ module Allure
                   :description_html,
                   :steps,
                   :attachments,
-                  :parameters,
                   :start,
                   :stop
   end

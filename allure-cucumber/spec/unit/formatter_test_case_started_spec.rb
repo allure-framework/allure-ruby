@@ -58,9 +58,6 @@ describe "on_test_case_started" do
           expect(arg.full_name).to eq(scenario)
           expect(arg.links).to be_empty
           expect(arg.parameters).to be_empty
-          expect(arg.history_id).to eq(
-            Digest::MD5.hexdigest("#<Cucumber::Core::Test::Case: #{test_tmp_dir}/features/test.feature:3>")
-          )
           expect(arg.labels).to match_array(labels)
         end
       end
@@ -83,7 +80,7 @@ describe "on_test_case_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
-        expect(arg.name).to eq("#{environment}: Add a to b")
+        expect(arg.parameters).to include(Allure::Parameter.new("environment", environment))
       end
     end
   end
