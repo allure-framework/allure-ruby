@@ -66,8 +66,9 @@ jobs:
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ALLURE_PUBLISHER_IMAGE: andrcuns/allure-report-publisher:0.3.2
         run: |
-          docker pull -q andrcuns/allure-report-publisher:0.1.0; \
+          docker pull -q ${ALLURE_PUBLISHER_IMAGE}; \
           docker run --rm \
             -v "$GITHUB_WORKSPACE":/workspace \
             -v "$GITHUB_EVENT_PATH":"$GITHUB_EVENT_PATH" \
@@ -82,7 +83,7 @@ jobs:
             -e GITHUB_EVENT_PATH="$GITHUB_EVENT_PATH" \
             -e ALLURE_JOB_NAME="rspec-3.0" \
             -e GOOGLE_CLOUD_CREDENTIALS_JSON="$GOOGLE_CLOUD_CREDENTIALS_JSON" \
-            ghcr.io/andrcuns/allure-report-publisher:latest \
+            ${ALLURE_PUBLISHER_IMAGE} \
             upload gcs \
               --results-glob="/workspace/*/reports/allure-results/*" \
               --bucket="allure-test-reports" \
