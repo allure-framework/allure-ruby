@@ -54,11 +54,7 @@ describe "example_started" do
   end
 
   context "allure environment" do
-    let(:environment) { "test" }
-
-    around do |example|
-      ClimateControl.modify(ALLURE_ENVIRONMENT: environment) { example.run }
-    end
+    let(:allure_environment) { "test" }
 
     it "prefixes test name with environment" do
       run_rspec(<<~SPEC)
@@ -70,7 +66,7 @@ describe "example_started" do
 
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
         aggregate_failures "Should have correct args" do
-          expect(arg.parameters).to include(Allure::Parameter.new("environment", environment))
+          expect(arg.parameters).to include(Allure::Parameter.new("environment", allure_environment))
         end
       end
     end

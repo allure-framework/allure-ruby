@@ -22,7 +22,12 @@ end
 
 RSpec.shared_context("lifecycle mocks") do
   let(:lifecycle) { Allure::AllureLifecycle.new(config) }
-  let(:config) { Allure::Config.send(:new).tap { |conf| conf.results_directory = "spec/allure-results" } }
+  let(:config) do
+    Allure::Config.send(:new).tap do |conf|
+      conf.results_directory = "spec/allure-results"
+      conf.environment = nil
+    end
+  end
 
   let(:file_writer) do
     instance_double(

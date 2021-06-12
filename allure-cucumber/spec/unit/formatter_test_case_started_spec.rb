@@ -65,11 +65,7 @@ describe "on_test_case_started" do
   end
 
   context "with allure environment" do
-    let(:environment) { "test" }
-
-    around do |example|
-      ClimateControl.modify(ALLURE_ENVIRONMENT: environment) { example.run }
-    end
+    let(:allure_environment) { "test" }
 
     it "prefixes test name with environment" do
       run_cucumber_cli(<<~FEATURE)
@@ -80,7 +76,7 @@ describe "on_test_case_started" do
       FEATURE
 
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
-        expect(arg.parameters).to include(Allure::Parameter.new("environment", environment))
+        expect(arg.parameters).to include(Allure::Parameter.new("environment", allure_environment))
       end
     end
   end
