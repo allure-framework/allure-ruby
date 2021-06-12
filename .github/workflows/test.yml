@@ -64,7 +64,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: allure-results
-          path: allure-results
       - name: Publish allure report
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
@@ -73,7 +72,7 @@ jobs:
         run: |
           docker pull -q ${ALLURE_PUBLISHER_IMAGE}; \
           docker run --rm \
-            -v "$GITHUB_WORKSPACE/allure-results":/allure-results \
+            -v "$GITHUB_WORKSPACE":/workspace \
             -v "$GITHUB_EVENT_PATH":"$GITHUB_EVENT_PATH" \
             -e GITHUB_WORKFLOW="$GITHUB_WORKFLOW" \
             -e GITHUB_EVENT_NAME="$GITHUB_EVENT_NAME" \
@@ -88,7 +87,7 @@ jobs:
             -e GOOGLE_CLOUD_CREDENTIALS_JSON="$GOOGLE_CLOUD_CREDENTIALS_JSON" \
             ${ALLURE_PUBLISHER_IMAGE} \
             upload gcs \
-              --results-glob="/allure-results/*" \
+              --results-glob="/workspace/*/reports/allure-results/*" \
               --bucket="allure-test-reports" \
               --prefix="allure-ruby/$GITHUB_REF" \
               --update-pr="comment" \
