@@ -10,7 +10,7 @@ on:
 
 jobs:
   rubocop:
-    name: Rubocop lint
+    name: rubocop
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -24,7 +24,7 @@ jobs:
         run: bundle exec rake rubocop
 
   rspec:
-    name: ruby ${{ matrix.ruby }}
+    name: rspec ruby-${{ matrix.ruby }}
     runs-on: ubuntu-20.04
     needs: rubocop
     strategy:
@@ -51,4 +51,14 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: allure-results
-          path: reports/allure-results/
+          path: '*/reports/allure-results/*'
+  
+  report:
+    name: allure report
+    runs-on: ubuntu-20.04
+    needs: rspec
+    steps:
+      - name: Download allure-results
+        uses: actions/download-artifact@v2
+        with:
+          name: allure-results
