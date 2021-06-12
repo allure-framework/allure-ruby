@@ -55,7 +55,7 @@ jobs:
           retention-days: 1
   
   report:
-    name: Publish allure report
+    name: Allure report
     runs-on: ubuntu-20.04
     needs: rspec
     if: always()
