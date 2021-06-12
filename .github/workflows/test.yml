@@ -24,7 +24,7 @@ jobs:
         run: bundle exec rake rubocop
 
   rspec:
-    name: Test with ${{ matrix.ruby }} ruby
+    name: ruby ${{ matrix.ruby }}
     runs-on: ubuntu-20.04
     needs: rubocop
     strategy:
@@ -47,3 +47,8 @@ jobs:
         with:
           coverageCommand: bundle exec rake test:coverage
           coverageLocations: coverage/coverage.json:simplecov
+      - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-results
+          path: reports/allure-results/
