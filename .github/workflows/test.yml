@@ -10,7 +10,7 @@ on:
 
 jobs:
   rubocop:
-    name: rubocop
+    name: Rubocop
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -24,7 +24,7 @@ jobs:
         run: bundle exec rake rubocop
 
   rspec:
-    name: rspec ruby-${{ matrix.ruby }}
+    name: Rspec ruby-${{ matrix.ruby }}
     runs-on: ubuntu-20.04
     needs: rubocop
     strategy:
@@ -55,7 +55,7 @@ jobs:
           retention-days: 1
   
   report:
-    name: allure report
+    name: Publish allure report
     runs-on: ubuntu-20.04
     needs: rspec
     if: always()
