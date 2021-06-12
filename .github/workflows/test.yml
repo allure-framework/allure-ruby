@@ -10,7 +10,7 @@ on:
 
 jobs:
   rubocop:
-    name: Rubocop lint
+    name: Rubocop
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -24,12 +24,12 @@ jobs:
         run: bundle exec rake rubocop
 
   rspec:
-    name: Test with ${{ matrix.ruby }} ruby
+    name: Rspec ruby-${{ matrix.ruby }}
     runs-on: ubuntu-20.04
     needs: rubocop
     strategy:
       matrix:
-        ruby: ["2.5", "2.6", "2.7"]
+        ruby: ["2.5", "2.6", "2.7", "3.0"]
       fail-fast: false
     steps:
       - name: Checkout
@@ -40,33 +40,35 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Test
-        run: bundle exec rake test
-  
-  rspec_coverage:
-    name: Test with 3.0 ruby
-    runs-on: ubuntu-20.04
-    needs: rubocop
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.4
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0
-          bundler-cache: true
-      - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: be263ef9412dc65a7aa8dfb6e8162d5c7cfb3307fae0a444cde9dd6ca6f52848
+          ALLURE_ENVIRONMENT: ruby-${{ matrix.ruby }}
         with:
           coverageCommand: bundle exec rake test:coverage
           coverageLocations: coverage/coverage.json:simplecov
+      - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-results
+          path: '*/reports/allure-results/*'
+          retention-days: 1
+  
+  report:
+    name: Allure report
+    runs-on: ubuntu-20.04
+    needs: rspec
+    if: always()
+    steps:
+      - name: Download allure-results
+        uses: actions/download-artifact@v2
+        with:
+          name: allure-results
       - name: Publish allure report
-        if: always()
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ALLURE_PUBLISHER_IMAGE: andrcuns/allure-report-publisher:0.3.2
+          ALLURE_PUBLISHER_IMAGE: andrcuns/allure-report-publisher:0.3.3
         run: |
           docker pull -q ${ALLURE_PUBLISHER_IMAGE}; \
           docker run --rm \
@@ -90,4 +92,5 @@ jobs:
               --prefix="allure-ruby/$GITHUB_REF" \
               --update-pr="comment" \
               --copy-latest \
-              --color || true
+              --ignore-missing-results \
+              --color
