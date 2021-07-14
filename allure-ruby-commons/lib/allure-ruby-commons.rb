@@ -161,14 +161,18 @@ module Allure
     lifecycle.add_attachment(name: name, source: source, type: type, test_case: test_case)
   end
 
-  # Add allure report environment info
+  # Manually create environment.properties file
+  #   if this method is called before test run started and
+  #   option clean_results_directory is enabled, the file will be deleted
   # @param [Hash<Symbol, String>] environment
   # @return [void]
   def add_environment(environment)
     lifecycle.write_environment(environment)
   end
 
-  # Add categories info
+  # Manually create categories.json file
+  #   if this method is called before test run started and
+  #   option clean_results_directory is enabled, the file will be deleted
   # @param [File, Array<Category>] categories
   # @return [void]
   def add_categories(categories)

@@ -50,7 +50,11 @@ module AllureRspec
                    :results_directory,
                    :results_directory=,
                    :environment,
-                   :environment=
+                   :environment=,
+                   :environment_properties,
+                   :environment_properties=,
+                   :categories,
+                   :categories=
 
     def initialize
       @allure_config = Allure.configuration

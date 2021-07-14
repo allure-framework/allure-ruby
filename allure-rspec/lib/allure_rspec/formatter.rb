@@ -45,6 +45,8 @@ module AllureRspec
     # @return [void]
     def start(_start_notification)
       lifecycle.clean_results_dir
+      lifecycle.write_environment
+      lifecycle.write_categories
 
       RSpec::Core::Example.class_eval do
         include Allure

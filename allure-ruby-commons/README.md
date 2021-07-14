@@ -29,6 +29,14 @@ Following configuration options are supported:
       # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
       config.link_tms_pattern = "http://www.jira.com/browse/{}"
       config.link_issue_pattern = "http://www.jira.com/browse/{}"
+
+      # additional metadata
+      # environment.properties
+      config.environment_properties = {
+        custom_attribute: "foo"
+      }
+      # categories.json
+      config.categories = File.new("my_custom_categories.json")
     end
 ```
 
@@ -38,9 +46,9 @@ Getting the configuration object:
 Allure.configuration
 ```
 
-### Allure environment
+### Allure execution environment
 
-It is possible to set up custom allure environment which will be used to prefix test case names. This is useful if you run same tests on different environments and generate single report. This way different runs are not put as retry. Environment can be configured in following ways:
+It is possible to set up custom allure environment which will be used as custom parameter `environment` in every test case. This is useful if you run same tests on different environments and generate single report. This way different runs are not put as retry. Environment can be configured in following ways:
 
 * via `ALLURE_ENVIRONMENT` environment variable
 * via `configure` method

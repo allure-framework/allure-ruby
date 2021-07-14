@@ -17,7 +17,9 @@ module Allure
                   :logging_level,
                   :link_tms_pattern,
                   :link_issue_pattern,
-                  :clean_results_directory
+                  :clean_results_directory,
+                  :environment_properties,
+                  :categories
 
     def initialize
       @results_directory = "reports/allure-results"

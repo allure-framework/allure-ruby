@@ -41,6 +41,8 @@ module AllureCucumber
     # @return [void]
     def on_test_run_started(_event)
       lifecycle.clean_results_dir
+      lifecycle.write_environment
+      lifecycle.write_categories
     end
 
     # Handle test case started event
