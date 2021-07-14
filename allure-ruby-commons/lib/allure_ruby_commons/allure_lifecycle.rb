@@ -21,7 +21,7 @@ module Allure
 
     attr_reader :config
 
-    def_delegators :file_writer, :write_attachment, :write_environment, :write_categories
+    def_delegators :file_writer, :write_attachment
 
     # Start test result container
     # @param [Allure::TestResultContainer] test_result_container
@@ -219,6 +219,26 @@ module Allure
       executable_item.attachments.push(attachment)
       logger.debug { "Adding attachment '#{name}' to '#{executable_item.name}'" }
       write_attachment(source, attachment)
+    end
+
+    # Add environment.properties file
+    #
+    # @param [Hash] env
+    # @return [void]
+    def write_environment(env = config.environment_properties)
+      return unless env
+
+      file_writer.write_environment(env)
+    end
+
+    # Add categories.json
+    #
+    # @param [File, Array<Category>] categories
+    # @return [void]
+    def write_categories(categories = config.categories)
+      return unless categories
+
+      file_writer.write_categories(categories)
     end
 
     # Add step to current fixture|step|test case

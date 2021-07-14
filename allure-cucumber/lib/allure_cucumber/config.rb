@@ -50,7 +50,11 @@ module AllureCucumber
                    :results_directory,
                    :results_directory=,
                    :environment,
-                   :environment=
+                   :environment=,
+                   :environment_properties,
+                   :environment_properties=,
+                   :categories,
+                   :categories=
 
     attr_writer :tms_prefix,
                 :issue_prefix,
