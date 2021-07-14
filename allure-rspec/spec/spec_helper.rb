@@ -21,6 +21,8 @@ end
 
 RSpec.shared_context("allure mock") do
   let(:allure_environment) { nil }
+  let(:environment_properties) { { env: "test" } }
+  let(:categories) { [Allure::Category.new(name: "test")] }
   let(:config) do
     AllureRspec::RspecConfig.send(:new).tap do |conf|
       conf.instance_variable_set(:@allure_config, Allure::Config.send(:new))
@@ -29,6 +31,9 @@ RSpec.shared_context("allure mock") do
       conf.results_directory = "tmp/allure-results"
       conf.link_tms_pattern = "http://www.jira.com/tms/{}"
       conf.link_issue_pattern = "http://www.jira.com/issue/{}"
+
+      conf.environment_properties = environment_properties
+      conf.categories = categories
     end
   end
 
