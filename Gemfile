@@ -10,7 +10,7 @@ group :development do
   gem "colorize", "~> 0.8.1"
   gem "pry", "~> 0.14.1"
   gem "rake", "~> 13.0.6"
-  gem "solargraph", "~> 0.42.4"
+  gem "solargraph", "~> 0.43.0"
 end
 
 group :test do
