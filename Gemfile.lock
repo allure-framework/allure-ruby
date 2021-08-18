@@ -1,21 +1,21 @@
 PATH
   remote: allure-cucumber
   specs:
-    allure-cucumber (2.14.3)
-      allure-ruby-commons (= 2.14.3)
+    allure-cucumber (2.14.4)
+      allure-ruby-commons (= 2.14.4)
       cucumber (>= 4.0.0, < 8)
 
 PATH
   remote: allure-rspec
   specs:
-    allure-rspec (2.14.3)
-      allure-ruby-commons (= 2.14.3)
+    allure-rspec (2.14.4)
+      allure-ruby-commons (= 2.14.4)
       rspec-core (>= 3.8, < 4)
 
 PATH
   remote: allure-ruby-commons
   specs:
-    allure-ruby-commons (2.14.3)
+    allure-ruby-commons (2.14.4)
       mime-types (>= 3.3, < 4)
       oj (>= 3.10, < 4)
       require_all (>= 2, < 4)
@@ -52,14 +52,14 @@ GEM
     cucumber-create-meta (6.0.1)
       cucumber-messages (~> 17.0, >= 17.0.1)
       sys-uname (~> 1.2, >= 1.2.2)
-    cucumber-cucumber-expressions (12.1.1)
+    cucumber-cucumber-expressions (12.1.2)
     cucumber-gherkin (20.0.1)
       cucumber-messages (~> 17.0, >= 17.0.1)
     cucumber-html-formatter (16.0.1)
       cucumber-messages (~> 17.0, >= 17.0.1)
     cucumber-messages (17.0.1)
     cucumber-tag-expressions (3.0.1)
-    cucumber-wire (6.0.1)
+    cucumber-wire (6.1.0)
       cucumber-core (~> 10.0, >= 10.0.1)
       cucumber-cucumber-expressions (~> 12.1, >= 12.1.1)
       cucumber-messages (~> 17.0, >= 17.0.1)
@@ -83,7 +83,7 @@ GEM
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    oj (3.12.1)
+    oj (3.13.2)
     parallel (1.20.1)
     parser (3.0.2.0)
       ast (~> 2.4.1)
