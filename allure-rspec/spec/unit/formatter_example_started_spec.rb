@@ -130,10 +130,10 @@ describe "example_started" do
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
         expect(arg.links).to match_array(
           [
-            result_utils.tms_link("QA-123", link_tms_pattern),
-            result_utils.tms_link("QA-124", link_tms_pattern),
-            result_utils.issue_link("BUG-123", link_issue_pattern),
-            result_utils.issue_link("BUG-124", link_issue_pattern)
+            result_utils.tms_link("tms", "QA-123", link_tms_pattern),
+            result_utils.tms_link("tms", "QA-124", link_tms_pattern),
+            result_utils.issue_link("issue", "BUG-123", link_issue_pattern),
+            result_utils.issue_link("issue", "BUG-124", link_issue_pattern)
           ]
         )
       end

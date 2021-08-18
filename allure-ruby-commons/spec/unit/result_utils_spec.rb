@@ -49,11 +49,19 @@ describe Allure::ResultUtils do
   end
 
   it "returns tms link" do
-    expect(utils.tms_link("123", "http://jira.com/{}")).to eq(Allure::Link.new("tms", "123", "http://jira.com/123"))
+    expect(utils.tms_link("tms", "123", "http://jira.com/{}")).to eq(Allure::Link.new("tms", "123", "http://jira.com/123"))
+  end
+
+  it "returns tms link with value as full url" do
+    expect(utils.tms_link("tms", "http://jira.com/123", "{}")).to eq(Allure::Link.new("tms", "tms", "http://jira.com/123"))
   end
 
   it "returns issue link" do
-    expect(utils.issue_link("123", "http://jira.com/{}")).to eq(Allure::Link.new("issue", "123", "http://jira.com/123"))
+    expect(utils.issue_link("issue", "123", "http://jira.com/{}")).to eq(Allure::Link.new("issue", "123", "http://jira.com/123"))
+  end
+
+  it "returns issue link with value as full url" do
+    expect(utils.issue_link("issue", "http://jira.com/123", "{}")).to eq(Allure::Link.new("issue", "issue", "http://jira.com/123"))
   end
 
   it "returns correct status for expectation error" do

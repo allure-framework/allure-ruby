@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "socket"
+require "uri"
 
 module Allure
   # Variouse helper methods
@@ -133,16 +134,18 @@ module Allure
       # @param [String] value
       # @param [String] link_pattern
       # @return [Allure::Link]
-      def tms_link(value, link_pattern)
-        Link.new(TMS_LINK_TYPE, value, url(value, link_pattern))
+      def tms_link(name, value, link_pattern)
+        link_name = url?(value) ? name : value
+        Link.new(TMS_LINK_TYPE, link_name, url(value, link_pattern))
       end
 
       # Issue link
       # @param [String] value
       # @param [String] link_pattern
       # @return [Allure::Link]
-      def issue_link(value, link_pattern)
-        Link.new(ISSUE_LINK_TYPE, value, url(value, link_pattern))
+      def issue_link(name, value, link_pattern)
+        link_name = url?(value) ? name : value
+        Link.new(ISSUE_LINK_TYPE, link_name, url(value, link_pattern))
       end
 
       # Get status based on exception type
@@ -171,6 +174,19 @@ module Allure
 
       private
 
+      # Check if value is full url
+      #
+      # @param [String] value
+      # @return [Boolean]
+      def url?(value)
+        URI.parse(value.to_s).scheme
+      end
+
+      # Construct url from pattern
+      #
+      # @param [String] value
+      # @param [String] link_pattern
+      # @return [String]
       def url(value, link_pattern)
         link_pattern.sub("{}", value)
       end

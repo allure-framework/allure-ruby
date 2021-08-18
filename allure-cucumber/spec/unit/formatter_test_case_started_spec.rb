@@ -159,8 +159,8 @@ describe "on_test_case_started" do
       expect(lifecycle).to have_received(:start_test_case).once do |arg|
         expect(arg.links).to match_array(
           [
-            result_utils.tms_link("OAT-4444", link_tms_pattern),
-            result_utils.issue_link("BUG-22400", link_issue_pattern)
+            result_utils.tms_link("tms", "OAT-4444", link_tms_pattern),
+            result_utils.issue_link("issue", "BUG-22400", link_issue_pattern)
           ]
         )
       end
