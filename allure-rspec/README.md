@@ -152,7 +152,23 @@ it "some test case", allure_1: "visual_test", allure_2: "core_functionality" do
 end
 ```
 
-All rspec metadata tags will also be added as labels in test report.
+All other metadata tags are also automatically added as labels:
+
+```ruby
+it "some test case", :visual_test, :core_functionality do
+  # test
+end
+```
+
+#### Skipping certain tags
+
+To skip adding certain tags as labels, following configuration can be added:
+
+```ruby
+AllureRspec.configure do |config|
+  config.ignored_tags = [:core_functionality, :generic_metadata_to_ignore]
+end
+```
 
 ### Behavior driven test grouping
 

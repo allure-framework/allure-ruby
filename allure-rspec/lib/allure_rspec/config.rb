@@ -65,7 +65,8 @@ module AllureRspec
                 :severity_tag,
                 :epic_tag,
                 :feature_tag,
-                :story_tag
+                :story_tag,
+                :ignored_tags
 
     # @return [Symbol]
     def tms_tag
@@ -95,6 +96,11 @@ module AllureRspec
     # @return [Symbol]
     def story_tag
       @story_prefix || DEFAULT_STORY_TAG
+    end
+
+    # @return [Array]
+    def ignored_tags
+      @ignored_tags || []
     end
   end
 end
