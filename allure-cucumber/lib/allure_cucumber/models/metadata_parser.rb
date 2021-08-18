@@ -100,12 +100,15 @@ module AllureCucumber
     # @return [Array<Allure::Link>]
     def matching_links(type)
       pattern = reserved_patterns[type]
+      prefix = config.tms_prefix
       link_pattern = config.public_send("link_#{type}_pattern")
 
       tags
         .select { |tag| tag.match?(pattern) }
         .map do |tag|
-          tag.match(pattern) { |match| Allure::ResultUtils.public_send("#{type}_link", match[type], link_pattern) }
+          tag.match(pattern) do |match|
+            Allure::ResultUtils.public_send("#{type}_link", prefix, match[type], link_pattern)
+          end
         end
     end
 

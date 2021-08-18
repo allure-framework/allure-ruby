@@ -144,8 +144,8 @@ module AllureRspec
       return [] unless link_pattern
 
       metadata
-        .select { |k| __send__("#{type}?", k) }.values
-        .map { |v| Allure::ResultUtils.public_send("#{type}_link", v, link_pattern) }
+        .select { |key| __send__("#{type}?", key) }
+        .map { |key, value| Allure::ResultUtils.public_send("#{type}_link", key.to_s, value, link_pattern) }
     end
 
     # Special allure metadata tags
