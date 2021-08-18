@@ -69,32 +69,32 @@ module AllureRspec
 
     # @return [Symbol]
     def tms_tag
-      @tms_prefix || DEFAULT_TMS_TAG
+      @tms_tag || DEFAULT_TMS_TAG
     end
 
     # @return [Symbol]
     def issue_tag
-      @issue_prefix || DEFAULT_ISSUE_TAG
+      @issue_tag || DEFAULT_ISSUE_TAG
     end
 
     # @return [Symbol]
     def severity_tag
-      @severity_prefix || DEFAULT_SEVERITY_TAG
+      @severity_tag || DEFAULT_SEVERITY_TAG
     end
 
     # @return [Symbol]
     def epic_tag
-      @epic_prefix || DEFAULT_EPIC_TAG
+      @epic_tag || DEFAULT_EPIC_TAG
     end
 
     # @return [Symbol]
     def feature_tag
-      @feature_prefix || DEFAULT_FEATURE_TAG
+      @feature_tag || DEFAULT_FEATURE_TAG
     end
 
     # @return [Symbol]
     def story_tag
-      @story_prefix || DEFAULT_STORY_TAG
+      @story_tag || DEFAULT_STORY_TAG
     end
   end
 end
