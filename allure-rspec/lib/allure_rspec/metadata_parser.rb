@@ -157,7 +157,8 @@ module AllureRspec
         config.severity_tag,
         config.epic_tag,
         config.feature_tag,
-        config.story_tag
+        config.story_tag,
+        *config.ignored_tags
       ].include?(key)
     end
 

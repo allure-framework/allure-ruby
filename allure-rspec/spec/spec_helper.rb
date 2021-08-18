@@ -31,6 +31,7 @@ RSpec.shared_context("allure mock") do
       conf.results_directory = "tmp/allure-results"
       conf.link_tms_pattern = "http://www.jira.com/tms/{}"
       conf.link_issue_pattern = "http://www.jira.com/issue/{}"
+      conf.ignored_tags = [:ignored]
 
       conf.environment_properties = environment_properties
       conf.categories = categories

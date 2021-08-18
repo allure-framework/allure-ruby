@@ -98,7 +98,7 @@ describe "example_started" do
     it "are added as labels" do
       run_rspec(<<~SPEC)
         describe "#{suite}" do
-          it "#{spec}", :rspec_tag1, :flaky, rspec_tag2: true do
+          it "#{spec}", :rspec_tag1, :flaky, :ignored, rspec_tag2: true do
           end
         end
       SPEC
@@ -109,6 +109,7 @@ describe "example_started" do
           result_utils.tag_label("rspec_tag2"),
           result_utils.tag_label("flaky")
         )
+        expect(arg.labels).not_to include(result_utils.tag_label("ignored"))
       end
     end
   end
