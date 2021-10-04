@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "on_test_run_started" do
+describe "on_test_run_finished" do
   include_context "allure mock"
   include_context "cucumber runner"
 
@@ -14,11 +14,7 @@ describe "on_test_run_started" do
     FEATURE
   end
 
-  it "cleans results dir before starting test run" do
-    expect(lifecycle).to have_received(:clean_results_dir).once
-  end
-
-  it "creates categories.json file" do
-    expect(lifecycle).to have_received(:write_categories).once
+  it "creates environment.properties file" do
+    expect(lifecycle).to have_received(:write_environment).once
   end
 end

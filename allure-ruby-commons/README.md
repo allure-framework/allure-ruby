@@ -53,6 +53,22 @@ It is possible to set up custom allure environment which will be used as custom 
 * via `ALLURE_ENVIRONMENT` environment variable
 * via `configure` method
 
+### Environment properties
+
+To add additional environment information to the report it is possible to set configuration property `environment_properties`.
+
+Option can be set to hash or block returning a hash:
+
+```ruby
+# hash
+config.environment_properties = {
+        custom_attribute: "foo"
+      }
+
+# lambda
+config.environment_properties = -> { { custom_attributes: "foo"} }
+```
+
 ### Log level
 
 Log level can be also configured via environment variable `ALLURE_LOG_LEVEL` which accepts one of the following values: `DEBUG INFO WARN ERROR FATAL UNKNOWN`.

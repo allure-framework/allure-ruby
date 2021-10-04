@@ -19,6 +19,7 @@ module AllureRspec
     RSpec::Core::Formatters.register(
       self,
       :start,
+      :stop,
       :example_group_started,
       :example_group_finished,
       :example_started,
@@ -45,12 +46,18 @@ module AllureRspec
     # @return [void]
     def start(_start_notification)
       lifecycle.clean_results_dir
-      lifecycle.write_environment
       lifecycle.write_categories
 
       RSpec::Core::Example.class_eval do
         include Allure
       end
+    end
+
+    # Start test run
+    # @param [RSpec::Core::Notifications::StopNotification] _stop_notification
+    # @return [void]
+    def stop(_stop_notification)
+      lifecycle.write_environment
     end
 
     # Starts example group

@@ -164,7 +164,7 @@ module Allure
   # Manually create environment.properties file
   #   if this method is called before test run started and
   #   option clean_results_directory is enabled, the file will be deleted
-  # @param [Hash<Symbol, String>] environment
+  # @param [Hash<Symbol, String>, Proc] environment
   # @return [void]
   def add_environment(environment)
     lifecycle.write_environment(environment)
