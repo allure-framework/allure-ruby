@@ -47,26 +47,40 @@ describe Allure::AllureLifecycle do
 
   context "with environment, categories and clean results config" do
     let(:clean_results) { true }
-    let(:environment_properties) { { test: "test" } }
     let(:categories) { [Allure::Category.new(name: "test")] }
+    let(:env_properties_hash) { { test: "test" } }
 
-    it "clean allure results directory" do
+    it "cleans allure results directory" do
       lifecycle.clean_results_dir
 
       expect(Dir).to have_received(:glob).with("#{results_dir}/**/*")
       expect(FileUtils).to have_received(:rm_f).with(report_files)
     end
 
-    it "skips creating environment.properties" do
-      lifecycle.write_environment
-
-      expect(file_writer).to have_received(:write_environment).with(environment_properties)
-    end
-
-    it "skips creating categories.json" do
+    it "creates categories.json" do
       lifecycle.write_categories
 
       expect(file_writer).to have_received(:write_categories).with(categories)
+    end
+
+    context "with environment_properties hash configuration" do
+      let(:environment_properties) { env_properties_hash }
+
+      it "creates environment.properties" do
+        lifecycle.write_environment
+
+        expect(file_writer).to have_received(:write_environment).with(env_properties_hash)
+      end
+    end
+
+    context "with environment_properties lambda configuration" do
+      let(:environment_properties) { -> { env_properties_hash } }
+
+      it "creates environment.properties" do
+        lifecycle.write_environment
+
+        expect(file_writer).to have_received(:write_environment).with(env_properties_hash)
+      end
     end
   end
 end

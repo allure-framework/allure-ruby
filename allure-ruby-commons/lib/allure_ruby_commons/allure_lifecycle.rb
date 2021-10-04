@@ -223,12 +223,13 @@ module Allure
 
     # Add environment.properties file
     #
-    # @param [Hash] env
+    # @param [Hash, Proc] env
     # @return [void]
     def write_environment(env = config.environment_properties)
       return unless env
 
-      file_writer.write_environment(env)
+      env_properties = env.respond_to?(:call) ? env.call : env
+      file_writer.write_environment(env_properties)
     end
 
     # Add categories.json
