@@ -30,6 +30,7 @@ module AllureCucumber
       config.name_regexps.push(*names.map { |name| /#{name}/ }) if names
 
       config.on_event(:test_run_started) { |event| on_test_run_started(event) }
+      config.on_event(:test_run_finished) { |event| on_test_run_finished(event) }
       config.on_event(:test_case_started) { |event| on_test_case_started(event) }
       config.on_event(:test_step_started) { |event| on_test_step_started(event) }
       config.on_event(:test_step_finished) { |event| on_test_step_finished(event) }
@@ -41,8 +42,14 @@ module AllureCucumber
     # @return [void]
     def on_test_run_started(_event)
       lifecycle.clean_results_dir
-      lifecycle.write_environment
       lifecycle.write_categories
+    end
+
+    # Clean test result directory before starting run
+    # @param [Cucumber::Events::TestRunFinished] _event
+    # @return [void]
+    def on_test_run_finished(_event)
+      lifecycle.write_environment
     end
 
     # Handle test case started event

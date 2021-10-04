@@ -14,11 +14,7 @@ describe "start", focus: true do
     SPEC
   end
 
-  it "cleans allure results directory" do
-    expect(lifecycle).to have_received(:clean_results_dir).once
-  end
-
-  it "creates categories.json file" do
-    expect(lifecycle).to have_received(:write_categories).once
+  it "creates environment.properties file" do
+    expect(lifecycle).to have_received(:write_environment).once
   end
 end
