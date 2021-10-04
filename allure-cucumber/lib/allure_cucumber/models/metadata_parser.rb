@@ -104,7 +104,7 @@ module AllureCucumber
       link_pattern = config.public_send("link_#{type}_pattern")
 
       tags
-        .select { |tag| tag.match?(pattern) }
+        .grep(pattern)
         .map do |tag|
           tag.match(pattern) do |match|
             Allure::ResultUtils.public_send("#{type}_link", prefix, match[type], link_pattern)
