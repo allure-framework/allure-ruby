@@ -14,7 +14,8 @@ Gem::Specification.new do |s|
     "changelog_uri" => "https://github.com/allure-framework/allure-ruby/releases",
     "documentation_uri" => "https://github.com/allure-framework/allure-ruby/blob/master/allure-rspec/README.md",
     "source_code_uri" => "https://github.com/allure-framework/allure-ruby/tree/master/allure-rspec",
-    "wiki_uri" => "https://github.com/allure-framework/allure-ruby/wiki"
+    "wiki_uri" => "https://github.com/allure-framework/allure-ruby/wiki",
+    "rubygems_mfa_required" => "true"
   }
 
   s.required_ruby_version = ">= 2.5.0"
