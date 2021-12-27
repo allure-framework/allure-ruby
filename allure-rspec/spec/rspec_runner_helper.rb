@@ -33,7 +33,7 @@ class RspecRunner
 
   def write_file(path, content)
     FileUtils.mkdir_p(File.dirname(path))
-    File.open(path, "w") { |file| file.write(content) }
+    File.write(path, content)
   end
 
   def spec_file

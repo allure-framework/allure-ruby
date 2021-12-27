@@ -73,7 +73,7 @@ module Allure
 
     def write(name, source)
       filename = File.join(output_dir, name)
-      File.open(filename, "w") { |file| file.write(source) }
+      File.write(filename, source)
     end
 
     def copy(from, to)
