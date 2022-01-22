@@ -44,3 +44,6 @@ Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always
   SafeAutoCorrect: true
+
+Gemspec/RequireMFA:
+  Enabled: false
