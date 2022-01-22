@@ -166,7 +166,7 @@ describe Allure do
     end
 
     it "adds parameter" do
-      result = allure.run_step("New step") do
+      allure.run_step("New step") do
         allure.step_parameter("name", "value")
       end
       expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value"))
