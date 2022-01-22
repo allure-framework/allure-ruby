@@ -95,8 +95,8 @@ describe "AllureLifecycle::TestStepResult" do
     end
 
     it "with parameter" do
-      lifecycle.update_test_step { |step| step.parameters.push(Allure::Parameter.new("param", 'test')) }
-      expect(@test_step.parameters).to include(Allure::Parameter.new("param", 'test'))
+      lifecycle.update_test_step { |step| step.parameters.push(Allure::Parameter.new("name", "value")) }
+      expect(@test_step.parameters).to include(Allure::Parameter.new("name", "value"))
     end
   end
 end
