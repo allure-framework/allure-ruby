@@ -27,7 +27,7 @@ pre-commit install
 **Make your change. Add tests for your change. Make sure all the tests pass and coverage is good:**
 
 ```bash
-COV_HTML_REPORT=true bundle exec rake test_with_coverage
+COV_HTML_REPORT=true bundle exec rake test:coverage
 ```
 
 ## Building
