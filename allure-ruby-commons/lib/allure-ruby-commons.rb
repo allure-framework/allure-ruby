@@ -207,5 +207,15 @@ module Allure
   ensure
     lifecycle.stop_test_step
   end
+
+  # Add parameter to current test step
+  # @param [String] name
+  # @param [String] value
+  # @return [void]
+  def step_parameter(name, value)
+    lifecycle.update_test_step do |step|
+      step.parameters.push(Parameter.new(name, value))
+    end
+  end
 end
 # rubocop:enable Naming/FileName

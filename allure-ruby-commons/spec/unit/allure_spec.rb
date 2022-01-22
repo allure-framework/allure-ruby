@@ -164,5 +164,12 @@ describe Allure do
         expect(last_step.status_details.message).to eq("Error")
       end
     end
+
+    it "adds parameter" do
+      allure.run_step("New step") do
+        allure.step_parameter("name", "value")
+      end
+      expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value"))
+    end
   end
 end

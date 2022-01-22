@@ -82,4 +82,21 @@ describe "AllureLifecycle::TestStepResult" do
       lifecycle.stop_test_step
     end
   end
+
+  context "parameters" do
+    before do
+      @result_container = start_test_container("Test Container")
+      @test_case = start_test_case(name: "Test case", full_name: "Full name")
+      @test_step = start_test_step(name: "Step name", descrption: "step description")
+    end
+
+    it "without parameters" do
+      expect(@test_step.parameters).to be_empty
+    end
+
+    it "with parameter" do
+      lifecycle.update_test_step { |step| step.parameters.push(Allure::Parameter.new("name", "value")) }
+      expect(@test_step.parameters).to include(Allure::Parameter.new("name", "value"))
+    end
+  end
 end

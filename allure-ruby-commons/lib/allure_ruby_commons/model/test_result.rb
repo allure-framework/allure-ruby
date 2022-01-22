@@ -28,27 +28,13 @@ module Allure
       @full_name = options[:full_name] || "Unnamed"
       @labels = options[:labels] || []
       @links = options[:links] || []
-      @parameters = updated_parameters(options[:parameters] || [], environment)
+      @parameters << Parameter.new("environment", environment) if environment
     end
 
     attr_accessor :uuid,
                   :history_id,
                   :full_name,
                   :labels,
-                  :links,
-                  :parameters
-
-    private
-
-    # Test name prefixed with allure environment
-    #
-    # @param [Array] parameters
-    # @param [String] environment
-    # @return [Array]
-    def updated_parameters(parameters, environment)
-      return parameters unless environment
-
-      parameters << Parameter.new("environment", environment)
-    end
+                  :links
   end
 end
