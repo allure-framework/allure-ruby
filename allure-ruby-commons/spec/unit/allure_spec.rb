@@ -172,4 +172,21 @@ describe Allure do
       expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value"))
     end
   end
+
+  context "with status details helpers" do
+    it "sets testcase flaky status detail" do
+      allure.set_flaky
+      expect(@test_case.status_details.flaky).to eq(true)
+    end
+
+    it "sets testcase muted status detail" do
+      allure.set_muted
+      expect(@test_case.status_details.muted).to eq(true)
+    end
+
+    it "sets testcase known status detail" do
+      allure.set_known
+      expect(@test_case.status_details.known).to eq(true)
+    end
+  end
 end
