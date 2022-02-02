@@ -179,6 +179,33 @@ module Allure
     lifecycle.write_categories(categories)
   end
 
+  # Set test case status detail to flaky
+  #
+  # @return [void]
+  def set_flaky
+    lifecycle.update_test_case do |test_case|
+      test_case.status_details.flaky = true
+    end
+  end
+
+  # Set test case status detail to muted
+  #
+  # @return [void]
+  def set_muted
+    lifecycle.update_test_case do |test_case|
+      test_case.status_details.muted = true
+    end
+  end
+
+  # Set test case status detail to known
+  #
+  # @return [void]
+  def set_known
+    lifecycle.update_test_case do |test_case|
+      test_case.status_details.known = true
+    end
+  end
+
   # Add step with provided name and optional status to current test step, fixture or test case
   # @param [String] name
   # @param [Symbol] status {Status}, {Status::PASSED} by default
