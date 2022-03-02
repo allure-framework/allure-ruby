@@ -5,8 +5,6 @@ require "oj"
 module Allure
   # General jsonable object implementation
   class JSONable
-    Oj.default_options = { mode: :custom, use_to_hash: true, ascii_only: true }
-
     # Return object hash represantation
     # @return [Hash]
     def to_hash
