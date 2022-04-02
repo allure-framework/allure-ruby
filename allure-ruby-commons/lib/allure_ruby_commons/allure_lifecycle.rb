@@ -16,7 +16,6 @@ module Allure
       @step_context = []
       @config = config
       @logger = config.logger
-      @file_writer = FileWriter.new(config.results_directory)
     end
 
     attr_reader :config
@@ -259,7 +258,11 @@ module Allure
 
     private
 
-    attr_reader :logger, :file_writer
+    attr_reader :logger
+
+    def file_writer
+      @file_writer ||= FileWriter.new(config.results_directory)
+    end
 
     def current_executable
       current_test_step || @current_fixture || @current_test_case
