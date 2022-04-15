@@ -4,7 +4,8 @@ include:
   - "**/*.rake"
   - Rakefile
 exclude:
-  - "spec/**/*"
+  - spec/**/*
+  - vendor/bundle/**/*
 require: []
 domains: []
 reporters:

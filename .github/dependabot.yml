@@ -4,51 +4,48 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-    time: "02:00"
-  open-pull-requests-limit: 10
   reviewers:
-  - andrcuns
-  assignees:
-  - andrcuns
+    - andrcuns
   labels:
-  - type:dependency
+    - type:dependency
+  commit-message:
+    prefix: deps
+    prefix-development: deps-dev
 - package-ecosystem: bundler
   directory: "/allure-rspec"
   schedule:
     interval: daily
-    time: "02:00"
-  open-pull-requests-limit: 10
   reviewers:
-  - andrcuns
+    - andrcuns
   labels:
-  - type:dependency
+    - type:dependency
+  commit-message:
+    prefix: deps
 - package-ecosystem: bundler
   directory: "/allure-ruby-commons"
   schedule:
     interval: daily
-    time: "02:00"
-  open-pull-requests-limit: 10
   reviewers:
-  - andrcuns
+    - andrcuns
   labels:
-  - type:dependency
+    - type:dependency
+  commit-message:
+    prefix: deps
 - package-ecosystem: bundler
   directory: "/allure-cucumber"
   schedule:
     interval: daily
-    time: "02:00"
-  open-pull-requests-limit: 10
   reviewers:
-  - andrcuns
+    - andrcuns
   labels:
-  - type:dependency
+    - type:dependency
+  commit-message:
+    prefix: deps
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: "daily"
-    time: "02:00"
-  open-pull-requests-limit: 10
   reviewers:
-  - andrcuns
+    - andrcuns
   labels:
-  - type:dependency
+    - type:chore
