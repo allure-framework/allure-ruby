@@ -33,7 +33,7 @@ module AllureStepAnnotation
     @allure_step = nil
 
     define_method(method_name) do |*args, &block|
-      Allure.run_step(step_name) { original_method.bind(self).call(*args, &block) }
+      Allure.run_step(step_name) { original_method.bind_call(self, *args, &block) }
     end
   end
 end
