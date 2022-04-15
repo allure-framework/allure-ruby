@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "start", focus: true do
+describe "start" do
   include_context "allure mock"
   include_context "rspec runner"
 
