@@ -9,20 +9,9 @@
 
 Ruby testing framework adaptors for generating allure compatible test reports.
 
-## allure-ruby-commons
+## Supported frameworks
 
-[![Gem Version](https://badge.fury.io/rb/allure-ruby-commons.svg)](https://badge.fury.io/rb/allure-ruby-commons)
-![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-ruby-commons)
-
-```ruby
-gem "allure-ruby-commons"
-```
-
-Allure lifecycle implementation to be used by other testing frameworks to generate allure reports
-
-Interaction and usage of allure lifecycle is described in [allure-ruby-commons docs](allure-ruby-commons/README.md)
-
-## allure-cucumber
+### allure-cucumber
 
 [![Gem Version](https://badge.fury.io/rb/allure-cucumber.svg)](https://badge.fury.io/rb/allure-cucumber)
 ![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-cucumber)
@@ -31,11 +20,11 @@ Interaction and usage of allure lifecycle is described in [allure-ruby-commons d
 gem "allure-cucumber"
 ```
 
-Implementation of allure adapter for [Cucumber](https://github.com/cucumber/cucumber-ruby) testing framework
+Implementation of allure adaptor for [Cucumber](https://github.com/cucumber/cucumber-ruby) testing framework
 
 Detailed usage and setup instruction can be found in [allure-cucumber docs](allure-cucumber/README.md)
 
-## allure-rspec
+### allure-rspec
 
 [![Gem Version](https://badge.fury.io/rb/allure-rspec.svg)](https://badge.fury.io/rb/allure-rspec)
 ![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-rspec)
@@ -44,6 +33,79 @@ Detailed usage and setup instruction can be found in [allure-cucumber docs](allu
 gem "allure-rspec"
 ```
 
-Implementation of allure adapter for [RSpec](https://github.com/rspec/rspec) testing framework
+Implementation of allure adaptor for [RSpec](https://github.com/rspec/rspec) testing framework
 
 Detailed usage and setup instruction can be found in [allure-rspec docs](allure-rspec/README.md)
+
+## Development
+
+### allure-ruby-commons
+
+[![Gem Version](https://badge.fury.io/rb/allure-ruby-commons.svg)](https://badge.fury.io/rb/allure-ruby-commons)
+![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-ruby-commons)
+
+```ruby
+gem "allure-ruby-commons"
+```
+
+Common allure lifecycle interface to be used by other testing frameworks to generate allure reports
+
+Interaction and usage of allure lifecycle is described in [allure-ruby-commons docs](allure-ruby-commons/README.md)
+
+### Contributing
+
+- Install dependencies:
+
+```console
+$ bundle install
+Bundle complete! ...
+```
+
+- Make changes
+
+- Run linter:
+
+```console
+$ bundle exec rake rubocop
+Executing rubocop for allure-cucumber
+...
+no offenses detected
+
+Executing rubocop for allure-rspec
+...
+no offenses detected
+
+Executing rubocop for allure-ruby-commons
+...
+no offenses detected
+```
+
+- Run tests:
+
+```console
+$ bundle exec rake test
+Executing test for allure-cucumber
+...
+0 failures
+
+Executing test for allure-rspec
+...
+0 failures
+
+Executing test for allure-ruby-commons
+...
+0 failures
+```
+
+- Submit a PR
+
+## Generating HTML report
+
+Ruby binding hosted in this repository only generate source json files for the [allure2](https://github.com/allure-framework/allure2) reporter.
+
+See [documentation](https://docs.qameta.io/allure-report/#_reporting) on how to generate report.
+
+### Using with CI providers
+
+[allure-report-publisher](https://github.com/andrcuns/allure-report-publisher) provides a docker image which can be run from github-actions
+workflow or gitlab-ci pipeline and host reports using cloud providers like AWS or GCP.

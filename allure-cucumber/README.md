@@ -130,7 +130,3 @@ It's possible to mark methods so those are included as allure steps: [Step annot
 ### Example project
 
 [Cucumber Example](https://github.com/allure-examples/allure-cucumber-example)
-
-## How to generate report
-
-This adaptor only generates json files containing information about tests. See [wiki section](https://docs.qameta.io/allure/#_reporting) on how to generate report.
