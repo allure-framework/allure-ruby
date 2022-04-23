@@ -64,7 +64,7 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::GroupNotification] example_group_notification
     # @return [void]
     def example_group_started(example_group_notification)
-      description = example_group_notification.group.description.yield_self do |desc|
+      description = example_group_notification.group.description.then do |desc|
         desc.empty? ? "Anonymous" : desc
       end
       lifecycle.start_test_container(Allure::TestResultContainer.new(name: description))
@@ -119,7 +119,7 @@ module AllureRspec
     # @param [RSpec::Core::Example::ExecutionResult] result
     # @return [Proc]
     def update_test_proc(result)
-      Allure::ResultUtils.status_details(result.exception).yield_self do |status_detail|
+      Allure::ResultUtils.status_details(result.exception).then do |status_detail|
         proc do |test_case|
           test_case.stage = Allure::Stage::FINISHED
           test_case.status = status(result)
