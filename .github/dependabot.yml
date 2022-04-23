@@ -7,10 +7,12 @@ updates:
   reviewers:
     - andrcuns
   labels:
-    - type:dependency
+    - type:chore
   commit-message:
     prefix: deps
     prefix-development: deps-dev
+  allow:
+    - dependency-type: all
 - package-ecosystem: bundler
   directory: "/allure-rspec"
   schedule:
