@@ -45,5 +45,8 @@ Style/FrozenStringLiteralComment:
   EnforcedStyle: always
   SafeAutoCorrect: true
 
+Style/FetchEnvVar:
+  Enabled: false
+
 Gemspec/RequireMFA:
   Enabled: false
