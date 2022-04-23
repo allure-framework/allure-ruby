@@ -68,7 +68,7 @@ jobs:
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ALLURE_PUBLISHER_VERSION: "0.5.1"
+          ALLURE_PUBLISHER_VERSION: "0.6.0"
         run: |
           docker run --rm \
             -v "$GITHUB_WORKSPACE":/workspace \
