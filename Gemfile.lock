@@ -67,7 +67,7 @@ GEM
     e2mmap (0.1.0)
     ffi (1.15.5)
     jaro_winkler (1.5.4)
-    kramdown (2.3.1)
+    kramdown (2.3.2)
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
