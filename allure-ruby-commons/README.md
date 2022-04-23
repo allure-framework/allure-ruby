@@ -104,23 +104,3 @@ class TestHelper
   def standard_method; end
 end
 ```
-
-## Testing
-
-Install dependencies:
-
-```bash
-bundle install
-```
-
-Run tests:
-
-```bash
-bundle exec rspec
-```
-
-## Building
-
-```bash
-gem build allure-ruby-commons.gemspec
-```
