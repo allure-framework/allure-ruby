@@ -75,7 +75,6 @@ class CucumberHelper
 
     Cucumber::Cli::Main.new(
       [feature_file, *args],
-      nil,
       @stdout,
       @stderr,
       @kernel
