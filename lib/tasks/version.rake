@@ -7,6 +7,7 @@ require "git"
 #
 class VersionTask
   include Rake::DSL
+  include TaskUtil
 
   VERSION_FILE = "ALLURE_VERSION"
   LOCKFILE = "Gemfile.lock"
