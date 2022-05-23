@@ -8,9 +8,6 @@ updates:
     - andrcuns
   labels:
     - type:chore
-  commit-message:
-    prefix: deps
-    prefix-development: deps-dev
   allow:
     - dependency-type: direct
     - dependency-name: cucumber
@@ -33,8 +30,6 @@ updates:
     - andrcuns
   labels:
     - type:dependency
-  commit-message:
-    prefix: deps
 - package-ecosystem: bundler
   directory: "/allure-ruby-commons"
   schedule:
@@ -43,8 +38,6 @@ updates:
     - andrcuns
   labels:
     - type:dependency
-  commit-message:
-    prefix: deps
 - package-ecosystem: bundler
   directory: "/allure-cucumber"
   schedule:
@@ -53,8 +46,6 @@ updates:
     - andrcuns
   labels:
     - type:dependency
-  commit-message:
-    prefix: deps
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
