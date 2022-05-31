@@ -29,7 +29,7 @@ GEM
     backport (1.2.0)
     benchmark (0.2.0)
     builder (3.2.4)
-    climate_control (1.1.0)
+    climate_control (1.1.1)
     coderay (1.1.3)
     colorize (0.8.1)
     cucumber (8.0.0)
@@ -169,7 +169,7 @@ DEPENDENCIES
   allure-cucumber!
   allure-rspec!
   allure-ruby-commons!
-  climate_control (~> 1.1.0)
+  climate_control (~> 1.1.1)
   colorize (~> 0.8.1)
   git (~> 1.11)
   pry (~> 0.14.1)
