@@ -72,7 +72,7 @@ jobs:
       - name: Publish allure report
         run: |
           allure-report-publisher upload gcs \
-            --results-glob="/workspace/*/reports/allure-results/*" \
+            --results-glob="*/reports/allure-results/*" \
             --bucket="allure-test-reports" \
             --prefix="allure-ruby/$GITHUB_REF" \
             --update-pr="description" \
