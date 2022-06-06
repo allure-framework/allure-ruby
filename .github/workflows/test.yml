@@ -59,6 +59,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: rspec
     if: always()
+    continue-on-error: true
     container:
       image: andrcuns/allure-report-publisher:0.8.0
       env:
