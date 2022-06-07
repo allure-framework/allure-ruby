@@ -60,24 +60,17 @@ jobs:
     needs: rspec
     if: always()
     continue-on-error: true
-    container:
-      image: andrcuns/allure-report-publisher:0.8.0
-      env:
-        GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
-        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Download allure-results
         uses: actions/download-artifact@v3
         with:
           name: allure-results
       - name: Publish allure report
-        run: |
-          allure-report-publisher upload gcs \
-            --results-glob="*/reports/allure-results/*" \
-            --bucket="allure-test-reports" \
-            --prefix="allure-ruby/$GITHUB_REF" \
-            --update-pr="description" \
-            --summary="behaviors" \
-            --copy-latest \
-            --ignore-missing-results \
-            --color
+        uses: andrcuns/allure-publish-action@action-implementation
+        env:
+          GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
+          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          storageType: gcs
+          resultsGlob: */reports/allure-results/*
+          bucket: allure-test-reports
