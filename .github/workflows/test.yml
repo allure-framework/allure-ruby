@@ -72,5 +72,5 @@ jobs:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           storageType: gcs
-          resultsGlob: */reports/allure-results/*
+          resultsGlob: "*/reports/allure-results/*"
           bucket: allure-test-reports
