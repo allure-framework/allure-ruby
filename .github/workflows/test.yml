@@ -69,6 +69,7 @@ jobs:
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ALLURE_JOB_NAME: rspec
         with:
           storageType: gcs
           resultsGlob: "*/reports/allure-results/*"
