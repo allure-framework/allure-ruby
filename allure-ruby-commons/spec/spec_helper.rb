@@ -70,5 +70,5 @@ RSpec.shared_context("lifecycle mocks") do
 end
 
 def clean_results_dir
-  FileUtils.remove_dir("spec/allure-results") if File.exist?("spec/allure-results")
+  FileUtils.rm_rf("spec/allure-results")
 end
