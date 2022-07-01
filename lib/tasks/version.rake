@@ -3,6 +3,8 @@
 require "semver"
 require "git"
 
+require_relative "../task_helpers/util"
+
 # Update app version
 #
 class VersionTask
