@@ -58,7 +58,7 @@ jobs:
     name: Allure report
     runs-on: ubuntu-22.04
     needs: rspec
-    if: always()
+    if: github.actor == 'andrcuns'
     steps:
       - name: Download allure-results
         uses: actions/download-artifact@v3
