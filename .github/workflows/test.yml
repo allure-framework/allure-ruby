@@ -65,14 +65,14 @@ jobs:
         with:
           name: allure-results
       - name: Publish allure report
-        uses: andrcuns/allure-publish-action@v1.2.0
+        uses: andrcuns/allure-publish-action@v2.0.1
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ALLURE_JOB_NAME: rspec
         with:
           storageType: gcs
-          resultsGlob: "*/reports/allure-results/*"
+          resultsGlob: "*/reports/allure-results"
           bucket: allure-test-reports
           prefix: allure-ruby/$GITHUB_REF
           updatePr: description
