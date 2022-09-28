@@ -72,7 +72,7 @@ jobs:
           ALLURE_JOB_NAME: rspec
         with:
           storageType: gcs
-          resultsGlob: "*/reports/allure-results/*"
+          resultsGlob: "*/reports/allure-results"
           bucket: allure-test-reports
           prefix: allure-ruby/$GITHUB_REF
           updatePr: description
