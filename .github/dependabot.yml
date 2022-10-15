@@ -7,7 +7,7 @@ updates:
   reviewers:
     - andrcuns
   labels:
-    - type:chore
+    - maintenance
   allow:
     - dependency-type: direct
     - dependency-name: cucumber
@@ -28,24 +28,18 @@ updates:
     interval: daily
   reviewers:
     - andrcuns
-  labels:
-    - type:dependency
 - package-ecosystem: bundler
   directory: "/allure-ruby-commons"
   schedule:
     interval: daily
   reviewers:
     - andrcuns
-  labels:
-    - type:dependency
 - package-ecosystem: bundler
   directory: "/allure-cucumber"
   schedule:
     interval: daily
   reviewers:
     - andrcuns
-  labels:
-    - type:dependency
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
@@ -53,4 +47,4 @@ updates:
   reviewers:
     - andrcuns
   labels:
-    - type:chore
+    - ci
