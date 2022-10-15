@@ -101,6 +101,10 @@ Executing test for allure-ruby-commons
 
 - Submit a PR
 
+### Releasing
+
+New version can be created by triggering manual `Release` workflow
+
 ## Generating HTML report
 
 Ruby binding hosted in this repository only generate source json files for the [allure2](https://github.com/allure-framework/allure2) reporter.
