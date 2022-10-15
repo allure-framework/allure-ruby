@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "semver"
-require "git"
 
 require_relative "../task_helpers/util"
 
@@ -27,11 +26,13 @@ class VersionTask
     task(:version, [:semver]) do |_task, args|
       @new_version = send(args[:semver]).format("%M.%m.%p").to_s
 
+      puts "Updating version to #{new_version}"
+
       update_version
       update_lockfile
       commit_and_tag
 
-      puts "Bumped version to #{new_version}"
+      puts "Version updated successfully!"
     end
   end
 
@@ -57,10 +58,10 @@ class VersionTask
   #
   # @return [void]
   def commit_and_tag
-    git = Git.init
-    git.add([VERSION_FILE, LOCKFILE])
-    git.commit("Update version to #{new_version}")
-    git.add_tag(new_version.to_s)
+    execute_shell("git add #{VERSION_FILE} #{LOCKFILE}")
+    execute_shell("git commit -m 'Update version to #{new_version}'")
+    execute_shell("git tag #{new_version}")
+    execute_shell("git push && git push --tags")
   end
 
   # Semver of ref from
