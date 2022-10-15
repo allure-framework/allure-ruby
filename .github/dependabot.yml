@@ -1,9 +1,9 @@
 version: 2
 updates:
 - package-ecosystem: bundler
-  directory: "/"
+  directory: /
   schedule:
-    interval: daily
+    interval: weekly
   reviewers:
     - andrcuns
   labels:
@@ -23,27 +23,27 @@ updates:
     - dependency-name: uuid
       dependency-type: indirect
 - package-ecosystem: bundler
-  directory: "/allure-rspec"
+  directory: /allure-rspec
   schedule:
     interval: daily
   reviewers:
     - andrcuns
 - package-ecosystem: bundler
-  directory: "/allure-ruby-commons"
+  directory: /allure-ruby-commons
   schedule:
     interval: daily
   reviewers:
     - andrcuns
 - package-ecosystem: bundler
-  directory: "/allure-cucumber"
+  directory: /allure-cucumber
   schedule:
     interval: daily
   reviewers:
     - andrcuns
 - package-ecosystem: github-actions
-  directory: "/"
+  directory: /
   schedule:
-    interval: "daily"
+    interval: weekly
   reviewers:
     - andrcuns
   labels:
