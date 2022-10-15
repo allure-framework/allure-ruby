@@ -12,6 +12,9 @@ changelog:
     - title: '📦 Dependency updates'
       labels:
         - 'dependencies'
+    - title: '📦 Development dependency updates'
+      labels:
+        - 'dev:dependencies'
     - title: '📄 Documentation updates'
       labels:
         - 'documentation'

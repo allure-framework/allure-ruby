@@ -7,7 +7,7 @@ updates:
   reviewers:
     - andrcuns
   labels:
-    - maintenance
+    - dev:dependencies
   allow:
     - dependency-type: direct
     - dependency-name: cucumber
