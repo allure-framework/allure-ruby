@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       semver:
-        description: Semver component
+        description: Bump
         required: true
         type: choice
         options:
