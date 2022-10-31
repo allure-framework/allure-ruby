@@ -16,7 +16,7 @@ end
 
 group :test do
   gem "climate_control", "~> 1.2.0"
-  gem "rspec", "~> 3.11.0"
+  gem "rspec", "~> 3.12.0"
   gem "rubocop", "~> 1.37.1"
   gem "rubocop-performance", "~> 1.15.0"
   gem "simplecov", "~> 0.21.2"
