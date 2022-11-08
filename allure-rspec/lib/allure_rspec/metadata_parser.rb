@@ -114,11 +114,14 @@ module AllureRspec
     end
 
     # Get custom labels
+    #  skip tags that are set to false explicitly
+    #  use value as label when it's a string or a symbol
+    #
     # @return [Array<Allure::Label>]
     def tag_labels
       metadata
         .reject { |k| RSPEC_IGNORED_METADATA.include?(k) || special_metadata_tag?(k) }
-        .map { |k, v| allure?(k) ? Allure::ResultUtils.tag_label(v) : Allure::ResultUtils.tag_label(k.to_s) }
+        .filter_map { |k, v| custom_label(k, v) }
     end
 
     # Get behavior labels
@@ -146,6 +149,18 @@ module AllureRspec
       metadata
         .select { |key| __send__("#{type}?", key) }
         .map { |key, value| Allure::ResultUtils.public_send("#{type}_link", key.to_s, value, link_pattern) }
+    end
+
+    # Label value from custom metadata
+    #
+    # @param [String, Symbol] key
+    # @param [Object] value
+    # @return [Allure::Label]
+    def custom_label(key, value)
+      return if value == false
+      return Allure::ResultUtils.tag_label(value.to_s) if value.is_a?(String) || value.is_a?(Symbol)
+
+      Allure::ResultUtils.tag_label(key.to_s)
     end
 
     # Special allure metadata tags
