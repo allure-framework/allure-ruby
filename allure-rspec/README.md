@@ -144,18 +144,28 @@ end
 
 ### Adding additional labels to allure test case
 
-Additional labels can be added using `allure_` pattern:
+- All metadata tags that have no value are added as labels:
 
 ```ruby
-it "some test case", allure_1: "visual_test", allure_2: "core_functionality" do
+it "some test case", :visual_test, :core_functionality do
   # test
 end
 ```
 
-All other metadata tags are also automatically added as labels:
+- For tags that define value as string or symbol, value is added as label:
 
 ```ruby
-it "some test case", :visual_test, :core_functionality do
+it "some test case", test_type: "visual_test", functionality: "core_functionality" do
+  # test
+end
+```
+
+will add `visual_test` and `core_functionality` labels to test case.
+
+- Tags that have value as `false` will not be added as labels:
+
+```ruby
+it "some test case", skipped: false do
   # test
 end
 ```
