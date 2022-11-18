@@ -124,7 +124,7 @@ module AllureRspec
           test_case.stage = Allure::Stage::FINISHED
           test_case.status = status(result)
           test_case.status_details.message = status_detail.message
-          test_case.status_details.trace = status_detail.trace
+          test_case.status_details.trace = status_detail.trace&.gsub(/\e\[(\d+)(?:;\d+)*m/, "")
         end
       end
     end
