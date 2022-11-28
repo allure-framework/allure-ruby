@@ -19,6 +19,7 @@ PATH
       mime-types (>= 3.3, < 4)
       oj (>= 3.10, < 4)
       require_all (>= 2, < 4)
+      rspec-expectations (~> 3.12)
       uuid (>= 2.3, < 3)
 
 GEM
