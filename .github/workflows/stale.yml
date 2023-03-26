@@ -13,5 +13,5 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-stale: 30
           days-before-close: 5
-          exempt-issue-labels: "type:new feature,type:bug"
+          exempt-issue-labels: "feature,enhancement,bug"
           stale-issue-message: "This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days"
