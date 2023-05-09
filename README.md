@@ -16,7 +16,7 @@ Ruby testing framework adaptors for generating allure compatible test reports.
 ### allure-cucumber
 
 [![Gem Version](https://badge.fury.io/rb/allure-cucumber.svg)](https://rubygems.org/gems/allure-cucumber)
-![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-cucumber)
+[![Downloads](https://img.shields.io/gem/dt/allure-cucumber?color=blue)](https://rubygems.org/gems/allure-cucumber)
 
 ```ruby
 gem "allure-cucumber"
@@ -29,7 +29,7 @@ Detailed usage and setup instruction can be found in [allure-cucumber docs](allu
 ### allure-rspec
 
 [![Gem Version](https://badge.fury.io/rb/allure-rspec.svg)](https://rubygems.org/gems/allure-rspec)
-![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-rspec)
+[![Downloads](https://img.shields.io/gem/dt/allure-rspec?color=blue)](https://rubygems.org/gems/allure-rspec)
 
 ```ruby
 gem "allure-rspec"
@@ -44,7 +44,6 @@ Detailed usage and setup instruction can be found in [allure-rspec docs](allure-
 ### allure-ruby-commons
 
 [![Gem Version](https://badge.fury.io/rb/allure-ruby-commons.svg)](https://rubygems.org/gems/allure-ruby-commons)
-![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/allure-ruby-commons)
 
 ```ruby
 gem "allure-ruby-commons"
