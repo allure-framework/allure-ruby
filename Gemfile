@@ -18,7 +18,7 @@ group :test do
   gem "climate_control", "~> 1.2.0"
   gem "rspec", "~> 3.12.0"
   gem "rubocop", "~> 1.51.0"
-  gem "rubocop-performance", "~> 1.17.1"
+  gem "rubocop-performance", "~> 1.18.0"
   gem "simplecov", "~> 0.22.0"
   gem "simplecov-console", "~> 0.9.1"
 end
