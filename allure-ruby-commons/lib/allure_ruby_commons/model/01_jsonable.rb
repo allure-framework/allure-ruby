@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "oj"
-
 module Allure
   # General jsonable object implementation
   class JSONable
@@ -13,6 +11,14 @@ module Allure
         value = instance_variable_get(var)
         map[key] = value unless value.nil?
       end
+    end
+
+    # Return object json string
+    #
+    # @param [Array] *options
+    # @return [String]
+    def to_json(*options)
+      to_hash.to_json(*options)
     end
 
     # Object comparator

@@ -24,18 +24,21 @@ jobs:
         run: bundle exec rake rubocop
 
   rspec:
-    name: Rspec ruby-${{ matrix.ruby }}
+    name: Rspec ruby-${{ matrix.ruby }}-oj-${{ matrix.oj }}
     runs-on: ubuntu-latest
     needs: rubocop
     strategy:
       matrix:
         ruby: ["3.0", "3.1", "3.2"]
+        oj: [false, true]
       fail-fast: false
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set up Ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
+        env:
+          WITH_OJ_GEM: ${{ matrix.oj }}
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
@@ -43,7 +46,7 @@ jobs:
         uses: paambaati/codeclimate-action@v4.0.0
         env:
           CC_TEST_REPORTER_ID: be263ef9412dc65a7aa8dfb6e8162d5c7cfb3307fae0a444cde9dd6ca6f52848
-          ALLURE_ENVIRONMENT: ruby-${{ matrix.ruby }}
+          ALLURE_ENVIRONMENT: ruby-${{ matrix.ruby }}-oj-${{ matrix.oj }}
         with:
           coverageCommand: bundle exec rake test:coverage
           coverageLocations: coverage/coverage.json:simplecov

@@ -104,3 +104,7 @@ class TestHelper
   def standard_method; end
 end
 ```
+
+## JSON parsing
+
+Internally, allure-ruby-common produces JSON files. To improve performance, [oj](https://www.ohler.com/oj/) gem is used for parsing and generating JSON files if it is available. Otherwise default ruby json implementation is used.

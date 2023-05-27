@@ -2,6 +2,8 @@
 
 module Allure
   class TestPlan
+    extend JsonHelper
+
     # @return [String] test plan path env var name
     TESTPLAN_PATH = "ALLURE_TESTPLAN_PATH"
 
@@ -26,9 +28,7 @@ module Allure
       #
       # @return [Array<Hash>]
       def tests
-        @tests ||= Oj.load_file(ENV[TESTPLAN_PATH], symbol_keys: true)&.fetch(:tests) if ENV[TESTPLAN_PATH]
-      rescue Oj::ParseError
-        nil
+        @tests ||= load_json(ENV[TESTPLAN_PATH])&.fetch(:tests) if ENV[TESTPLAN_PATH]
       end
     end
   end
