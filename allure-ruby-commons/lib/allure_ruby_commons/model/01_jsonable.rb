@@ -13,6 +13,14 @@ module Allure
       end
     end
 
+    # Return object json string
+    #
+    # @param [Array] *options
+    # @return [String]
+    def to_json(*options)
+      to_hash.to_json(*options)
+    end
+
     # Object comparator
     # @param [JSONable] other
     # @return [Booelan]

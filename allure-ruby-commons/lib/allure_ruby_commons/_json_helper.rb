@@ -32,7 +32,7 @@ module Allure
       end
     rescue LoadError
       define_method(:dump_json) do |obj|
-        JSON.dump(obj)
+        JSON.generate(obj)
       end
 
       define_method(:load_json) do |json|
