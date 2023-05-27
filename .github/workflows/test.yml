@@ -24,7 +24,7 @@ jobs:
         run: bundle exec rake rubocop
 
   rspec:
-    name: Rspec ruby-${{ matrix.ruby }}
+    name: Rspec ruby-${{ matrix.ruby }}-oj-${{ matrix.oj }}
     runs-on: ubuntu-latest
     needs: rubocop
     strategy:
