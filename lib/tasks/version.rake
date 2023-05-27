@@ -11,7 +11,6 @@ class VersionTask
   include TaskUtil
 
   VERSION_FILE = "ALLURE_VERSION"
-  LOCKFILE = "Gemfile.lock"
 
   def initialize
     @version = File.read(VERSION_FILE)
@@ -58,7 +57,7 @@ class VersionTask
   #
   # @return [void]
   def commit_and_tag
-    execute_shell("git add #{VERSION_FILE} #{LOCKFILE}")
+    execute_shell("git add #{VERSION_FILE}")
     execute_shell("git commit -m 'Update version to #{new_version}'")
     execute_shell("git tag #{new_version}")
     execute_shell("git push && git push --tags")
