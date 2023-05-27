@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "oj"
-
 module Allure
   # General jsonable object implementation
   class JSONable

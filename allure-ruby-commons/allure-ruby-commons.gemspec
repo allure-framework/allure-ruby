@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
 
   s.add_dependency "mime-types", ">= 3.3", "< 4"
-  s.add_dependency "oj", ">= 3.10", "< 4"
   s.add_dependency "require_all", ">= 2", "< 4"
   s.add_dependency "rspec-expectations", "~> 3.12"
   s.add_dependency "uuid", ">= 2.3", "< 3"

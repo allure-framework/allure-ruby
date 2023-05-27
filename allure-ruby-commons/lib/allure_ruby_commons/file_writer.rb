@@ -3,6 +3,8 @@
 module Allure
   # Allure result file writer
   class FileWriter
+    include JsonHelper
+
     # @return [String] test result suffix
     TEST_RESULT_SUFFIX = "-result.json"
     # @return [String] test result container suffix
@@ -13,8 +15,6 @@ module Allure
     ENVIRONMENT_FILE = "environment.properties"
     # @return [String] categories definition json
     CATEGORIES_FILE = "categories.json"
-    # @return [Hash] Oj json options
-    OJ_OPTIONS = { mode: :custom, use_to_hash: true, ascii_only: true }.freeze
 
     # File writer instance
     #
@@ -27,14 +27,14 @@ module Allure
     # @param [Allure::TestResult] test_result
     # @return [void]
     def write_test_result(test_result)
-      write("#{test_result.uuid}#{TEST_RESULT_SUFFIX}", Oj.dump(test_result, OJ_OPTIONS))
+      write("#{test_result.uuid}#{TEST_RESULT_SUFFIX}", dump_json(test_result))
     end
 
     # Write test result container
     # @param [Allure::TestResultContainer] test_container_result
     # @return [void]
     def write_test_result_container(test_container_result)
-      write("#{test_container_result.uuid}#{TEST_RESULT_CONTAINER_SUFFIX}", Oj.dump(test_container_result, OJ_OPTIONS))
+      write("#{test_container_result.uuid}#{TEST_RESULT_CONTAINER_SUFFIX}", dump_json(test_container_result))
     end
 
     # Write allure attachment file
@@ -61,7 +61,7 @@ module Allure
       if categories.is_a?(File)
         copy(categories.path, CATEGORIES_FILE)
       else
-        write(CATEGORIES_FILE, Oj.dump(categories, OJ_OPTIONS))
+        write(CATEGORIES_FILE, dump_json(categories.map(&:to_hash)))
       end
     end
 
