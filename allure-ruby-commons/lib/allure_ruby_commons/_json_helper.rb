@@ -31,6 +31,8 @@ module Allure
         nil
       end
     rescue LoadError
+      require "json"
+
       define_method(:dump_json) do |obj|
         JSON.generate(obj)
       end
