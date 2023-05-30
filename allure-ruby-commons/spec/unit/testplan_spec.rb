@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Allure::TestPlan do
+describe Allure::TestPlan, :aggregate_failures do
   let(:test_ids) { ["test case id, aka allure id"] }
   let(:test_names) { ["some unique id or selector that can be used to run particular test case"] }
 
@@ -22,10 +22,8 @@ describe Allure::TestPlan do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/correct/testplan.json" }
 
     it "correct testplan.json" do
-      aggregate_failures do
-        expect(described_class.test_ids).to eq(test_ids)
-        expect(described_class.test_names).to eq(test_names)
-      end
+      expect(described_class.test_ids).to eq(test_ids)
+      expect(described_class.test_names).to eq(test_names)
     end
   end
 
@@ -33,21 +31,26 @@ describe Allure::TestPlan do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/malformed/testplan.json" }
 
     it "malformed testplan.json" do
-      aggregate_failures do
-        expect(described_class.test_ids).to eq(nil)
-        expect(described_class.test_names).to eq(nil)
-      end
+      expect(described_class.test_ids).to eq(nil)
+      expect(described_class.test_names).to eq(nil)
     end
   end
 
   context "handles" do
-    let(:path) { nil }
+    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan" }
 
-    it "missing testplan.json" do
-      aggregate_failures do
-        expect(described_class.test_ids).to eq(nil)
-        expect(described_class.test_names).to eq(nil)
-      end
+    it "incorrect test plan directory" do
+      expect(described_class.test_ids).to eq(nil)
+      expect(described_class.test_names).to eq(nil)
+    end
+  end
+
+  context "handles" do
+    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/correct" }
+
+    it "testplan.json directory" do
+      expect(described_class.test_ids).to eq(test_ids)
+      expect(described_class.test_names).to eq(test_names)
     end
   end
 end
