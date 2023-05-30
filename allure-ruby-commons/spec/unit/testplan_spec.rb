@@ -8,6 +8,10 @@ describe Allure::TestPlan do
     described_class.instance_variable_set(:@tests, nil)
     described_class.instance_variable_set(:@test_ids, nil)
     described_class.instance_variable_set(:@test_names, nil)
+
+    :@test_plan_path.tap do |var|
+      described_class.send(:remove_instance_variable, var) if described_class.instance_variable_defined?(var)
+    end
   end
 
   around do |example|

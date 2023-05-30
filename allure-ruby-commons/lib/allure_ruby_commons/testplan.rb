@@ -28,13 +28,17 @@ module Allure
       #
       # @return [Array<Hash>]
       def tests
-        @tests ||= load_json(test_plan_path)&.fetch(:tests) if ENV[TESTPLAN_PATH]
+        @tests ||= load_json(test_plan_path)&.fetch(:tests) if test_plan_path
       end
 
+      # Fetch test plan path
+      #
+      # @return [<String, nil>]
       def test_plan_path
         return @test_plan_path if defined?(@test_plan_path)
 
         @test_plan_path = ENV[TESTPLAN_PATH].then do |path|
+          next unless path
           next path if File.file?(path)
 
           json = File.join(path, "testplan.json")
