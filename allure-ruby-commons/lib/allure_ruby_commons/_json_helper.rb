@@ -28,6 +28,7 @@ module Allure
       define_method(:load_json) do |json|
         Oj.load_file(json, symbol_keys: true)
       rescue Oj::ParseError
+        Allure.configuration.logger.error("Failed to parse json: #{json}")
         nil
       end
     rescue LoadError
@@ -40,6 +41,7 @@ module Allure
       define_method(:load_json) do |json|
         JSON.parse(File.read(json), symbolize_names: true)
       rescue JSON::ParserError
+        Allure.configuration.logger.error("Failed to parse json: #{json}")
         nil
       end
     end
