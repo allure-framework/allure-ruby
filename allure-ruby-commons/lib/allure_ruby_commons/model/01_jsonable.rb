@@ -6,9 +6,9 @@ module Allure
     # Return object hash represantation
     # @return [Hash]
     def to_hash
-      instance_variables.each_with_object({}) do |var, map|
-        key = camelcase(var.to_s.delete_prefix("@"))
-        value = instance_variable_get(var)
+      json_attributes.each_with_object({}) do |attribute, map|
+        key = camelcase(attribute)
+        value = send(attribute) # fetch via reader for dynamically generated attributes
         map[key] = value unless value.nil?
       end
     end
@@ -33,7 +33,7 @@ module Allure
     # Object state
     # @return [Array]
     def state
-      instance_variables.map { |var| instance_variable_get(var) }
+      json_attributes.map { |attribute| send(attribute) }
     end
 
     private
@@ -44,6 +44,13 @@ module Allure
     def camelcase(str)
       str = str.gsub(/(?:_+)([a-z])/) { Regexp.last_match(1).upcase }
       str.gsub(/(\A|\s)([A-Z])/) { Regexp.last_match(1) + Regexp.last_match(2).downcase }
+    end
+
+    # Json attribute names
+    #
+    # @return [Array<String>]
+    def json_attributes
+      @json_attributes ||= instance_variables.map { |attribute| attribute.to_s.delete_prefix("@") }
     end
   end
 end

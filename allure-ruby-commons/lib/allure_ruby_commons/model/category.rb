@@ -15,5 +15,7 @@ module Allure
       @message_regex = message_regex
       @trace_regex = trace_regex
     end
+
+    attr_reader :name, :matched_statuses, :message_regex, :trace_regex
   end
 end
