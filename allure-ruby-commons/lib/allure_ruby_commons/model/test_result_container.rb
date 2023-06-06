@@ -14,6 +14,15 @@ module Allure
       @links = []
     end
 
-    attr_accessor :uuid, :name, :description, :description_html, :start, :stop, :children, :befores, :afters, :links
+    attr_accessor :uuid,
+                  :name,
+                  :description,
+                  :description_html,
+                  :start,
+                  :stop,
+                  :children,
+                  :befores,
+                  :afters,
+                  :links
   end
 end

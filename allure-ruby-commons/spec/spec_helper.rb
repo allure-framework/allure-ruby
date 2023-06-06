@@ -17,6 +17,8 @@ end
 RSpec.configure do |config|
   config.before do |example|
     example.epic("allure-ruby-commons")
+    example.parameter("ruby", ENV["RUBY_VERSION"])
+    example.parameter("oj", ENV["WITH_OJ_GEM"])
   end
 end
 

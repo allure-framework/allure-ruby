@@ -24,7 +24,7 @@ module Allure
 
       @name = options[:name]
       @uuid = uuid
-      @history_id = Digest::MD5.hexdigest("#{history_id}#{environment}")
+      @history_id = history_id
       @full_name = options[:full_name] || "Unnamed"
       @labels = options[:labels] || []
       @links = options[:links] || []
@@ -32,9 +32,26 @@ module Allure
     end
 
     attr_accessor :uuid,
-                  :history_id,
                   :full_name,
                   :labels,
                   :links
+
+    attr_writer :history_id
+
+    # History id
+    #
+    # @return [String]
+    def history_id
+      Digest::MD5.hexdigest("#{@history_id}#{parameters_string}")
+    end
+
+    private
+
+    # All parameters string
+    #
+    # @return [String]
+    def parameters_string
+      parameters.map { |p| "#{p.name}=#{p.value}" }.join(";")
+    end
   end
 end
