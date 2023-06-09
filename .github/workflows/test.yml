@@ -38,7 +38,7 @@ jobs:
       - name: Set up Ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
         env:
-          WITH_OJ_GEM: ${{ matrix.oj }}
+          DEPENDENCIES_OJ: ${{ matrix.oj }}
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
@@ -46,7 +46,7 @@ jobs:
         uses: paambaati/codeclimate-action@v4.0.0
         env:
           CC_TEST_REPORTER_ID: be263ef9412dc65a7aa8dfb6e8162d5c7cfb3307fae0a444cde9dd6ca6f52848
-          WITH_OJ_GEM: ${{ matrix.oj }}
+          DEPENDENCIES_OJ: ${{ matrix.oj }}
           RUBY_VERSION: ${{ matrix.ruby }}
         with:
           coverageCommand: bundle exec rake test:coverage

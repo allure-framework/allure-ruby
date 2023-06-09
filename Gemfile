@@ -2,6 +2,8 @@
 
 source "https://rubygems.org"
 
+plugin "bootboot", "~> 0.2.2"
+
 gem "allure-cucumber", path: "allure-cucumber"
 gem "allure-rspec", path: "allure-rspec"
 gem "allure-ruby-commons", path: "allure-ruby-commons"
@@ -16,10 +18,17 @@ end
 
 group :test do
   gem "climate_control", "~> 1.2.0"
-  gem "oj", "~> 3.14" if ENV["WITH_OJ_GEM"] == "true"
   gem "rspec", "~> 3.12.0"
   gem "rubocop", "~> 1.52.0"
   gem "rubocop-performance", "~> 1.18.0"
   gem "simplecov", "~> 0.22.0"
   gem "simplecov-console", "~> 0.9.1"
+end
+
+Plugin.send(:load_plugin, "bootboot") if Plugin.installed?("bootboot")
+
+if ENV["DEPENDENCIES_OJ"]
+  enable_dual_booting if Plugin.installed?("bootboot")
+
+  gem "oj", "~> 3.14"
 end

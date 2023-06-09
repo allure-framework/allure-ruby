@@ -19,6 +19,3 @@ coverage
 vendor/bundle
 tmp
 allure-results
-
-# Lockfile
-Gemfile.lock
