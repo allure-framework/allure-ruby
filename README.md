@@ -107,7 +107,7 @@ New version can be created by triggering manual `Release` workflow
 
 Ruby binding hosted in this repository only generate source json files for the [allure2](https://github.com/allure-framework/allure2) reporter.
 
-See [documentation](https://docs.qameta.io/allure-report/#_reporting) on how to generate report.
+See [documentation](https://allurereport.org/) on how to use allure report.
 
 ### Using with CI providers
 
