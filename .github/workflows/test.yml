@@ -69,7 +69,7 @@ jobs:
         with:
           name: allure-results
       - name: Publish allure report
-        uses: andrcuns/allure-publish-action@v2.5.0
+        uses: andrcuns/allure-publish-action@v2.5.1
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
