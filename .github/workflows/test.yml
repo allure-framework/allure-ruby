@@ -65,7 +65,7 @@ jobs:
     if: always()
     steps:
       - name: Download allure-results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: allure-results
       - name: Publish allure report
