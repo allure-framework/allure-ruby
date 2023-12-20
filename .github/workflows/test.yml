@@ -66,8 +66,6 @@ jobs:
     steps:
       - name: Download allure-results
         uses: actions/download-artifact@v4
-        with:
-          path: allure-results
       - name: Publish allure report
         uses: andrcuns/allure-publish-action@v2.6.0
         env:
@@ -76,7 +74,7 @@ jobs:
           ALLURE_JOB_NAME: rspec
         with:
           storageType: gcs
-          resultsGlob: "allure-results/*"
+          resultsGlob: "**/allure-results"
           bucket: allure-test-reports
           prefix: allure-ruby/$GITHUB_REF
           updatePr: description
@@ -84,3 +82,4 @@ jobs:
           copyLatest: true
           ignoreMissingResults: false
           summaryTableType: ascii
+          debug: true
