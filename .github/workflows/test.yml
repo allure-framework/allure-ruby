@@ -54,8 +54,8 @@ jobs:
       - name: Upload report
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results
-          path: "*/reports/allure-results/*"
+          name: allure-results-${{ matrix.ruby }}-oj-${{ matrix.oj }}
+          path: "*/reports/allure-results/"
           retention-days: 1
 
   report:
@@ -66,8 +66,6 @@ jobs:
     steps:
       - name: Download allure-results
         uses: actions/download-artifact@v4
-        with:
-          name: allure-results
       - name: Publish allure report
         uses: andrcuns/allure-publish-action@v2.6.0
         env:
