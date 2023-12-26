@@ -101,13 +101,13 @@ module AllureCucumber
     def matching_links(type)
       pattern = reserved_patterns[type]
       prefix = config.tms_prefix
-      link_pattern = config.public_send("link_#{type}_pattern")
+      link_pattern = config.public_send(:"link_#{type}_pattern")
 
       tags
         .grep(pattern)
         .map do |tag|
           tag.match(pattern) do |match|
-            Allure::ResultUtils.public_send("#{type}_link", prefix, match[type], link_pattern)
+            Allure::ResultUtils.public_send(:"#{type}_link", prefix, match[type], link_pattern)
           end
         end
     end
