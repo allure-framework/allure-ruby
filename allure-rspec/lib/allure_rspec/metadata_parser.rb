@@ -143,12 +143,12 @@ module AllureRspec
     # @param [Symbol] type
     # @return [Array<Allure::Link>]
     def matching_links(type)
-      link_pattern = config.public_send("link_#{type}_pattern")
+      link_pattern = config.public_send(:"link_#{type}_pattern")
       return [] unless link_pattern
 
       metadata
-        .select { |key| __send__("#{type}?", key) }
-        .map { |key, value| Allure::ResultUtils.public_send("#{type}_link", key.to_s, value, link_pattern) }
+        .select { |key| __send__(:"#{type}?", key) }
+        .map { |key, value| Allure::ResultUtils.public_send(:"#{type}_link", key.to_s, value, link_pattern) }
     end
 
     # Label value from custom metadata
