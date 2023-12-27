@@ -23,10 +23,10 @@ jobs:
           fetch-depth: 0
           ssh-key: ${{ secrets.RELEASE_SSH_KEY }}
       -
-        name: Set up Ruby 3.2
+        name: Set up Ruby 3.3
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2"
+          ruby-version: "3.3"
           bundler-cache: true
       -
         name: Update version
