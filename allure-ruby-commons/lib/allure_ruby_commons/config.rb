@@ -2,6 +2,7 @@
 
 require "logger"
 require "singleton"
+require "rspec/expectations"
 
 module Allure
   # Allure configuration class
@@ -11,7 +12,7 @@ module Allure
     # @return [Array<String>] valid log levels
     LOGLEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
 
-    attr_writer :environment, :logger
+    attr_writer :environment, :logger, :failure_exception
 
     attr_accessor :results_directory,
                   :logging_level,
@@ -40,6 +41,13 @@ module Allure
     # @return [Logger]
     def logger
       @logger ||= Logger.new($stdout, level: logging_level)
+    end
+
+    # Exception class that corresponds to test failure
+    #
+    # @return [Class]
+    def failure_exception
+      @failure_exception ||= RSpec::Expectations::ExpectationNotMetError
     end
   end
 end

@@ -71,9 +71,10 @@ module AllureCucumber
     # @param [Cucumber::Events::TestStepFinished] event
     # @return [void]
     def on_test_step_finished(event)
+      status = ALLURE_STATUS.fetch(event.result.to_sym, Allure::Status::BROKEN)
       update_block = proc do |step|
         step.stage = Allure::Stage::FINISHED
-        step.status = ALLURE_STATUS.fetch(event.result.to_sym, Allure::Status::BROKEN)
+        step.status = event.result.failed? ? Allure::ResultUtils.status(event.result&.exception) : status
       end
 
       event.test_step.hook? ? handle_hook_finished(event.test_step, update_block) : handle_step_finished(update_block)

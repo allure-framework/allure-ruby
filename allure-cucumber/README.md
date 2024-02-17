@@ -48,6 +48,7 @@ AllureCucumber.configure do |config|
   config.logging_level = Logger::INFO
   config.logger = Logger.new($stdout, Logger::DEBUG)
   config.environment = "staging"
+  config.failure_exception = RSpec::Expectations::ExpectationNotMetError
 
   # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
   config.link_tms_pattern = "http://www.jira.com/browse/{}"
@@ -109,6 +110,18 @@ Example:
 ```
 
 Additional special tags exists for setting status detail of test scenarios, allure will pick up following tags: `@flaky`, `@known` and `@muted`
+
+### Custom failure exception
+
+Allure report will mark steps and tests as either `Failed` or `Broken` based on exception class that was raised. By default, `RSpec::Expectations::ExpectationNotMetError` exception will mark test as `Failed` and all other exceptions will mark test as `Broken`.
+
+Custom failure exception class can be configured:
+
+```ruby
+AllureCucumber.configure do |config|
+  config.failure_exception = MyCustomFailedException
+end
+```
 
 ## Usage
 

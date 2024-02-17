@@ -37,7 +37,7 @@ describe "on_test_step_finished" do
       expect(lifecycle).to have_received(:update_test_step).with(no_args).once do |&arg|
         arg.call(@step)
       end
-      expect(@step.status).to eq(Allure::Status::FAILED)
+      expect(@step.status).to eq(Allure::Status::BROKEN)
     end
 
     it "with skipped status is updated" do
@@ -119,7 +119,7 @@ describe "on_test_step_finished" do
 
       expect(lifecycle).to have_received(:update_fixture).with(no_args).once do |&arg|
         arg.call(@step)
-        expect(@step.status).to eq(Allure::Status::FAILED)
+        expect(@step.status).to eq(Allure::Status::BROKEN)
       end
     end
   end

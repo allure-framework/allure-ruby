@@ -152,7 +152,7 @@ module Allure
       # @param [Exception] exception
       # @return [Symbol]
       def status(exception)
-        exception.is_a?(RSpec::Expectations::ExpectationNotMetError) ? Status::FAILED : Status::BROKEN
+        exception.is_a?(Allure.configuration.failure_exception) ? Status::FAILED : Status::BROKEN
       end
 
       # Get exception status detail
