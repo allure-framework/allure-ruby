@@ -207,6 +207,18 @@ it "some test case 2", story: "user story" do
 end
 ```
 
+### Custom failure exception
+
+Allure report will mark steps and tests as either `Failed` or `Broken` based on exception class that was raised. By default, `RSpec::Expectations::ExpectationNotMetError` exception will mark test as `Failed` and all other exceptions will mark test as `Broken`.
+
+Custom failure exception class can be configured:
+
+```ruby
+AllureRspec.configure do |config|
+  config.failure_exception = MyCustomFailedException
+end
+```
+
 ### Custom actions
 
 Rspec example object has access to [Allure](https://www.rubydoc.info/github/allure-framework/allure-ruby/Allure) helper methods.
