@@ -225,7 +225,7 @@ module Allure
     lifecycle.update_test_step { |step| step.status = Status::PASSED }
 
     result
-  rescue StandardError, RSpec::Expectations::ExpectationNotMetError => e
+  rescue StandardError, configuration.failure_exception => e
     lifecycle.update_test_step do |step|
       step.status = ResultUtils.status(e)
       step.status_details = ResultUtils.status_details(e)
