@@ -21,7 +21,6 @@ module AllureRspec
   #   @return [String]
   class RspecConfig
     include Singleton
-    extend Forwardable
 
     # @return [Symbol] default tms tag
     DEFAULT_TMS_TAG = :tms
@@ -35,26 +34,6 @@ module AllureRspec
     DEFAULT_FEATURE_TAG = :feature
     # @return [Symbol] default story tag
     DEFAULT_STORY_TAG = :story
-
-    def_delegators :@allure_config,
-                   :clean_results_directory,
-                   :clean_results_directory=,
-                   :link_issue_pattern,
-                   :link_issue_pattern=,
-                   :link_tms_pattern,
-                   :link_tms_pattern=,
-                   :logging_level,
-                   :logging_level=,
-                   :logger,
-                   :logger=,
-                   :results_directory,
-                   :results_directory=,
-                   :environment,
-                   :environment=,
-                   :environment_properties,
-                   :environment_properties=,
-                   :categories,
-                   :categories=
 
     def initialize
       @allure_config = Allure.configuration
@@ -101,6 +80,14 @@ module AllureRspec
     # @return [Array]
     def ignored_tags
       @ignored_tags || []
+    end
+
+    def method_missing(method, ...)
+      @allure_config.respond_to?(method) ? @allure_config.send(method, ...) : super
+    end
+
+    def respond_to_missing?(method, include_private = false)
+      @allure_config.respond_to?(method, include_private) || super
     end
   end
 end

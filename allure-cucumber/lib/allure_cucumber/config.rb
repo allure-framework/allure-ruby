@@ -21,7 +21,6 @@ module AllureCucumber
   #   @return [String]
   class CucumberConfig
     include Singleton
-    extend Forwardable
 
     # @return [String] default tms tag prefix
     DEFAULT_TMS_PREFIX = "TMS:"
@@ -35,26 +34,6 @@ module AllureCucumber
     DEFAULT_FEATURE_PREFIX = "FEATURE:"
     # @return [String] default story tag prefix
     DEFAULT_STORY_PREFIX = "STORY:"
-
-    def_delegators :@allure_config,
-                   :clean_results_directory,
-                   :clean_results_directory=,
-                   :link_issue_pattern,
-                   :link_issue_pattern=,
-                   :link_tms_pattern,
-                   :link_tms_pattern=,
-                   :logging_level,
-                   :logging_level=,
-                   :logger,
-                   :logger=,
-                   :results_directory,
-                   :results_directory=,
-                   :environment,
-                   :environment=,
-                   :environment_properties,
-                   :environment_properties=,
-                   :categories,
-                   :categories=
 
     attr_writer :tms_prefix,
                 :issue_prefix,
@@ -95,6 +74,14 @@ module AllureCucumber
     # @return [String]
     def story_prefix
       @story_prefix || DEFAULT_STORY_PREFIX
+    end
+
+    def method_missing(method, ...)
+      @allure_config.respond_to?(method) ? @allure_config.send(method, ...) : super
+    end
+
+    def respond_to_missing?(method, include_private = false)
+      @allure_config.respond_to?(method, include_private) || super
     end
   end
 end
