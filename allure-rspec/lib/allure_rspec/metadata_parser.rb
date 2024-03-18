@@ -31,7 +31,7 @@ module AllureRspec
     # Metadata parser instance
     #
     # @param [RSpec::Core::Example] example
-    # @param [AllureRspec::RspecConfig] config <description>
+    # @param [AllureRspec::RspecConfig] config
     def initialize(example, config)
       @example = example
       @config = config
@@ -65,6 +65,21 @@ module AllureRspec
         muted: !metadata[:muted].nil?,
         known: !metadata[:known].nil?
       )
+    end
+
+    # Example location
+    #
+    # @return [String]
+    def location
+      file = example
+             .metadata
+             .fetch(:shared_group_inclusion_backtrace)
+             .last
+             &.formatted_inclusion_location
+
+      return example.location unless file
+
+      file
     end
 
     private

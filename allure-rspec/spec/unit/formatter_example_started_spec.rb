@@ -51,6 +51,28 @@ describe "example_started" do
         end
       end
     end
+
+    context "with shared example" do
+      it "correctly detects spec location" do
+        run_rspec(<<~SPEC)
+          shared_examples "shared" do
+            it "#{spec}" do |e|
+              e.step(name: "test body")
+            end
+          end
+
+          describe "#{suite}" do
+            it_behaves_like "shared"
+          end
+        SPEC
+
+        expect(lifecycle).to have_received(:start_test_case).once do |arg|
+          aggregate_failures "Should have correct args" do
+            expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:8")
+          end
+        end
+      end
+    end
   end
 
   context "allure environment" do
