@@ -29,5 +29,6 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
 
   s.add_dependency "allure-ruby-commons", version
+  s.add_dependency "csv", ">= 3.0", "< 4.0"
   s.add_dependency "cucumber", ">= 4.0.0", "< 10"
 end
