@@ -104,8 +104,8 @@ module AllureRspec
 
       Allure::TestResult.new(
         name: example.description,
-        description: "Location - #{strip_relative(example.location)}",
-        description_html: "Location - #{strip_relative(example.location)}",
+        description: "Location - #{strip_relative(parser.location)}",
+        description_html: "Location - #{strip_relative(parser.location)}",
         history_id: example.id,
         full_name: example.full_description,
         labels: parser.labels,
