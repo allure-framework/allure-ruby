@@ -9,7 +9,7 @@ gem "allure-ruby-commons", path: "allure-ruby-commons"
 group :development do
   gem "colorize", "~> 1.1.0"
   gem "debug", "~> 1.8"
-  gem "rake", "~> 13.1.0"
+  gem "rake", "~> 13.2.1"
   gem "semver2", "~> 3.4"
   gem "solargraph", "~> 0.50.0"
 end
