@@ -36,7 +36,7 @@ describe "example_finished" do
       aggregate_failures "Should update correct test case parameters" do
         expect(@test_case.stage).to eq(Allure::Stage::FINISHED)
         expect(@test_case.status).to eq(Allure::Status::PASSED)
-        expect(@test_case.status_details).to eq(Allure::StatusDetails.new)
+        expect(@test_case.status_details).to eq(Allure::StatusDetails.new(message: "NilClass"))
       end
     end
   end
