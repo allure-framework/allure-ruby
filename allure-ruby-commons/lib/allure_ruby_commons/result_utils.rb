@@ -159,7 +159,7 @@ module Allure
       # @param [Exception] exception
       # @return [Allure::StatusDetails]
       def status_details(exception)
-        StatusDetails.new(message: exception&.message || exception.class.name, trace: exception&.backtrace&.join("\n"))
+        StatusDetails.new(message: exception&.message, trace: exception&.backtrace&.join("\n"))
       end
 
       # Allure attachment object

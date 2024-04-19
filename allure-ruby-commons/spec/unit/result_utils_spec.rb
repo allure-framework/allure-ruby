@@ -93,10 +93,4 @@ describe Allure::ResultUtils do
     expect(status_details.message).to include("Got 2 failures from failure aggregation block")
     expect(status_details.trace).not_to be_empty
   end
-
-  it "returns status details for nill class error" do
-    status_details = Allure::ResultUtils.status_details(nil)
-    expect(status_details.message).to eq("NilClass")
-    expect(status_details.instance_variable_defined?(:@trace)).to be_truthy
-  end
 end
