@@ -43,7 +43,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Test
-        uses: paambaati/codeclimate-action@v5.0.0
+        uses: paambaati/codeclimate-action@v6.0.0
         env:
           CC_TEST_REPORTER_ID: be263ef9412dc65a7aa8dfb6e8162d5c7cfb3307fae0a444cde9dd6ca6f52848
           WITH_OJ_GEM: ${{ matrix.oj }}
