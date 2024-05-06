@@ -20,8 +20,8 @@ module AllureStepAnnotation
     step_name = @allure_step.empty? ? method_name.to_s : @allure_step
     @allure_step = nil
 
-    define_singleton_method(method_name) do |*args, &block|
-      Allure.run_step(step_name) { original_method.call(*args, &block) }
+    define_singleton_method(method_name) do |*args, **kwargs, &block|
+      Allure.run_step(step_name) { original_method.call(*args, **kwargs, &block) }
     end
   end
 
@@ -32,8 +32,8 @@ module AllureStepAnnotation
     step_name = @allure_step.empty? ? method_name.to_s : @allure_step
     @allure_step = nil
 
-    define_method(method_name) do |*args, &block|
-      Allure.run_step(step_name) { original_method.bind_call(self, *args, &block) }
+    define_method(method_name) do |*args, **kwargs, &block|
+      Allure.run_step(step_name) { original_method.bind_call(self, *args, **kwargs, &block) }
     end
   end
 end
