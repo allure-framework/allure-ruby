@@ -18,7 +18,7 @@ group :test do
   gem "climate_control", "~> 1.2.0"
   gem "oj", "~> 3.14" if ENV["WITH_OJ_GEM"] == "true"
   gem "rspec", "~> 3.13.0"
-  gem "rubocop", "~> 1.63.1"
+  gem "rubocop", "~> 1.64.0"
   gem "rubocop-performance", "~> 1.21.0"
   gem "simplecov", "~> 0.22.0"
   gem "simplecov-console", "~> 0.9.1"
