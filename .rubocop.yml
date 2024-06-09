@@ -2,7 +2,7 @@ require:
   - rubocop-performance
 
 AllCops:
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.1
   NewCops: enable
   Exclude:
     - bin/**/*
@@ -46,6 +46,9 @@ Style/FrozenStringLiteralComment:
   SafeAutoCorrect: true
 
 Style/FetchEnvVar:
+  Enabled: false
+
+Style/HashSyntax:
   Enabled: false
 
 Gemspec/RequireMFA:
