@@ -67,7 +67,7 @@ jobs:
       - name: Download allure-results
         uses: actions/download-artifact@v4
       - name: Publish allure report
-        uses: andrcuns/allure-publish-action@v2.6.0
+        uses: andrcuns/allure-publish-action@v2.7.0
         env:
           GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
