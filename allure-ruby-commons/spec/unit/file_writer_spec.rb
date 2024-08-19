@@ -29,7 +29,7 @@ describe Allure::FileWriter do
     attachment = Allure::Attachment.new(
       name: "Test attachment",
       type: Allure::ContentType::TXT,
-      source: "#{UUID.generate}-attachment.txt"
+      source: "#{SecureRandom.uuid}-attachment.txt"
     )
     attachment_file = File.join(results_dir, attachment.source)
     file_writer.write_attachment("Test attachment", attachment)
@@ -41,7 +41,7 @@ describe Allure::FileWriter do
     attachment = Allure::Attachment.new(
       name: "Test attachment",
       type: Allure::ContentType::PNG,
-      source: "#{UUID.generate}-attachment.png"
+      source: "#{SecureRandom.uuid}-attachment.png"
     )
     source = File.new(File.join(Dir.pwd, "spec", "fixtures", "ruby-logo.png"))
     attachment_file = File.join(results_dir, attachment.source)

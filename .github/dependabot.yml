@@ -20,8 +20,6 @@ updates:
       dependency-type: indirect
     - dependency-name: require_all
       dependency-type: indirect
-    - dependency-name: uuid
-      dependency-type: indirect
 - package-ecosystem: bundler
   directory: /allure-rspec
   schedule:

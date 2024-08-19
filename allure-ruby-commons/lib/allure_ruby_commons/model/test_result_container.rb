@@ -3,7 +3,7 @@
 module Allure
   # Allure model step result container
   class TestResultContainer < JSONable
-    def initialize(uuid: UUID.generate, name: "Unnamed")
+    def initialize(uuid: SecureRandom.uuid, name: "Unnamed")
       super()
 
       @uuid = uuid
