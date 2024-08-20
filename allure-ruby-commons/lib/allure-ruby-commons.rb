@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require "require_all"
-require "uuid"
+require "securerandom"
 
 require_rel "allure_ruby_commons/**/*rb"
 

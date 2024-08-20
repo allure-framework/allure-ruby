@@ -168,7 +168,7 @@ module Allure
       # @return [Allure::Attachment]
       def prepare_attachment(name, type)
         extension = ContentType.to_extension(type) || return
-        file_name = "#{UUID.generate}-attachment.#{extension}"
+        file_name = "#{SecureRandom.uuid}-attachment.#{extension}"
         Attachment.new(name: name, source: file_name, type: type)
       end
 

@@ -19,7 +19,7 @@ module Allure
     # @option options [Array<Allure::Link>] :links ([])
     # @option options [Array<Allure::Attachment>] :attachments ([])
     # @option options [Array<Allure::Parameter>] :parameters ([])
-    def initialize(uuid: UUID.generate, history_id: UUID.generate, environment: nil, **options)
+    def initialize(uuid: SecureRandom.uuid, history_id: SecureRandom.uuid, environment: nil, **options)
       super
 
       @name = options[:name]
