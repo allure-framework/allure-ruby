@@ -10,7 +10,7 @@ group :development do
   gem "colorize", "~> 1.1.0"
   gem "debug", "~> 1.8"
   gem "rake", "~> 13.2.1"
-  gem "ruby-lsp", "~> 0.17.2"
+  gem "ruby-lsp", "~> 0.23.9"
   gem "semver2", "~> 3.4"
   gem "solargraph", "~> 0.51.2"
 end
