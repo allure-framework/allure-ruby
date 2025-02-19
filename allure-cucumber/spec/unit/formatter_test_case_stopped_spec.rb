@@ -86,4 +86,29 @@ describe "on_test_case_finished" do
       end
     end
   end
+
+  it "correctly updates skipped test case" do
+    run_cucumber_cli(<<~FEATURE)
+      Feature: Simple feature
+
+      @skipped
+      Scenario: Add a to b
+        Simple scenario description
+        Given a is 5
+        And b is 10
+        When I add a to b
+        Then step fails with simple exception
+        And this step shoud be skipped
+    FEATURE
+
+    expect(lifecycle).to have_received(:update_test_case).with(no_args) do |&arg|
+      arg.call(@test_case)
+      aggregate_failures "Should update correct test case parameters" do
+        expect(@test_case.stage).to eq(Allure::Stage::FINISHED)
+        expect(@test_case.status).to eq(Allure::Status::SKIPPED)
+        expect(@test_case.status_details.message).to eq("because reasons")
+        expect(@test_case.status_details.trace).not_to be_empty
+      end
+    end
+  end
 end

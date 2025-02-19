@@ -26,6 +26,10 @@ class CucumberHelper
 
     AfterStep("@after_step") do
     end
+
+    Before("@skipped") do
+      skip_this_scenario("because reasons")
+    end
   RUBY
 
   STEPS = <<~RUBY
