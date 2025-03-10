@@ -60,7 +60,7 @@ module AllureCucumber
     # @return [Hash<Symbol, String>]
     def failure_details(result)
       return { message: result.exception.message, trace: result.exception.backtrace.join("\n") } if result.failed?
-      return { message: result.message, trace: result.backtrace.join("\n") } if result.undefined?
+      return { message: result.message, trace: result.backtrace.join("\n") } if result.undefined? || result.skipped?
 
       {}
     end
