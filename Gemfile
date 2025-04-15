@@ -20,7 +20,7 @@ group :test do
   gem "oj", "~> 3.14" if ENV["WITH_OJ_GEM"] == "true"
   gem "rspec", "~> 3.13.0"
   gem "rubocop", "~> 1.75.1"
-  gem "rubocop-performance", "~> 1.24.0"
+  gem "rubocop-performance", "~> 1.25.0"
   gem "simplecov", "~> 0.22.0"
   gem "simplecov-console", "~> 0.9.1"
 end
