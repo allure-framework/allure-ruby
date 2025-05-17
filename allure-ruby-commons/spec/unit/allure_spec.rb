@@ -93,8 +93,8 @@ describe Allure do
 
   context "with parameter helpers" do
     it "adds test parameter" do
-      allure.parameter("name", "value")
-      expect(@test_case.parameters.last).to eq(Allure::Parameter.new("name", "value"))
+      allure.parameter("name", "value", excluded: true, mode: "masked")
+      expect(@test_case.parameters.last).to eq(Allure::Parameter.new("name", "value", excluded: true, mode: "masked"))
     end
   end
 
@@ -167,9 +167,9 @@ describe Allure do
 
     it "adds parameter" do
       allure.run_step("New step") do
-        allure.step_parameter("name", "value")
+        allure.step_parameter("name", "value", excluded: true, mode: "hidden")
       end
-      expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value"))
+      expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value", excluded: true, mode: "hidden"))
     end
   end
 
