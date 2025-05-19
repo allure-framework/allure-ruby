@@ -4,7 +4,7 @@ module Allure
   # Allure model parameter object
   class Parameter < JSONable
     MODES = %w[default masked hidden].freeze
-    def initialize(name, value, excluded: false, mode: "default")
+    def initialize(name, value, excluded: false, mode: DEFAULT)
       super()
 
       @name = name
