@@ -13,8 +13,7 @@ module Allure
       @name = name
       @value = value
       @excluded = excluded
-      validate_mode!(mode)
-      @mode = mode
+      @mode = validate_mode!(mode)
     end
 
     attr_reader :name, :value, :excluded, :mode
