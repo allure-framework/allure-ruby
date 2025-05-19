@@ -51,7 +51,7 @@ module Allure
     #
     # @return [String]
     def parameters_string
-      parameters.map { |p| "#{p.name}=#{p.value}" }.join(";")
+      parameters.reject(&:excluded).map { |p| "#{p.name}=#{p.value}" }.join(";")
     end
   end
 end

@@ -171,6 +171,14 @@ describe Allure do
       end
       expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value", excluded: true, mode: "hidden"))
     end
+
+    it "invalid parameter mode" do
+      msg = "Parameter mode 'jibberish' is invalid. Valid modes are: #{Allure::Parameter::MODES.join(', ')}"
+      expect(Allure.configuration.logger).to receive(:error).with(msg)
+      allure.run_step("New step") do
+        allure.step_parameter("name", "value", excluded: true, mode: "jibberish")
+      end
+    end
   end
 
   context "with status details helpers" do
