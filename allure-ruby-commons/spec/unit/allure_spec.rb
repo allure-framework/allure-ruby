@@ -167,9 +167,9 @@ describe Allure do
 
     it "adds parameter" do
       allure.run_step("New step") do
-        allure.step_parameter("name", "value", excluded: true, mode: "hidden")
+        allure.step_parameter("name", "value", excluded: true, mode: Allure::Parameter::HIDDEN)
       end
-      expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value", excluded: true, mode: "hidden"))
+      expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value", excluded: true, mode: Allure::Parameter::HIDDEN))
     end
 
     it "invalid parameter mode" do
