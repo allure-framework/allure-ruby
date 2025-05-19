@@ -19,9 +19,10 @@ module Allure
     private
 
     def validate_mode!(mode)
-      return if MODES.include?(mode)
+      modes = [DEFAULT, MASKED, HIDDEN]
+      return if modes.include?(mode)
 
-      Allure.configuration.logger.error "Parameter mode '#{mode}' is invalid. Valid modes are: #{MODES.join(', ')}"
+      Allure.configuration.logger.error "Parameter mode '#{mode}' is invalid. Valid modes are: #{modes.join(', ')}"
     end
   end
 end
