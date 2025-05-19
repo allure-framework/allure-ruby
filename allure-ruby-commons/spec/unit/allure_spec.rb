@@ -94,7 +94,8 @@ describe Allure do
   context "with parameter helpers" do
     it "adds test parameter" do
       allure.parameter("name", "value", excluded: true, mode: Allure::Parameter::MASKED)
-      expect(@test_case.parameters.last).to eq(Allure::Parameter.new("name", "value", excluded: true, mode: Allure::Parameter::MASKED))
+      parameter = Allure::Parameter.new("name", "value", excluded: true, mode: Allure::Parameter::MASKED)
+      expect(@test_case.parameters.last).to eq(parameter)
     end
   end
 
@@ -169,7 +170,8 @@ describe Allure do
       allure.run_step("New step") do
         allure.step_parameter("name", "value", excluded: true, mode: Allure::Parameter::HIDDEN)
       end
-      expect(last_step.parameters.last).to eq(Allure::Parameter.new("name", "value", excluded: true, mode: Allure::Parameter::HIDDEN))
+      parameter = Allure::Parameter.new("name", "value", excluded: true, mode: Allure::Parameter::HIDDEN)
+      expect(last_step.parameters.last).to eq(parameter)
     end
 
     it "uses default mode when invalid mode parameter is set" do
