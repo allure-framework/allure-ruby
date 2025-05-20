@@ -5,6 +5,7 @@ describe "AllureLifecycle::TestCaseResult" do
 
   let!(:result_container) { @result_container = start_test_container("Test Container") }
   let!(:test_case) { start_test_case(name: "Test Case", environment: environment) }
+  let(:environment) { "test" }
 
   context "without allure environment" do
     let(:environment) { nil }
@@ -44,6 +45,38 @@ describe "AllureLifecycle::TestCaseResult" do
         Allure::Label.new("host", Socket.gethostname),
         Allure::Label.new("language", "ruby")
       )
+    end
+  end
+
+  context "history id" do
+    it "History id is different for different non-excluded parameters" do
+      test_case1 = start_test_case(name: "Test Case", history_id: 1)
+      lifecycle.update_test_case do |test_case|
+        test_case.parameters.push(Allure::Parameter.new("name", "value1"))
+      end
+      test_case1.stop
+
+      test_case2 = start_test_case(name: "Test Case", history_id: 1)
+      lifecycle.update_test_case do |test_case|
+        test_case.parameters.push(Allure::Parameter.new("name", "value2"))
+      end
+      test_case2.stop
+      expect(test_case1.history_id).not_to eq(test_case2.history_id)
+    end
+
+    it "History id is the same for excluded parameters" do
+      test_case1 = start_test_case(name: "Test Case", history_id: 1)
+      lifecycle.update_test_case do |test_case|
+        test_case.parameters.push(Allure::Parameter.new("name", "value1", excluded: true))
+      end
+      test_case1.stop
+
+      test_case2 = start_test_case(name: "Test Case", history_id: 1)
+      lifecycle.update_test_case do |test_case|
+        test_case.parameters.push(Allure::Parameter.new("name", "value2", excluded: true))
+      end
+      test_case2.stop
+      expect(test_case1.history_id).to eq(test_case2.history_id)
     end
   end
 

@@ -118,9 +118,9 @@ module Allure
   # @param [String] name
   # @param [String] value
   # @return [void]
-  def parameter(name, value)
+  def parameter(name, value, excluded: false, mode: Allure::Parameter::DEFAULT)
     lifecycle.update_test_case do |test_case|
-      test_case.parameters.push(Parameter.new(name, value))
+      test_case.parameters.push(Parameter.new(name, value, excluded: excluded, mode: mode))
     end
   end
 
@@ -239,9 +239,9 @@ module Allure
   # @param [String] name
   # @param [String] value
   # @return [void]
-  def step_parameter(name, value)
+  def step_parameter(name, value, excluded: false, mode: Allure::Parameter::DEFAULT)
     lifecycle.update_test_step do |step|
-      step.parameters.push(Parameter.new(name, value))
+      step.parameters.push(Parameter.new(name, value, excluded: excluded, mode: mode))
     end
   end
 end
