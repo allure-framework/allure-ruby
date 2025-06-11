@@ -12,7 +12,7 @@ group :development do
   gem "rake", "~> 13.3.0"
   gem "ruby-lsp", "~> 0.23.9"
   gem "semver2", "~> 3.4"
-  gem "solargraph", "~> 0.54.0"
+  gem "solargraph", "~> 0.55.1"
 end
 
 group :test do
