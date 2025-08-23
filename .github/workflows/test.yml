@@ -57,29 +57,3 @@ jobs:
           name: allure-results-${{ matrix.ruby }}-oj-${{ matrix.oj }}
           path: "*/reports/allure-results/"
           retention-days: 1
-
-  report:
-    name: Allure report
-    runs-on: ubuntu-latest
-    needs: rspec
-    if: always()
-    steps:
-      - name: Download allure-results
-        uses: actions/download-artifact@v4
-      - name: Publish allure report
-        uses: andrcuns/allure-publish-action@v2.9.0
-        env:
-          GOOGLE_CLOUD_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_JSON }}
-          GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ALLURE_JOB_NAME: rspec
-        with:
-          storageType: gcs
-          resultsGlob: "**/allure-results"
-          bucket: allure-test-reports
-          prefix: allure-ruby/$GITHUB_REF
-          updatePr: description
-          summary: behaviors
-          copyLatest: true
-          ignoreMissingResults: false
-          summaryTableType: ascii
-          debug: true

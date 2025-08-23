@@ -6,7 +6,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/3190a4c9e68f20dd82ec/maintainability)](https://codeclimate.com/github/allure-framework/allure-ruby/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3190a4c9e68f20dd82ec/test_coverage)](https://codeclimate.com/github/allure-framework/allure-ruby/test_coverage)
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)
-[![Test Report](https://img.shields.io/badge/report-allure-blue.svg)](https://storage.googleapis.com/allure-test-reports/allure-ruby/refs/heads/master/index.html)
 
 Ruby testing framework adaptors for generating allure compatible test reports.
 
