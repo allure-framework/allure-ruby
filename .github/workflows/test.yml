@@ -8,6 +8,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   rubocop:
     name: Rubocop
@@ -26,6 +29,8 @@ jobs:
   rspec:
     name: Rspec ruby-${{ matrix.ruby }}-oj-${{ matrix.oj }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: rubocop
     strategy:
       fail-fast: false
