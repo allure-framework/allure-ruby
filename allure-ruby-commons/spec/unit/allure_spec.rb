@@ -39,7 +39,7 @@ describe Allure do
 
       aggregate_failures do
         expect(label).to eq(Allure::Label.new("epic", "Test Epic"))
-        expect(labels.count { |it| it.name == "epic" }).to eq(1)
+        expect(labels.count { |label| label.name == "epic" }).to eq(1)
       end
     end
 
@@ -49,7 +49,7 @@ describe Allure do
 
       aggregate_failures do
         expect(label).to eq(Allure::Label.new("feature", "Test Feature"))
-        expect(labels.count { |it| it.name == "feature" }).to eq(1)
+        expect(labels.count { |label| label.name == "feature" }).to eq(1)
       end
     end
 
@@ -59,7 +59,7 @@ describe Allure do
 
       aggregate_failures do
         expect(label).to eq(Allure::Label.new("story", "Test Story"))
-        expect(labels.count { |it| it.name == "story" }).to eq(1)
+        expect(labels.count { |label| label.name == "story" }).to eq(1)
       end
     end
 
@@ -69,7 +69,7 @@ describe Allure do
 
       aggregate_failures do
         expect(label).to eq(Allure::Label.new("suite", "Test Suite"))
-        expect(labels.count { |it| it.name == "suite" }).to eq(1)
+        expect(labels.count { |label| label.name == "suite" }).to eq(1)
       end
     end
 
