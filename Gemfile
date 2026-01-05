@@ -11,7 +11,7 @@ group :development do
   gem "debug", "~> 1.8"
   gem "rake", "~> 13.3.0"
   gem "semver2", "~> 3.4"
-  gem "solargraph", "~> 0.57.0"
+  gem "solargraph", "~> 0.58.1"
 end
 
 group :test do
