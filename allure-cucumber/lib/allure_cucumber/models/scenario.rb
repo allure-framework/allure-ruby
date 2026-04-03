@@ -25,6 +25,12 @@ module AllureCucumber
       @feature_name ||= feature.name
     end
 
+    # Title path without the final scenario display name.
+    # @return [Array<String>]
+    def title_path
+      [feature_path, feature_name, rule_name].compact
+    end
+
     # Scenario name
     # @return [String]
     def name
@@ -52,18 +58,59 @@ module AllureCucumber
     # Feature file name
     # @return [String]
     def feature_file_name
-      @feature_file_name ||= test_case.location.file.split("/").last.gsub(".feature", "")
+      @feature_file_name ||= File.basename(location_file, ".feature")
     end
 
     # Feature folder
     # @return [String]
     def feature_folder
-      @feature_folder ||= test_case.location.file.split("/")[-2]
+      @feature_folder ||= begin
+        directory = File.dirname(location_file)
+        directory == "." ? nil : File.basename(directory)
+      end
     end
 
     private
 
     attr_reader :test_case, :scenario_source, :feature
+
+    # @return [String]
+    def feature_path
+      @feature_path ||= location_file.delete_prefix("./")
+    end
+
+    # @return [String]
+    def location_file
+      @location_file ||= test_case.location.file
+    end
+
+    # @return [String, nil]
+    def rule_name
+      @rule_name ||= rule&.name
+    end
+
+    # @return [Object, nil]
+    def rule
+      return unless scenario_id
+
+      @rule ||= Array(feature.children)
+                 .filter_map { |child| child.rule if child.respond_to?(:rule) }
+                 .find { |child_rule| rule_scenario_ids(child_rule).include?(scenario_id) }
+    end
+
+    # @return [Array<String>]
+    def rule_scenario_ids(rule)
+      Array(rule.children).filter_map do |child|
+        next unless child.respond_to?(:scenario)
+
+        child.scenario&.id
+      end
+    end
+
+    # @return [String, nil]
+    def scenario_id
+      @scenario_id ||= scenario.respond_to?(:id) ? scenario.id : nil
+    end
 
     # Is scenario outline
     # @return [Boolean]

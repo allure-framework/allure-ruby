@@ -44,6 +44,7 @@ describe "example_started" do
           expect(arg.name).to eq(spec)
           expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
           expect(arg.full_name).to eq("#{suite} #{spec}")
+          expect(arg.title_path).to eq(["#{test_tmp_dir}/spec/test_spec.rb", suite])
           expect(arg.links).to be_empty
           expect(arg.parameters).to be_empty
           expect(arg.history_id).to eq(Digest::MD5.hexdigest("./#{test_tmp_dir}/spec/test_spec.rb[1:1]"))
@@ -256,14 +257,19 @@ describe "example_started" do
 
       aggregate_failures "Examples should contain correct suite labels" do
         expect(examples.first.labels).to include(Allure::ResultUtils.suite_label("Suite"))
+        expect(examples.first.title_path).to eq(["#{test_tmp_dir}/spec/test_spec.rb", "Suite"])
         expect(examples[1].labels).to include(
           Allure::ResultUtils.suite_label("Nested Suite 1"),
           Allure::ResultUtils.parent_suite_label("Suite")
         )
+        expect(examples[1].title_path).to eq(["#{test_tmp_dir}/spec/test_spec.rb", "Suite", "Nested Suite 1"])
         expect(examples.last.labels).to include(
           Allure::ResultUtils.suite_label("Nested Suite 2"),
           Allure::ResultUtils.parent_suite_label("Suite"),
           Allure::ResultUtils.sub_suite_label("Nested Suite 2:1:1 > Nested Suite 2:1")
+        )
+        expect(examples.last.title_path).to eq(
+          ["#{test_tmp_dir}/spec/test_spec.rb", "Suite", "Nested Suite 2", "Nested Suite 2:1", "Nested Suite 2:1:1"]
         )
       end
     end

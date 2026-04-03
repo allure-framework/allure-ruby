@@ -9,6 +9,7 @@ module Allure
     # @param [Hash] options
     # @option options [String] :name
     # @option options [String] :full_name
+    # @option options [Array<String>] :title_path
     # @option options [String] :description
     # @option options [String] :description_html
     # @option options [String] :status ('broken')
@@ -26,6 +27,7 @@ module Allure
       @uuid = uuid
       @history_id = history_id
       @full_name = options[:full_name] || "Unnamed"
+      @title_path = options[:title_path]
       @labels = options[:labels] || []
       @links = options[:links] || []
       @parameters << Parameter.new("environment", environment) if environment
@@ -33,6 +35,7 @@ module Allure
 
     attr_accessor :uuid,
                   :full_name,
+                  :title_path,
                   :labels,
                   :links
 

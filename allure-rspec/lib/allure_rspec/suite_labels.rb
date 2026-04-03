@@ -13,9 +13,7 @@ module AllureRspec
     # Get test suite labels
     # @return [Array<Allure::Label>]
     def fetch
-      parents = example_group.parent_groups.map do |group|
-        group.description.empty? ? "Anonymous" : group.description
-      end
+      parents = parent_groups
 
       labels = []
       labels << Allure::ResultUtils.suite_label(suite(parents))
@@ -25,9 +23,22 @@ module AllureRspec
       labels
     end
 
+    # Get title path from outermost group to innermost group.
+    # @return [Array<String>]
+    def title_path
+      parent_groups.reverse
+    end
+
     private
 
     attr_reader :example_group
+
+    # @return [Array<String>]
+    def parent_groups
+      @parent_groups ||= example_group.parent_groups.map do |group|
+        group.description.empty? ? "Anonymous" : group.description
+      end
+    end
 
     # @param [Array<String>] parents
     # @return [String]
