@@ -31,7 +31,7 @@ module Allure
     #
     # @return [String]
     def environment
-      return(@environment) if defined?(@environment)
+      return @environment if defined?(@environment)
 
       @environment ||= ENV["ALLURE_ENVIRONMENT"]
     end

@@ -30,5 +30,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency "mime-types", ">= 3.3", "< 4"
   s.add_dependency "require_all", ">= 2", "< 4"
-  s.add_dependency "rspec-expectations", "~> 3.12"
+  s.add_dependency "rspec-expectations", "~> 3.13"
 end

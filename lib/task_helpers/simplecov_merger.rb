@@ -35,7 +35,7 @@ class SimpleCovMerger
     end
 
     def multiformatter
-      [SimpleCov::Formatter::Console].yield_self do |formatters|
+      [SimpleCov::Formatter::Console].then do |formatters|
         formatters << SimpleCov::Formatter::HTMLFormatter if ENV["COV_HTML_REPORT"]
         formatters << SimpleCov::Formatter::JSONFormatter if ENV["CC_TEST_REPORTER_ID"]
         SimpleCov::Formatter::MultiFormatter.new(formatters)
