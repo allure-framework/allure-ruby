@@ -172,6 +172,35 @@ module Allure
         Attachment.new(name: name, source: file_name, type: type)
       end
 
+      # Allure global attachment object
+      # @param [String] name
+      # @param [String] type
+      # @param [Number] timestamp
+      # @return [Allure::GlobalAttachment]
+      def prepare_global_attachment(name, type, timestamp: self.timestamp)
+        attachment = prepare_attachment(name, type) || return
+
+        GlobalAttachment.new(
+          name: attachment.name,
+          source: attachment.source,
+          type: attachment.type,
+          timestamp: timestamp
+        )
+      end
+
+      # Allure global error object
+      # @param [Number] timestamp
+      # @param [Hash] options
+      # @option options [Boolean] :known
+      # @option options [Boolean] :muted
+      # @option options [Boolean] :flaky
+      # @option options [String] :message
+      # @option options [String] :trace
+      # @return [Allure::GlobalError]
+      def prepare_global_error(timestamp: self.timestamp, **options)
+        GlobalError.new(timestamp: timestamp, **options)
+      end
+
       private
 
       # Check if value is full url
