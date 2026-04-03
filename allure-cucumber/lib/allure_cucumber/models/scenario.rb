@@ -94,8 +94,8 @@ module AllureCucumber
       return unless scenario_id
 
       @rule ||= Array(feature.children)
-                 .filter_map { |child| child.rule if child.respond_to?(:rule) }
-                 .find { |child_rule| rule_scenario_ids(child_rule).include?(scenario_id) }
+                .filter_map { |child| child.rule if child.respond_to?(:rule) }
+                .find { |child_rule| rule_scenario_ids(child_rule).include?(scenario_id) }
     end
 
     # @return [Array<String>]
