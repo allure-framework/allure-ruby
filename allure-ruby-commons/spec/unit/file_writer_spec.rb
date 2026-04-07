@@ -50,6 +50,75 @@ describe Allure::FileWriter do
     expect(File.exist?(attachment_file)).to be_truthy, "Expected #{attachment_file} to exist"
   end
 
+  it "writes globals chunk" do
+    globals = Allure::Globals.new(
+      attachments: [
+        Allure::GlobalAttachment.new(
+          name: "Global attachment",
+          type: Allure::ContentType::TXT,
+          source: "#{SecureRandom.uuid}-attachment.txt",
+          timestamp: 123
+        )
+      ],
+      errors: []
+    )
+    existing_files = Dir.glob(File.join(results_dir, "*-globals.json"))
+    file_writer.write_globals(globals)
+
+    globals_file = (Dir.glob(File.join(results_dir, "*-globals.json")) - existing_files).first
+
+    aggregate_failures "Expected globals chunk to exist with correct content" do
+      expect(globals_file).to be_a(String)
+      expect(File.exist?(globals_file)).to be_truthy, "Expected #{globals_file} to exist"
+      expect(file_writer.load_json(globals_file)).to eq(
+        attachments: [
+          {
+            name: "Global attachment",
+            type: Allure::ContentType::TXT,
+            source: globals.attachments.first.source,
+            timestamp: 123
+          }
+        ],
+        errors: []
+      )
+    end
+  end
+
+  it "writes globals chunk with error" do
+    globals = Allure::Globals.new(
+      attachments: [],
+      errors: [
+        Allure::GlobalError.new(
+          message: "Global failure",
+          trace: "trace line",
+          timestamp: 456
+        )
+      ]
+    )
+    existing_files = Dir.glob(File.join(results_dir, "*-globals.json"))
+    file_writer.write_globals(globals)
+
+    globals_file = (Dir.glob(File.join(results_dir, "*-globals.json")) - existing_files).first
+
+    aggregate_failures "Expected globals error chunk to exist with correct content" do
+      expect(globals_file).to be_a(String)
+      expect(File.exist?(globals_file)).to be_truthy, "Expected #{globals_file} to exist"
+      expect(file_writer.load_json(globals_file)).to eq(
+        attachments: [],
+        errors: [
+          {
+            known: false,
+            muted: false,
+            flaky: false,
+            message: "Global failure",
+            trace: "trace line",
+            timestamp: 456
+          }
+        ]
+      )
+    end
+  end
+
   it "writes environment properties" do
     environment_file = File.join(results_dir, "environment.properties")
     file_writer.write_environment(PROP1: "test", PROP2: "test_2")

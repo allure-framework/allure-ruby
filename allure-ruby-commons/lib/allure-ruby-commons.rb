@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "require_all"
+require "digest"
 require "securerandom"
 
 require_rel "allure_ruby_commons/**/*rb"
@@ -159,6 +160,27 @@ module Allure
   # @return [void]
   def add_attachment(name:, source:, type:, test_case: false)
     lifecycle.add_attachment(name: name, source: source, type: type, test_case: test_case)
+  end
+
+  # Add run-level attachment not bound to a test or fixture
+  # @param [String] name Attachment name
+  # @param [File, String] source File or string to save as attachment
+  # @param [String] type attachment type defined in {ContentType} or any other valid mime type
+  # @return [void]
+  def add_global_attachment(name:, source:, type:)
+    lifecycle.add_global_attachment(name: name, source: source, type: type)
+  end
+
+  # Add run-level error not bound to a test or fixture
+  # @param [Hash] details
+  # @option details [Boolean] :known
+  # @option details [Boolean] :muted
+  # @option details [Boolean] :flaky
+  # @option details [String] :message
+  # @option details [String] :trace
+  # @return [void]
+  def add_global_error(**details)
+    lifecycle.add_global_error(**details)
   end
 
   # Manually create environment.properties file

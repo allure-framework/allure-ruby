@@ -119,6 +119,29 @@ describe Allure do
       expect(file_writer).to have_received(:write_attachment).with(args[:source], kind_of(Allure::Attachment))
     end
 
+    it "adds global attachment" do
+      args = { name: "Global attach", source: "Some string", type: Allure::ContentType::TXT }
+      allure.add_global_attachment(**args)
+
+      expect(file_writer).to have_received(:write_attachment).with(args[:source], kind_of(Allure::GlobalAttachment))
+      expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals))
+    end
+
+    it "adds global error" do
+      allure.add_global_error(message: "Global failure", trace: "trace line")
+
+      expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)) do |globals|
+        error = globals.errors.first
+
+        aggregate_failures do
+          expect(globals.attachments).to eq([])
+          expect(error.message).to eq("Global failure")
+          expect(error.trace).to eq("trace line")
+          expect(error.timestamp).to be_a(Integer)
+        end
+      end
+    end
+
     it "adds environment" do
       env = { PROP1: "test", PROP2: "test" }
       allure.add_environment(env)
