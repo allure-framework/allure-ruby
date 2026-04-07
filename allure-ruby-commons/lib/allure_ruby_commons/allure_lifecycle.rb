@@ -231,7 +231,7 @@ module Allure
 
       logger.debug { "Adding global attachment '#{name}'" }
       write_attachment(source, attachment)
-      write_globals(Globals.new(attachments: [attachment], errors: []))
+      write_globals(Globals.new(attachments: [attachment]))
     end
 
     # Add run-level error
