@@ -56,6 +56,7 @@ describe "on_test_case_started" do
           expect(arg.name).to eq(scenario)
           expect(arg.description).to eq("Simple scenario description")
           expect(arg.full_name).to eq(scenario)
+          expect(arg.title_path).to eq(["#{test_tmp_dir}/features/test.feature", feature])
           expect(arg.links).to be_empty
           expect(arg.parameters).to be_empty
           expect(arg.labels).to match_array(labels)
@@ -220,6 +221,22 @@ describe "on_test_case_started" do
           Allure::Parameter.new("num_b", "7"),
           Allure::Parameter.new("result", "13")
         )
+      end
+    end
+  end
+
+  context "feature hierarchy" do
+    it "adds title path for rules" do
+      run_cucumber_cli(<<~FEATURE)
+        Feature: #{feature}
+
+        Rule: Core scenarios
+          Scenario: #{scenario}
+            Given a is 5
+      FEATURE
+
+      expect(lifecycle).to have_received(:start_test_case).once do |arg|
+        expect(arg.title_path).to eq(["#{test_tmp_dir}/features/test.feature", feature, "Core scenarios"])
       end
     end
   end
