@@ -246,7 +246,7 @@ module Allure
       error = ResultUtils.prepare_global_error(timestamp: ResultUtils.timestamp, **details)
 
       logger.debug { "Adding global error '#{error.message}'" }
-      write_globals(Globals.new(attachments: [], errors: [error]))
+      write_globals(Globals.new(errors: [error]))
     end
 
     # Add environment.properties file
