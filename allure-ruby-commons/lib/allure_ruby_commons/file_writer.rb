@@ -11,6 +11,8 @@ module Allure
     TEST_RESULT_CONTAINER_SUFFIX = "-container.json"
     # @return [String] attachment file suffix
     ATTACHMENT_FILE_SUFFIX = "-attachment"
+    # @return [String] globals chunk suffix
+    GLOBALS_SUFFIX = "-globals.json"
     # @return [String] environment info file
     ENVIRONMENT_FILE = "environment.properties"
     # @return [String] categories definition json
@@ -43,6 +45,13 @@ module Allure
     # @return [void]
     def write_attachment(source, attachment)
       source.is_a?(File) ? copy(source.path, attachment.source) : write(attachment.source, source)
+    end
+
+    # Write allure globals chunk
+    # @param [Allure::Globals] globals
+    # @return [void]
+    def write_globals(globals)
+      write("#{SecureRandom.uuid}#{GLOBALS_SUFFIX}", dump_json(globals))
     end
 
     # Write allure report environment info

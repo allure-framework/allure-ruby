@@ -3,7 +3,15 @@
 describe Allure::AllureLifecycle do
   subject(:lifecycle) { described_class.new(config) }
 
-  let(:file_writer) { instance_double("Allure::FileWriter", write_environment: nil, write_categories: nil) }
+  let(:file_writer) do
+    instance_double(
+      "Allure::FileWriter",
+      write_attachment: nil,
+      write_globals: nil,
+      write_environment: nil,
+      write_categories: nil
+    )
+  end
   let(:results_dir) { "spec/allure-results" }
   let(:report_files) { ["result.json", "container.json"] }
 
@@ -80,6 +88,43 @@ describe Allure::AllureLifecycle do
         lifecycle.write_environment
 
         expect(file_writer).to have_received(:write_environment).with(env_properties_hash)
+      end
+    end
+  end
+
+  describe "#add_global_attachment" do
+    it "writes a run-level attachment without an active test" do
+      lifecycle.add_global_attachment(name: "Global attachment", source: "payload", type: Allure::ContentType::TXT)
+
+      expect(file_writer).to have_received(:write_attachment).with("payload", kind_of(Allure::GlobalAttachment))
+      expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)) do |globals|
+        attachment = globals.attachments.first
+
+        aggregate_failures do
+          expect(globals.errors).to eq([])
+          expect(globals.attachments.length).to eq(1)
+          expect(attachment.name).to eq("Global attachment")
+          expect(attachment.type).to eq(Allure::ContentType::TXT)
+          expect(attachment.timestamp).to be_a(Integer)
+        end
+      end
+    end
+  end
+
+  describe "#add_global_error" do
+    it "writes a run-level error without an active test" do
+      lifecycle.add_global_error(message: "Global failure", trace: "trace line")
+
+      expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)) do |globals|
+        error = globals.errors.first
+
+        aggregate_failures do
+          expect(globals.attachments).to eq([])
+          expect(globals.errors.length).to eq(1)
+          expect(error.message).to eq("Global failure")
+          expect(error.trace).to eq("trace line")
+          expect(error.timestamp).to be_a(Integer)
+        end
       end
     end
   end

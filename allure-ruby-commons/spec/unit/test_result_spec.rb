@@ -80,6 +80,20 @@ describe "AllureLifecycle::TestCaseResult" do
     end
   end
 
+  context "title path" do
+    let(:environment) { nil }
+    let(:title_path) { ["spec/test_spec.rb", "Suite", "Nested Suite"] }
+    let!(:test_case) { start_test_case(name: "Test Case", title_path: title_path, environment: environment) }
+
+    it "stores title path on test results" do
+      expect(test_case.title_path).to eq(title_path)
+    end
+
+    it "serializes title path as titlePath" do
+      expect(test_case.to_hash["titlePath"]).to eq(title_path)
+    end
+  end
+
   context "with allure environment" do
     let(:environment) { "test" }
 

@@ -20,7 +20,7 @@ module Allure
 
     attr_reader :config
 
-    def_delegators :file_writer, :write_attachment
+    def_delegators :file_writer, :write_attachment, :write_globals
 
     # Start test result container
     # @param [Allure::TestResultContainer] test_result_container
@@ -218,6 +218,35 @@ module Allure
       executable_item.attachments.push(attachment)
       logger.debug { "Adding attachment '#{name}' to '#{executable_item.name}'" }
       write_attachment(source, attachment)
+    end
+
+    # Add run-level attachment
+    # @param [String] name Attachment name
+    # @param [File, String] source File or string to save as attachment
+    # @param [String] type attachment type defined in {Allure::ContentType} or any other valid mime type
+    # @return [void]
+    def add_global_attachment(name:, source:, type:)
+      attachment = ResultUtils.prepare_global_attachment(name, type, timestamp: ResultUtils.timestamp)
+      return logger.error { "Can't add global attachment, unrecognized mime type: #{type}" } unless attachment
+
+      logger.debug { "Adding global attachment '#{name}'" }
+      write_attachment(source, attachment)
+      write_globals(Globals.new(attachments: [attachment]))
+    end
+
+    # Add run-level error
+    # @param [Hash] details
+    # @option details [Boolean] :known
+    # @option details [Boolean] :muted
+    # @option details [Boolean] :flaky
+    # @option details [String] :message
+    # @option details [String] :trace
+    # @return [void]
+    def add_global_error(**details)
+      error = ResultUtils.prepare_global_error(timestamp: ResultUtils.timestamp, **details)
+
+      logger.debug { "Adding global error '#{error.message}'" }
+      write_globals(Globals.new(errors: [error]))
     end
 
     # Add environment.properties file

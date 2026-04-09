@@ -67,6 +67,12 @@ module AllureRspec
       )
     end
 
+    # Title path without the final example display name.
+    # @return [Array<String>]
+    def title_path
+      [strip_relative(example.file_path), *SuiteLabels.new(example.example_group).title_path]
+    end
+
     # Example location
     #
     # @return [String]

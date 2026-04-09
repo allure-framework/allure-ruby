@@ -35,6 +35,7 @@ RSpec.shared_context("lifecycle mocks") do
     instance_double(
       "FileWriter",
       write_attachment: nil,
+      write_globals: nil,
       write_categories: nil,
       write_environment: nil,
       write_test_result: nil,

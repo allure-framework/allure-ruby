@@ -91,4 +91,24 @@ describe "Lifecycle:Attachments" do
       )
     end
   end
+
+  it "adds global attachment as a globals chunk" do
+    lifecycle.add_global_attachment(**attach_opts)
+
+    aggregate_failures "Global attachment should be written" do
+      expect(@test_case.attachments).to be_empty
+      expect(file_writer).to have_received(:write_attachment).with(
+        "string attachment",
+        kind_of(Allure::GlobalAttachment)
+      )
+      expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)) do |globals|
+        attachment = globals.attachments.first
+
+        expect(globals.errors).to eq([])
+        expect(attachment.name).to eq("Test Attachment")
+        expect(attachment.type).to eq(Allure::ContentType::TXT)
+        expect(attachment.timestamp).to be_a(Integer)
+      end
+    end
+  end
 end

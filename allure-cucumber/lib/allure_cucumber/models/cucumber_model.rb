@@ -26,6 +26,7 @@ module AllureCucumber
         description_html: scenario.description,
         history_id: scenario.id,
         full_name: scenario.name,
+        title_path: scenario.title_path,
         labels: parser.labels,
         links: parser.links,
         parameters: parser.parameters,
