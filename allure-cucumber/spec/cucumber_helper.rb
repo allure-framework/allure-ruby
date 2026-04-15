@@ -2,7 +2,6 @@
 
 require "cucumber/cli/main"
 
-# rubocop:disable Style/OneClassPerFile
 class MockKernel
   def exit(status); end
 end
@@ -122,4 +121,3 @@ class CucumberHelper
     ]
   end
 end
-# rubocop:enable Style/OneClassPerFile
