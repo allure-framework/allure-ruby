@@ -107,7 +107,7 @@ jobs:
         run: npx -y allure@3 generate --config ./.allurerc.mjs --dump="allure-results-*.zip" --output=./out/allure-report
 
       - name: Post Allure summary
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        if: ${{ always() && !cancelled() && contains(fromJSON('["success","failure"]'), needs.rspec.result) && needs.rubocop.result != 'failure' }}
         uses: allure-framework/allure-action@v0
         with:
           report-directory: ./out/allure-report
