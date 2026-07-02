@@ -37,9 +37,24 @@ jobs:
       matrix:
         ruby: ["3.2", "3.3", "3.4", "4.0"]
         oj: [false, true]
+        include:
+          - ruby: "3.2"
+            ruby_id: "3_2"
+          - ruby: "3.3"
+            ruby_id: "3_3"
+          - ruby: "3.4"
+            ruby_id: "3_4"
+          - ruby: "4.0"
+            ruby_id: "4_0"
+    env:
+      ALLURE_MATRIX_ENV: ubuntu-ruby-${{ matrix.ruby_id }}-oj-${{ matrix.oj }}
+      ALLURE_TEST_DUMP_NAME: allure-results-test-ruby-${{ matrix.ruby }}-oj-${{ matrix.oj }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
       - name: Set up Ruby ${{ matrix.ruby }}
         uses: ruby/setup-ruby@v1
         env:
@@ -51,10 +66,49 @@ jobs:
         env:
           WITH_OJ_GEM: ${{ matrix.oj }}
           RUBY_VERSION: ${{ matrix.ruby }}
-        run: bundle exec rake test
+        run: npx -y allure@3 run --config ./.allurerc.mjs --rerun 2 --environment="${{ env.ALLURE_MATRIX_ENV }}" --dump="${{ env.ALLURE_TEST_DUMP_NAME }}" -- bundle exec rake test
       - name: Upload report
         uses: actions/upload-artifact@v7
         with:
-          name: allure-results-${{ matrix.ruby }}-oj-${{ matrix.oj }}
-          path: "*/reports/allure-results/"
+          name: ${{ env.ALLURE_TEST_DUMP_NAME }}
+          path: ./${{ env.ALLURE_TEST_DUMP_NAME }}.zip
           retention-days: 1
+
+  report:
+    needs: [rspec]
+    name: Build Allure report
+    runs-on: ubuntu-latest
+    if: always()
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    env:
+      ALLURE_SERVICE_TOKEN: ${{ secrets.ALLURE_SERVICE_TOKEN }}
+      ALLURE_TOKEN: ${{ secrets.ALLURE_TOKEN }}
+      ALLURE_ENDPOINT: ${{ secrets.ALLURE_ENDPOINT }}
+      ALLURE_PROJECT_ID: ${{ secrets.ALLURE_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+
+      - name: Download Allure dumps
+        uses: actions/download-artifact@v8
+        continue-on-error: true
+        with:
+          pattern: allure-results-*
+          path: ./
+          merge-multiple: true
+
+      - name: Generate Allure report
+        run: npx -y allure@3 generate --config ./.allurerc.mjs --dump="allure-results-*.zip" --output=./out/allure-report
+
+      - name: Post Allure summary
+        if: ${{ always() && !cancelled() && contains(fromJSON('["success","failure"]'), needs.rspec.result) && needs.rubocop.result != 'failure' }}
+        uses: allure-framework/allure-action@v0
+        with:
+          report-directory: ./out/allure-report
+          github-token: ${{ secrets.GITHUB_TOKEN }}

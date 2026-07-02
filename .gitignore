@@ -19,6 +19,7 @@ coverage
 vendor/bundle
 tmp
 allure-results
+out
 
 # Lockfile
 Gemfile.lock
