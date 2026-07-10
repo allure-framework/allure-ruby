@@ -5,7 +5,7 @@ updates:
   schedule:
     interval: weekly
   labels:
-    - dev:dependencies
+    - pr:dependencies
   allow:
     - dependency-type: direct
     - dependency-name: cucumber
@@ -22,17 +22,23 @@ updates:
   directory: /allure-rspec
   schedule:
     interval: daily
+  labels:
+    - pr:dependencies
 - package-ecosystem: bundler
   directory: /allure-ruby-commons
   schedule:
     interval: daily
+  labels:
+    - pr:dependencies
 - package-ecosystem: bundler
   directory: /allure-cucumber
   schedule:
     interval: daily
+  labels:
+    - pr:dependencies
 - package-ecosystem: github-actions
   directory: /
   schedule:
     interval: weekly
   labels:
-    - ci
+    - pr:dependencies

@@ -1,26 +1,27 @@
 changelog:
+  exclude:
+    labels:
+      - 'pr:invalid'
+      - 'pr:tests'
   categories:
     - title: '🚀 New Features'
       labels:
-        - 'feature'
+        - 'pr:new feature'
     - title: '🔬 Improvements'
       labels:
-        - 'enhancement'
+        - 'pr:improvement'
     - title: '🐞 Bug Fixes'
       labels:
-        - 'bug'
+        - 'pr:bug'
     - title: '📦 Dependency updates'
       labels:
-        - 'dependencies'
-    - title: '📦 Development dependency updates'
-      labels:
-        - 'dev:dependencies'
+        - 'pr:dependencies'
     - title: '📄 Documentation updates'
       labels:
-        - 'documentation'
+        - 'pr:documentation'
+    - title: '⛔️ Security'
+      labels:
+        - 'pr:security'
     - title: '🧰 Maintenance'
       labels:
-        - 'maintenance'
-    - title: '👷 CI'
-      labels:
-        - 'ci'
+        - 'pr:internal'
