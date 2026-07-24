@@ -19,29 +19,35 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v7
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ssh-key: ${{ secrets.RELEASE_SSH_KEY }}
-      -
-        name: Set up Ruby 3.4
+          persist-credentials: false
+      - name: Set up Ruby 4.0.2
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4
+          ruby-version: 4.0.2
           bundler-cache: true
-      -
-        name: Update version
+      - name: Update version
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name '${{ vars.ALLURE_CI_APP_SLUG }}[bot]'
+          git config user.email '${{ vars.ALLURE_CI_APP_USER_ID }}+${{ vars.ALLURE_CI_APP_SLUG }}[bot]@users.noreply.github.com'
           bundle config unset deployment
           bundle exec rake "version[${{ inputs.semver }}]"
-      -
-        name: Build and push gem
-        run: bundle exec rake release
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.ALLURE_CI_APP_CLIENT_ID }}
+          private-key: ${{ secrets.ALLURE_CI_APP_PRIVATE_KEY }}
+          permission-contents: write
+      - name: Push version commit and tag
         env:
-          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_TOKEN }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git remote set-url origin "https://x-access-token:${APP_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin HEAD:${{ github.ref_name }}
+          git push origin --tags
