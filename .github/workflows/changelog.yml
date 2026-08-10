@@ -23,7 +23,7 @@ jobs:
           permission-contents: write
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v3
