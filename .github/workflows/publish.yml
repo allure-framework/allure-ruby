@@ -1,0 +1,92 @@
+name: Publish
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish-commons:
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Ruby 4.0.2
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.2
+          bundler-cache: true
+
+      - name: Validate release tag
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(cat ALLURE_VERSION)
+          test "$RELEASE_TAG" = "${version}"
+
+      - name: Build gem
+        run: |
+          cd "allure-ruby-commons"
+          gem build allure-ruby-commons.gemspec
+
+      - name: Configure RubyGems credentials
+        uses: rubygems/configure-rubygems-credentials@v2.1.0
+
+      - name: Publish allure-ruby-commons
+        run: |
+          version=$(cat ALLURE_VERSION)
+          gem push "allure-ruby-commons/allure-ruby-commons-${version}.gem"
+
+  publish-adapters:
+    runs-on: ubuntu-latest
+    environment: release
+    needs: publish-commons
+    strategy:
+      fail-fast: false
+      matrix:
+        gem:
+          - allure-cucumber
+          - allure-rspec
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Ruby 4.0.2
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 4.0.2
+          bundler-cache: true
+
+      - name: Validate release tag
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(cat ALLURE_VERSION)
+          test "$RELEASE_TAG" = "${version}"
+
+      - name: Build ${{ matrix.gem }}
+        run: |
+          cd "${{ matrix.gem }}"
+          gem build "${{ matrix.gem }}.gemspec"
+
+      - name: Configure RubyGems credentials
+        uses: rubygems/configure-rubygems-credentials@v2.1.0
+
+      - name: Publish ${{ matrix.gem }}
+        run: |
+          version=$(cat ALLURE_VERSION)
+          gem push "${{ matrix.gem }}/${{ matrix.gem }}-${version}.gem"
