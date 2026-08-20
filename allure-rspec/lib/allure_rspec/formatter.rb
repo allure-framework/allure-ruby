@@ -37,6 +37,7 @@ module AllureRspec
     def initialize(output)
       super
 
+      GlobalHook.install
       @allure_config = AllureRspec.configuration
       Allure.lifecycle = @lifecycle = Allure::AllureLifecycle.new(@allure_config)
     end

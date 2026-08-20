@@ -148,8 +148,8 @@ module Allure
     # @param [Allure::FixtureResult] fixture_result
     # @return [Allure::FixtureResult]
     def start_prepare_fixture(fixture_result)
-      start_fixture(fixture_result) || return
-      current_test_result_container.befores.push(fixture_result)
+      start_fixture(fixture_result)
+      current_test_result_container&.befores&.push(fixture_result)
       @current_fixture = fixture_result
     end
 
@@ -157,8 +157,8 @@ module Allure
     # @param [Allure::FixtureResult] fixture_result
     # @return [Allure::FixtureResult]
     def start_tear_down_fixture(fixture_result)
-      start_fixture(fixture_result) || return
-      current_test_result_container.afters.push(fixture_result)
+      start_fixture(fixture_result)
+      current_test_result_container&.afters&.push(fixture_result)
       @current_fixture = fixture_result
     end
 
@@ -167,14 +167,11 @@ module Allure
     # @return [Allure::FixtureResult]
     def start_fixture(fixture_result)
       clear_step_context
-      unless current_test_result_container
-        logger.error("Could not start fixture, test container is not started")
-        return false
-      end
-
       logger.debug { "Starting fixture: #{fixture_result.name}" }
       fixture_result.start = ResultUtils.timestamp
       fixture_result.stage = Stage::RUNNING
+      @global_fixture = current_test_result_container.nil?
+      fixture_result
     end
 
     # @example Update current fixture
@@ -198,6 +195,7 @@ module Allure
       logger.debug { "Stopping fixture: #{@current_fixture.name}" }
       @current_fixture.stop = ResultUtils.timestamp
       @current_fixture.stage = Stage::FINISHED
+      write_global_fixture_error if @global_fixture
       clear_current_fixture
       clear_step_context
     end
@@ -323,6 +321,22 @@ module Allure
 
     def clear_current_fixture
       @current_fixture = nil
+      @global_fixture = false
+    end
+
+    def write_global_fixture_error
+      return unless [Status::FAILED, Status::BROKEN].include?(@current_fixture.status)
+
+      details = @current_fixture.status_details
+      return unless details.message || details.trace
+
+      add_global_error(
+        known: details.known,
+        muted: details.muted,
+        flaky: details.flaky,
+        message: details.message,
+        trace: details.trace
+      )
     end
   end
 end
