@@ -58,6 +58,7 @@ module AllureRspec
     # @return [void]
     def stop(_stop_notification)
       lifecycle.write_environment
+      lifecycle.write_globals
     end
 
     # Starts example group

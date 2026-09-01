@@ -50,6 +50,7 @@ module AllureCucumber
     # @return [void]
     def on_test_run_finished(_event)
       lifecycle.write_environment
+      lifecycle.write_globals
     end
 
     # Handle test case started event

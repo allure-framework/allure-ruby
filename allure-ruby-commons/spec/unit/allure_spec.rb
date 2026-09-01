@@ -123,12 +123,18 @@ describe Allure do
       args = { name: "Global attach", source: "Some string", type: Allure::ContentType::TXT }
       allure.add_global_attachment(**args)
 
+      expect(file_writer).not_to have_received(:write_globals)
+      lifecycle.write_globals
+
       expect(file_writer).to have_received(:write_attachment).with(args[:source], kind_of(Allure::GlobalAttachment))
       expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals))
     end
 
     it "adds global error" do
       allure.add_global_error(message: "Global failure", trace: "trace line")
+
+      expect(file_writer).not_to have_received(:write_globals)
+      lifecycle.write_globals
 
       expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)) do |globals|
         error = globals.errors.first

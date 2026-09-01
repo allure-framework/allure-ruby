@@ -93,8 +93,11 @@ describe Allure::AllureLifecycle do
   end
 
   describe "#add_global_attachment" do
-    it "writes a run-level attachment without an active test" do
+    it "buffers a run-level attachment without an active test" do
       lifecycle.add_global_attachment(name: "Global attachment", source: "payload", type: Allure::ContentType::TXT)
+
+      expect(file_writer).not_to have_received(:write_globals)
+      lifecycle.write_globals
 
       expect(file_writer).to have_received(:write_attachment).with("payload", kind_of(Allure::GlobalAttachment))
       expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)) do |globals|
@@ -112,8 +115,11 @@ describe Allure::AllureLifecycle do
   end
 
   describe "#add_global_error" do
-    it "writes a run-level error without an active test" do
+    it "buffers a run-level error without an active test" do
       lifecycle.add_global_error(message: "Global failure", trace: "trace line")
+
+      expect(file_writer).not_to have_received(:write_globals)
+      lifecycle.write_globals
 
       expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)) do |globals|
         error = globals.errors.first
@@ -124,6 +130,25 @@ describe Allure::AllureLifecycle do
           expect(error.message).to eq("Global failure")
           expect(error.trace).to eq("trace line")
           expect(error.timestamp).to be_a(Integer)
+        end
+      end
+    end
+  end
+
+  describe "#write_globals" do
+    it "writes all accumulated globals in one chunk" do
+      lifecycle.add_global_attachment(name: "First attachment", source: "first", type: Allure::ContentType::TXT)
+      lifecycle.add_global_attachment(name: "Second attachment", source: "second", type: Allure::ContentType::TXT)
+      lifecycle.add_global_error(message: "First failure")
+      lifecycle.add_global_error(message: "Second failure")
+
+      expect(file_writer).not_to have_received(:write_globals)
+      lifecycle.write_globals
+
+      expect(file_writer).to have_received(:write_globals).with(kind_of(Allure::Globals)).once do |globals|
+        aggregate_failures do
+          expect(globals.attachments.map(&:name)).to eq(["First attachment", "Second attachment"])
+          expect(globals.errors.map(&:message)).to eq(["First failure", "Second failure"])
         end
       end
     end

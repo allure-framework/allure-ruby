@@ -13,5 +13,19 @@ module Allure
     end
 
     attr_accessor :attachments, :errors
+
+    # Add an error to the globals
+    # @param [Allure::GlobalError] error
+    # @return [void]
+    def add_error(error)
+      @errors.push(error)
+    end
+
+    # Add an attachment to the globals
+    # @param [Allure::GlobalAttachment] attachment
+    # @return [void]
+    def add_attachment(attachment)
+      @attachments.push(attachment)
+    end
   end
 end
