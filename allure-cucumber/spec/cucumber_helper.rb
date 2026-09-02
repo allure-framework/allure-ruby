@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/OneClassPerFile
-
 require "cucumber/cli/main"
 
 class MockKernel
@@ -123,5 +121,3 @@ class CucumberHelper
     ]
   end
 end
-
-# rubocop:enable Style/OneClassPerFile

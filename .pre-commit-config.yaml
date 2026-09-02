@@ -4,6 +4,6 @@ repos:
       - id: rubocop
         name: Rubocop
         language: system
-        entry: bundle exec rubocop
+        entry: bundle exec rake rubocop
         types: [ruby]
         exclude: \.lock
