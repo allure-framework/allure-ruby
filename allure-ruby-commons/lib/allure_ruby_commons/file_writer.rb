@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "tempfile"
+
 module Allure
   # Allure result file writer
   class FileWriter
@@ -83,12 +85,30 @@ module Allure
     end
 
     def write(name, source)
-      filename = File.join(output_dir, name)
-      File.write(filename, source)
+      atomic_write(name) { |temp_file| temp_file.write(source) }
     end
 
     def copy(from, to)
-      FileUtils.cp(from, File.join(output_dir, to))
+      atomic_write(to) { |temp_file| IO.copy_stream(from, temp_file) }
+    end
+
+    def atomic_write(name)
+      filename = File.join(output_dir, name)
+      target_mode = begin
+        File.stat(filename).mode
+      rescue Errno::ENOENT
+        0o644
+      end
+
+      Tempfile.create("#{name}.tmp", output_dir) do |temp_file|
+        temp_file.binmode
+
+        yield temp_file
+
+        temp_file.chmod(target_mode)
+        temp_file.close
+        File.rename(temp_file.path, filename)
+      end
     end
   end
 end
