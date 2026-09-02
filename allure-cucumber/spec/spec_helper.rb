@@ -44,7 +44,9 @@ end
 RSpec.shared_context("cucumber runner") do
   let!(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
 
-  def run_cucumber_cli(feature)
-    Thread.new { CucumberHelper.new(test_tmp_dir).execute(feature) }.join
+  def run_cucumber_cli(feature, support_code: CucumberHelper::ENV)
+    Thread.new do
+      CucumberHelper.new(test_tmp_dir).execute(feature, support_code: support_code)
+    end.join
   end
 end

@@ -15,6 +15,8 @@ module AllureRspec
       pending: Allure::Status::SKIPPED,
       passed: Allure::Status::PASSED
     }.freeze
+    ANSI_ESCAPE_PATTERN = /\e\[(\d+)(?:;\d+)*m/
+    SUITE_HOOK_FAILURE_PATTERN = /\AAn error occurred in an? `(?:before|after)\(:suite\)` hook\.\z/
 
     RSpec::Core::Formatters.register(
       self,
@@ -23,7 +25,8 @@ module AllureRspec
       :example_group_started,
       :example_group_finished,
       :example_started,
-      :example_finished
+      :example_finished,
+      :message
     )
 
     RSpec.configure do |config|
@@ -93,6 +96,17 @@ module AllureRspec
       lifecycle.stop_test_container
     end
 
+    # Capture errors raised by before(:suite) and after(:suite) hooks
+    # @param [RSpec::Core::Notifications::MessageNotification] notification
+    # @return [void]
+    def message(notification)
+      formatted_error = notification.message.to_s.gsub(ANSI_ESCAPE_PATTERN, "").strip
+      first_line = formatted_error.lines.first&.chomp
+      return unless SUITE_HOOK_FAILURE_PATTERN.match?(first_line.to_s)
+
+      lifecycle.add_global_error(message: first_line, trace: formatted_error)
+    end
+
     private
 
     attr_reader :lifecycle, :allure_config
@@ -126,7 +140,7 @@ module AllureRspec
           test_case.stage = Allure::Stage::FINISHED
           test_case.status = status(result)
           test_case.status_details.message = status_detail.message
-          test_case.status_details.trace = status_detail.trace&.gsub(/\e\[(\d+)(?:;\d+)*m/, "")
+          test_case.status_details.trace = status_detail.trace&.gsub(ANSI_ESCAPE_PATTERN, "")
         end
       end
     end
