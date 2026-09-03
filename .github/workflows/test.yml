@@ -35,11 +35,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ["3.2", "3.3", "3.4", "4.0"]
+        ruby: ["3.3", "3.4", "4.0"]
         oj: [false, true]
         include:
-          - ruby: "3.2"
-            ruby_id: "3_2"
           - ruby: "3.3"
             ruby_id: "3_3"
           - ruby: "3.4"
