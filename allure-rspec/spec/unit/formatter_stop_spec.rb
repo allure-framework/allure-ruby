@@ -14,7 +14,8 @@ describe "start" do
     SPEC
   end
 
-  it "creates environment.properties file" do
+  it "writes run-level files" do
     expect(lifecycle).to have_received(:write_environment).once
+    expect(lifecycle).to have_received(:write_globals).once
   end
 end

@@ -35,6 +35,8 @@ module AllureCucumber
       config.on_event(:test_step_started) { |event| on_test_step_started(event) }
       config.on_event(:test_step_finished) { |event| on_test_step_finished(event) }
       config.on_event(:test_case_finished) { |event| on_test_case_finished(event) }
+
+      register_test_run_hook_finished(config)
     end
 
     # Clean test result directory before starting run
@@ -50,6 +52,17 @@ module AllureCucumber
     # @return [void]
     def on_test_run_finished(_event)
       lifecycle.write_environment
+      lifecycle.write_globals
+    end
+
+    # Handle a global hook finishing
+    # @param [Cucumber::Events::TestRunHookFinished] event
+    # @return [void]
+    def on_test_run_hook_finished(event)
+      return unless event.test_result.failed?
+
+      details = Allure::ResultUtils.status_details(event.test_result.exception)
+      lifecycle.add_global_error(message: details.message, trace: details.trace)
     end
 
     # Handle test case started event
@@ -100,6 +113,15 @@ module AllureCucumber
     private
 
     attr_reader :lifecycle, :cucumber_model
+
+    # Register global hook finished event
+    # @param [Cucumber::Configuration] config
+    # @return [void]
+    def register_test_run_hook_finished(config)
+      return unless defined?(Cucumber::Events::TestRunHookFinished)
+
+      config.on_event(:test_run_hook_finished) { |event| on_test_run_hook_finished(event) }
+    end
 
     # Is hook fixture like Before, After or Step as AfterStep
     # @param [String] text

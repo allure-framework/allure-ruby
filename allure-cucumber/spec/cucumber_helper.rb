@@ -74,8 +74,8 @@ class CucumberHelper
     @tmp_dir = tmp_dir
   end
 
-  def execute(feature)
-    setup(feature)
+  def execute(feature, support_code: ENV)
+    setup(feature, support_code)
 
     Cucumber::Cli::Main.new(
       [feature_file, *args],
@@ -95,11 +95,11 @@ class CucumberHelper
     [@stdout.string, @stderr.string].reject(&:empty?).join("\n")
   end
 
-  def setup(feature)
+  def setup(feature, support_code)
     FileUtils.rm_rf(tmp_dir)
 
     write_file(feature_file, feature)
-    write_file("#{tmp_dir}/features/support/env.rb", ENV)
+    write_file("#{tmp_dir}/features/support/env.rb", support_code)
     write_file("#{tmp_dir}/features/step_definitions/step_defs.rb", STEPS)
   end
 

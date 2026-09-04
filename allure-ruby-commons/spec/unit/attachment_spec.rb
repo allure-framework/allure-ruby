@@ -92,8 +92,11 @@ describe "Lifecycle:Attachments" do
     end
   end
 
-  it "adds global attachment as a globals chunk" do
+  it "adds global attachment to the globals chunk" do
     lifecycle.add_global_attachment(**attach_opts)
+
+    expect(file_writer).not_to have_received(:write_globals)
+    lifecycle.write_globals
 
     aggregate_failures "Global attachment should be written" do
       expect(@test_case.attachments).to be_empty

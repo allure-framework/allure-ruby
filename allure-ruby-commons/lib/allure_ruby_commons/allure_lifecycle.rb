@@ -14,13 +14,14 @@ module Allure
     def initialize(config = Config.instance)
       @test_context = []
       @step_context = []
+      @globals = Globals.new
       @config = config
       @logger = config.logger
     end
 
     attr_reader :config
 
-    def_delegators :file_writer, :write_attachment, :write_globals
+    def_delegators :file_writer, :write_attachment
 
     # Start test result container
     # @param [Allure::TestResultContainer] test_result_container
@@ -231,7 +232,7 @@ module Allure
 
       logger.debug { "Adding global attachment '#{name}'" }
       write_attachment(source, attachment)
-      write_globals(Globals.new(attachments: [attachment]))
+      @globals.add_attachment(attachment)
     end
 
     # Add run-level error
@@ -246,7 +247,7 @@ module Allure
       error = ResultUtils.prepare_global_error(timestamp: ResultUtils.timestamp, **details)
 
       logger.debug { "Adding global error '#{error.message}'" }
-      write_globals(Globals.new(errors: [error]))
+      @globals.add_error(error)
     end
 
     # Add environment.properties file
@@ -268,6 +269,12 @@ module Allure
       return unless categories
 
       file_writer.write_categories(categories)
+    end
+
+    # Write global errors and attachments
+    # @return [void]
+    def write_globals
+      file_writer.write_globals(@globals)
     end
 
     # Add step to current fixture|step|test case
