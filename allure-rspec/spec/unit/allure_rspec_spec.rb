@@ -27,4 +27,37 @@ describe AllureRspec do
 
     expect(AllureRspec.configuration.tms_tag).to eq("TMS")
   end
+
+  context "with global labels" do
+    include_context "rspec runner"
+
+    it "writes configured labels to every test result alongside metadata labels" do
+      results_directory = File.expand_path("#{test_tmp_dir}/allure-results")
+      global_labels = [
+        { name: "owner", value: "qa" },
+        { name: "label", value: "global" }
+      ]
+      AllureRspec.configure do |config|
+        config.results_directory = results_directory
+        config.global_labels = global_labels
+      end
+
+      run_rspec(<<~SPEC)
+        describe "Suite" do
+          it("first example", tag: "local") {}
+          it("second example") {}
+        end
+      SPEC
+
+      reader = Allure::FileWriter.new(results_directory)
+      results = Dir.glob(File.join(results_directory, "*-result.json")).map { |path| reader.load_json(path) }
+
+      first = results.find { |result| result[:name] == "first example" }
+      second = results.find { |result| result[:name] == "second example" }
+
+      expect(results.size).to eq(2)
+      expect(first[:labels]).to include(*global_labels, { name: "tag", value: "local" })
+      expect(second[:labels]).to include(*global_labels)
+    end
+  end
 end

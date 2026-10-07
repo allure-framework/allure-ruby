@@ -30,6 +30,12 @@ AllureRspec.configure do |config|
   config.logger = Logger.new($stdout, Logger::DEBUG)
   config.environment = "staging"
 
+  # labels added to every test result
+  config.global_labels = [
+    { name: "owner", value: "qa" },
+    { name: "tag", value: "global" }
+  ]
+
   # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
   config.link_tms_pattern = "http://www.jira.com/browse/{}"
   config.link_issue_pattern = "http://www.jira.com/browse/{}"
@@ -43,6 +49,9 @@ AllureRspec.configure do |config|
   config.categories = File.new("my_custom_categories.json")
 end
 ```
+
+`global_labels` defaults to `[]`. Each entry is a hash with symbol keys `:name` and `:value`.
+Labels are prepended to every completed test's labels without replacing test-specific labels, including those with the same name.
 
 ## Usage
 

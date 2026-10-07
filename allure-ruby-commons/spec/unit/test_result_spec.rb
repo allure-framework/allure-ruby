@@ -48,6 +48,58 @@ describe "AllureLifecycle::TestCaseResult" do
     end
   end
 
+  context "with global labels" do
+    let(:global_labels) do
+      [
+        { name: "owner", value: "qa" },
+        { name: "tag", value: "global" },
+        { name: "owner", value: "platform" }
+      ]
+    end
+    let(:config) { super().tap { |value| value.global_labels = global_labels } }
+
+    it "prepends global labels when stopping a test without replacing existing labels" do
+      lifecycle.update_test_case { |result| result.labels << Allure::Label.new("owner", "local") }
+      existing_labels = test_case.labels.dup
+
+      expect(test_case.labels).not_to include(Allure::Label.new("owner", "qa"))
+
+      lifecycle.stop_test_case
+
+      expect(test_case.labels).to eq(
+        [
+          Allure::Label.new("owner", "qa"),
+          Allure::Label.new("tag", "global"),
+          Allure::Label.new("owner", "platform"),
+          *existing_labels
+        ]
+      )
+    end
+
+    it "reuses configured global label objects across test results" do
+      lifecycle.stop_test_case
+
+      next_test_case = start_test_case(name: "another test case")
+      lifecycle.stop_test_case
+
+      global_labels.each_index do |index|
+        expect(next_test_case.labels[index]).to equal(test_case.labels[index])
+      end
+    end
+
+    context "with an empty array" do
+      let(:global_labels) { [] }
+
+      it "preserves test labels" do
+        existing_labels = test_case.labels.dup
+
+        lifecycle.stop_test_case
+
+        expect(test_case.labels).to eq(existing_labels)
+      end
+    end
+  end
+
   context "history id" do
     it "History id is different for different non-excluded parameters" do
       test_case1 = start_test_case(name: "Test Case", history_id: 1)
