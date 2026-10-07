@@ -22,23 +22,16 @@ class SimpleCovMerger
 
     def merge_results
       puts "Generating combined coverage report".yellow
-      groups.each { |g| SimpleCov.add_group(g, g) }
+      %w[allure-cucumber allure-rspec allure-ruby-commons].each { |g| SimpleCov.group(g, g) }
+
+      formatters = [SimpleCov::Formatter::Console]
+      formatters << SimpleCov::Formatter::HTMLFormatter if ENV["COV_HTML_REPORT"]
+      formatters << SimpleCov::Formatter::JSONFormatter if ENV["CC_TEST_REPORTER_ID"]
+
       SimpleCov.collate(Dir["#{root}/*/coverage/.resultset.json"]) do
-        formatter(multiformatter)
+        formatter(SimpleCov::Formatter::MultiFormatter.new(formatters))
         minimum_coverage(95)
         enable_coverage(:branch)
-      end
-    end
-
-    def groups
-      @groups ||= %w[allure-cucumber allure-rspec allure-ruby-commons]
-    end
-
-    def multiformatter
-      [SimpleCov::Formatter::Console].then do |formatters|
-        formatters << SimpleCov::Formatter::HTMLFormatter if ENV["COV_HTML_REPORT"]
-        formatters << SimpleCov::Formatter::JSONFormatter if ENV["CC_TEST_REPORTER_ID"]
-        SimpleCov::Formatter::MultiFormatter.new(formatters)
       end
     end
   end

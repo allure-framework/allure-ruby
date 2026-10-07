@@ -3,6 +3,8 @@
 ENV["ALLURE_LOG_LEVEL"] = "FATAL"
 
 require "simplecov"
+SimpleCov.start if ENV["COVERAGE"]
+
 require "rspec"
 require "climate_control"
 require "allure-ruby-commons"
