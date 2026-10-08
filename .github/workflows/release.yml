@@ -19,13 +19,19 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.ALLURE_CI_APP_CLIENT_ID }}
+          private-key: ${{ secrets.ALLURE_CI_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          fetch-depth: 0
-          persist-credentials: false
+          token: ${{ steps.app-token.outputs.token }}
       - name: Set up Ruby 4.0
         uses: ruby/setup-ruby@v1
         with:
@@ -36,17 +42,7 @@ jobs:
           git config user.name '${{ vars.ALLURE_CI_APP_SLUG }}[bot]'
           git config user.email '${{ vars.ALLURE_CI_APP_USER_ID }}+${{ vars.ALLURE_CI_APP_SLUG }}[bot]@users.noreply.github.com'
           bundle exec rake "version[${{ inputs.semver }}]"
-      - name: Create GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v3
-        with:
-          client-id: ${{ vars.ALLURE_CI_APP_CLIENT_ID }}
-          private-key: ${{ secrets.ALLURE_CI_APP_PRIVATE_KEY }}
-          permission-contents: write
       - name: Push version commit and tag
-        env:
-          APP_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          git remote set-url origin "https://x-access-token:${APP_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push origin HEAD:${{ github.ref_name }}
+          git push origin ${{ github.ref_name }}
           git push origin --tags
