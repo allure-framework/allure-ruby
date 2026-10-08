@@ -26,16 +26,15 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Set up Ruby 4.0.2
+      - name: Set up Ruby 4.0
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 4.0.2
+          ruby-version: "4.0"
           bundler-cache: true
       - name: Update version
         run: |
           git config user.name '${{ vars.ALLURE_CI_APP_SLUG }}[bot]'
           git config user.email '${{ vars.ALLURE_CI_APP_USER_ID }}+${{ vars.ALLURE_CI_APP_SLUG }}[bot]@users.noreply.github.com'
-          bundle config unset deployment
           bundle exec rake "version[${{ inputs.semver }}]"
       - name: Create GitHub App token
         id: app-token

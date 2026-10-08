@@ -28,7 +28,6 @@ class VersionTask
       puts "Updating version to #{new_version}"
 
       update_version
-      update_lockfile
       commit_and_tag
 
       puts "Version updated successfully!"
@@ -46,18 +45,11 @@ class VersionTask
     File.write(VERSION_FILE, new_version)
   end
 
-  # Update lock file
-  #
-  # @return [void]
-  def update_lockfile
-    execute_shell("bundle install")
-  end
-
-  # Commit updated version file and Gemfile.lock
+  # Commit updated version file
   #
   # @return [void]
   def commit_and_tag
-    execute_shell("git add #{VERSION_FILE} Gemfile.lock")
+    execute_shell("git add #{VERSION_FILE}")
     execute_shell("git commit -m 'Update version to #{new_version}'")
     execute_shell("git tag #{new_version}")
   end
