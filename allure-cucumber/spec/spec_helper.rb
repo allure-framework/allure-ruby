@@ -4,6 +4,7 @@ require "simplecov"
 SimpleCov.start if ENV["COVERAGE"]
 
 require "rspec"
+require "cucumber"
 require "allure-cucumber"
 require "allure-rspec"
 require "climate_control"
