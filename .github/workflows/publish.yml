@@ -1,25 +1,26 @@
 name: Publish
 
 on:
-  release:
-    types:
-      - published
-
-permissions:
-  contents: read
-  id-token: write
+  push:
+    tags:
+      - "[0-9]*.[0-9]*.[0-9]*"
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     environment: release
+
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
           persist-credentials: false
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.ref_name }}
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -29,7 +30,7 @@ jobs:
 
       - name: Validate release tag
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           version=$(cat ALLURE_VERSION)
           test "$RELEASE_TAG" = "${version}"
@@ -37,3 +38,18 @@ jobs:
       - uses: rubygems/release-gem@v1
         with:
           await-release: false # release rake task includes release await
+
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.ALLURE_CI_APP_CLIENT_ID }}
+          private-key: ${{ secrets.ALLURE_CI_APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
