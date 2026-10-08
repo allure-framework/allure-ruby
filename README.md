@@ -5,7 +5,7 @@
 ![Workflow status](https://github.com/allure-framework/allure-ruby/workflows/Test/badge.svg)
 [![Yard Docs](https://img.shields.io/badge/yard-docs-blue.svg)](https://rubydoc.info/github/allure-framework/allure-ruby/master)
 
-Ruby testing framework adaptors for generating allure compatible test reports.
+Ruby testing framework adapters for generating allure compatible test reports.
 
 ## Supported frameworks
 
@@ -18,7 +18,7 @@ Ruby testing framework adaptors for generating allure compatible test reports.
 gem "allure-cucumber"
 ```
 
-Implementation of allure adaptor for [Cucumber](https://github.com/cucumber/cucumber-ruby) testing framework
+Implementation of allure adapter for [Cucumber](https://github.com/cucumber/cucumber-ruby) testing framework
 
 Detailed usage and setup instruction can be found in [allure-cucumber docs](allure-cucumber/README.md)
 
@@ -31,7 +31,7 @@ Detailed usage and setup instruction can be found in [allure-cucumber docs](allu
 gem "allure-rspec"
 ```
 
-Implementation of allure adaptor for [RSpec](https://github.com/rspec/rspec) testing framework
+Implementation of allure adapter for [RSpec](https://github.com/rspec/rspec) testing framework
 
 Detailed usage and setup instruction can be found in [allure-rspec docs](allure-rspec/README.md)
 

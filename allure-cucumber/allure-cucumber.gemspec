@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.name = "allure-cucumber"
   s.version = version
-  s.summary = "Allure cucumber ruby adaptor"
-  s.description = "Cucumber adaptor to generate rich allure test reports"
+  s.summary = "Allure cucumber ruby adapter"
+  s.description = "Cucumber adapter to generate rich allure test reports"
   s.homepage = "https://github.com/allure-framework/allure-ruby"
   s.metadata = {
     "bug_tracker_uri" => "https://github.com/allure-framework/allure-ruby/issues",

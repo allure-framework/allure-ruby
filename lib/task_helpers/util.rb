@@ -8,8 +8,8 @@ module TaskUtil
     @root ||= File.expand_path("../..", __dir__)
   end
 
-  def adaptors
-    @adaptors ||= Dir.glob("allure-*").select { |f| File.directory?(f) }
+  def adapters
+    @adapters ||= %w[allure-ruby-commons allure-cucumber allure-rspec]
   end
 
   def version

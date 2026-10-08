@@ -7,7 +7,7 @@ require "securerandom"
 
 require_rel "allure_ruby_commons/**/*rb"
 
-# Namespace for classes that handle allure report generation and different framework adaptors
+# Namespace for classes that handle allure report generation and different framework adapters
 module Allure
   # Set lifecycle object
   # @param [AllureLifecycle] lifecycle
