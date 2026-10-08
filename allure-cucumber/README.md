@@ -50,6 +50,12 @@ AllureCucumber.configure do |config|
   config.environment = "staging"
   config.failure_exception = RSpec::Expectations::ExpectationNotMetError
 
+  # labels added to every test result
+  config.global_labels = [
+    { name: "owner", value: "qa" },
+    { name: "tag", value: "global" }
+  ]
+
   # these are used for creating links to bugs or test cases where {} is replaced with keys of relevant items
   config.link_tms_pattern = "http://www.jira.com/browse/{}"
   config.link_issue_pattern = "http://www.jira.com/browse/{}"
@@ -63,6 +69,9 @@ AllureCucumber.configure do |config|
   config.categories = File.new("my_custom_categories.json")
 end
 ```
+
+`global_labels` defaults to `[]`. Each entry is a hash with symbol keys `:name` and `:value`.
+Labels are prepended to every completed test's labels without replacing test-specific labels, including those with the same name.
 
 By default, allure-cucumber will analyze your cucumber tags looking for Test Management, Issue Management, and Severity tag as well
 as custom tags for grouping tests in to epics, features and stories in Behavior tab of report. Links to TMS and ISSUE and test severity will be displayed in the report.

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "simplecov"
+SimpleCov.start if ENV["COVERAGE"]
+
 require "rspec"
 require "allure-cucumber"
 require "allure-rspec"

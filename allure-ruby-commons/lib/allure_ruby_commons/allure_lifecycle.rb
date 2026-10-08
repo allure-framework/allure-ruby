@@ -103,6 +103,7 @@ module Allure
       logger.debug { "Stopping test case: #{@current_test_case.name}" }
       @current_test_case.stop = ResultUtils.timestamp
       @current_test_case.stage = Stage::FINISHED
+      @current_test_case.labels.unshift(*global_labels)
       file_writer.write_test_result(@current_test_case)
       clear_current_test_case
       clear_step_context
@@ -295,6 +296,10 @@ module Allure
     private
 
     attr_reader :logger
+
+    def global_labels
+      @global_labels ||= config.global_labels.map { |label| Label.new(label[:name], label[:value]) }
+    end
 
     def file_writer
       @file_writer ||= FileWriter.new(config.results_directory)

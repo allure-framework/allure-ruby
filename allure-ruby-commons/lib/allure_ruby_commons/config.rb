@@ -20,10 +20,12 @@ module Allure
                   :link_issue_pattern,
                   :clean_results_directory,
                   :environment_properties,
-                  :categories
+                  :categories,
+                  :global_labels
 
     def initialize
       @results_directory = "reports/allure-results"
+      @global_labels = []
       @logging_level = LOGLEVELS.index(ENV.fetch("ALLURE_LOG_LEVEL", "INFO")) || Logger::INFO
     end
 

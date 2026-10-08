@@ -27,4 +27,38 @@ describe AllureCucumber do
 
     expect(AllureCucumber.configuration.tms_prefix).to eq("TMS")
   end
+
+  context "with global labels" do
+    include_context "cucumber runner"
+
+    it "writes configured labels to every test result alongside scenario tags" do
+      global_labels = [
+        { name: "owner", value: "qa" },
+        { name: "label", value: "global" }
+      ]
+      AllureCucumber.configure { |config| config.global_labels = global_labels }
+
+      run_cucumber_cli(<<~FEATURE)
+        Feature: Global labels
+
+        @local
+        Scenario: First scenario
+          Given a is 5
+
+        Scenario: Second scenario
+          Given a is 10
+      FEATURE
+
+      results_directory = AllureCucumber.configuration.results_directory
+      reader = Allure::FileWriter.new(results_directory)
+      results = Dir.glob(File.join(results_directory, "*-result.json")).map { |path| reader.load_json(path) }
+
+      first = results.find { |result| result[:name] == "First scenario" }
+      second = results.find { |result| result[:name] == "Second scenario" }
+
+      expect(results.size).to eq(2)
+      expect(first[:labels]).to include(*global_labels, { name: "tag", value: "local" })
+      expect(second[:labels]).to include(*global_labels)
+    end
+  end
 end
