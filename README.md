@@ -102,11 +102,6 @@ New version can be created by triggering manual `Release` workflow
 
 ## Generating HTML report
 
-Ruby binding hosted in this repository only generate source json files for the [allure2](https://github.com/allure-framework/allure2) reporter.
+Ruby binding hosted in this repository only generate source json files for the [allure](https://allurereport.org) reporter.
 
-See [documentation](https://allurereport.org/) on how to use allure report.
-
-### Using with CI providers
-
-[allure-report-publisher](https://github.com/andrcuns/allure-report-publisher) provides a docker image which can be run from github-actions
-workflow or gitlab-ci pipeline and host reports using cloud providers like AWS or GCP.
+See [documentation](https://allurereport.org/docs) on how to generate report and it's features.
