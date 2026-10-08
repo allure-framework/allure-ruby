@@ -49,9 +49,10 @@ class VersionTask
   #
   # @return [void]
   def commit_and_tag
+    msg = "Update version to #{new_version}"
     execute_shell("git add #{VERSION_FILE}")
-    execute_shell("git commit -m 'Update version to #{new_version}'")
-    execute_shell("git tag #{new_version}")
+    execute_shell("git commit -m '#{msg}'")
+    execute_shell("git tag #{new_version} -m '#{msg}}'")
   end
 
   # Semver of ref from
