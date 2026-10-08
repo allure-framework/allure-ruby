@@ -5,14 +5,15 @@ on:
     tags:
       - "[0-9]*.[0-9]*.[0-9]*"
 
-permissions:
-  contents: read
-  id-token: write
-
 jobs:
   publish:
     runs-on: ubuntu-latest
     environment: release
+
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
