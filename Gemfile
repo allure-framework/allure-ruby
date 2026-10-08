@@ -6,6 +6,10 @@ gem "allure-cucumber", path: "allure-cucumber"
 gem "allure-rspec", path: "allure-rspec"
 gem "allure-ruby-commons", path: "allure-ruby-commons"
 
+group :release do
+  gem "rubygems-await", "~> 0.5.4"
+end
+
 group :development do
   gem "colorize", "~> 1.1.0"
   gem "debug", "~> 1.8"

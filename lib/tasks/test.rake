@@ -11,8 +11,8 @@ class TestTasks
   include TaskUtil
 
   def initialize
-    add_single_adaptor_tasks
-    add_all_adaptors_tasks
+    add_single_adapter_tasks
+    add_all_adapters_tasks
   end
 
   def self.add_rspec_task
@@ -41,48 +41,46 @@ class TestTasks
 
   private
 
-  def add_all_adaptors_tasks
-    desc "Run rubocop for all adaptors"
-    task(:rubocop) { run_all_adaptors(:rubocop) }
+  def add_all_adapters_tasks
+    desc "Run rubocop for all adapters"
+    task(:rubocop) { run_all_adapters(:rubocop) }
 
-    desc "Run tests for all adaptors"
-    task(:test) { run_all_adaptors(:test) }
+    desc "Run tests for all adapters"
+    task(:test) { run_all_adapters(:test) }
 
     desc "Run all tests and generate SimpleCov report"
     task("test:coverage") do
       ENV["COVERAGE"] = "true"
-      run_all_adaptors(:test)
+      run_all_adapters(:test)
     ensure
       SimpleCovMerger.merge_coverage
     end
   end
 
-  def add_single_adaptor_tasks
-    adaptors.each do |adaptor|
-      namespace adaptor do
-        desc "Run rubocop for #{adaptor}"
-        task(:rubocop) { run_single_adaptor(adaptor, :rubocop) }
+  def add_single_adapter_tasks
+    adapters.each do |adapter|
+      namespace adapter do
+        desc "Run rubocop for #{adapter}"
+        task(:rubocop) { run_single_adapter(adapter, :rubocop) }
 
-        desc "Run tests for #{adaptor}"
-        task(:test, :tag) { |_task, args| run_single_adaptor(adaptor, "test[#{args[:tag] || ''}]") }
+        desc "Run tests for #{adapter}"
+        task(:test, :tag) { |_task, args| run_single_adapter(adapter, "test[#{args[:tag] || ''}]") }
       end
     end
   end
 
-  def run_all_adaptors(task_name)
-    errors = adaptors.each_with_object([]) do |adaptor, a|
-      puts "Executing #{task_name} for #{adaptor}".yellow
-      run_single_adaptor(adaptor, task_name)
+  def run_all_adapters(task_name)
+    errors = adapters.each_with_object([]) do |adapter, a|
+      puts "Executing #{task_name} for #{adapter}".yellow
+      run_single_adapter(adapter, task_name)
     rescue StandardError
-      a << adaptor
+      a << adapter
     end
 
     raise StandardError, "Errors in #{errors.join(', ')}" unless errors.empty?
   end
 
-  def run_single_adaptor(adaptor, task_name)
-    system("cd #{adaptor} && #{$PROGRAM_NAME} #{task_name}") || (raise StandardError, "Task failed!")
+  def run_single_adapter(adapter, task_name)
+    system("cd #{adapter} && #{$PROGRAM_NAME} #{task_name}") || (raise StandardError, "Task failed!")
   end
 end
-
-TestTasks.new

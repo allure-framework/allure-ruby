@@ -11,18 +11,18 @@ class ReleaseTasks
   def initialize
     directory "pkg"
 
-    add_adaptor_build_tasks
+    add_adapter_build_tasks
     add_build_tasks
   end
 
   private
 
-  def add_adaptor_build_tasks # rubocop:disable Metrics/MethodLength
-    adaptors.each do |adaptor|
-      namespace adaptor do
-        gem = "#{adaptor}-#{version}.gem"
+  def add_adapter_build_tasks # rubocop:disable Metrics/MethodLength
+    adapters.each do |adapter|
+      namespace adapter do
+        gem = "#{adapter}-#{version}.gem"
         gem_path = "#{root}/pkg/#{gem}"
-        gemspec = "#{adaptor}.gemspec"
+        gemspec = "#{adapter}.gemspec"
 
         task(:clean) do
           system("rm -f #{gem_path}")
@@ -30,7 +30,7 @@ class ReleaseTasks
 
         task(gem: :pkg) do
           puts "Building #{gem}".yellow
-          sh "cd #{adaptor} && gem build #{gemspec} && mv #{gem} #{gem_path}"
+          sh "cd #{adapter} && gem build #{gemspec} && mv #{gem} #{gem_path}"
         end
 
         task(build: %i[clean gem])
@@ -38,6 +38,7 @@ class ReleaseTasks
         task(release: :build) do
           puts "Pushing #{gem}".yellow
           sh "gem push #{gem_path}"
+          sh "gem exec rubygems-await #{gem_path}"
         end
       end
     end
@@ -45,13 +46,13 @@ class ReleaseTasks
 
   def add_build_tasks
     desc "Clean gem files from pkg folder"
-    task clean: adaptors.map { |adaptor| "#{adaptor}:clean" }
+    task clean: adapters.map { |adapter| "#{adapter}:clean" }
 
-    desc "Build ruby gems for all adaptors"
-    task build: adaptors.map { |adaptor| "#{adaptor}:build" }
+    desc "Build ruby gems for all adapters"
+    task build: adapters.map { |adapter| "#{adapter}:build" }
 
-    desc "Build and push ruby gems to registry for all adaptors"
-    task release: adaptors.map { |adaptor| "#{adaptor}:release" }
+    desc "Build and push ruby gems to registry for all adapters"
+    task release: adapters.map { |adapter| "#{adapter}:release" }
   end
 end
 
