@@ -91,6 +91,7 @@ describe Allure::FileWriter do
         Allure::GlobalError.new(
           message: "Global failure",
           trace: "trace line",
+          status: Allure::Status::BROKEN,
           timestamp: 456
         )
       ]
@@ -112,6 +113,7 @@ describe Allure::FileWriter do
             flaky: false,
             message: "Global failure",
             trace: "trace line",
+            status: "broken",
             timestamp: 456
           }
         ]

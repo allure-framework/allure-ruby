@@ -64,6 +64,69 @@ describe Allure::ResultUtils do
     expect(utils.issue_link("issue", "http://jira.com/123", "{}")).to eq(Allure::Link.new("issue", "issue", "http://jira.com/123"))
   end
 
+  describe ".prepare_global_error" do
+    it "builds a broken global error from an exception" do
+      error.set_backtrace(["first trace line", "second trace line"])
+
+      global_error = utils.prepare_global_error(exception: error, timestamp: 123)
+
+      expect(global_error.to_hash).to eq(
+        "known" => false,
+        "muted" => false,
+        "flaky" => false,
+        "message" => "Error",
+        "trace" => "first trace line\nsecond trace line",
+        "status" => :broken,
+        "timestamp" => 123
+      )
+    end
+
+    it "classifies an expectation error as failed without a backtrace" do
+      global_error = utils.prepare_global_error(exception: rspec_error, timestamp: 123)
+
+      expect(global_error.to_hash).to eq(
+        "known" => false,
+        "muted" => false,
+        "flaky" => false,
+        "message" => "Not met",
+        "status" => :failed,
+        "timestamp" => 123
+      )
+    end
+
+    it "builds a broken global error without an exception" do
+      global_error = utils.prepare_global_error(timestamp: 123)
+
+      expect(global_error.to_hash).to eq(
+        "known" => false,
+        "muted" => false,
+        "flaky" => false,
+        "status" => :broken,
+        "timestamp" => 123
+      )
+    end
+
+    it "preserves supplied status detail flags" do
+      global_error = utils.prepare_global_error(
+        exception: error,
+        timestamp: 123,
+        known: true,
+        muted: true,
+        flaky: true
+      )
+
+      expect(global_error.to_hash).to include("known" => true, "muted" => true, "flaky" => true)
+    end
+
+    it "uses the current time when no timestamp is supplied" do
+      allow(Time).to receive(:now).and_return(Time.at(123))
+
+      global_error = utils.prepare_global_error(exception: error)
+
+      expect(global_error.timestamp).to eq(123_000)
+    end
+  end
+
   it "returns correct status for expectation error" do
     expect(Allure::ResultUtils.status(rspec_error)).to eq(Allure::Status::FAILED)
   end
