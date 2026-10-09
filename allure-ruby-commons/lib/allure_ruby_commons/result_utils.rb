@@ -157,9 +157,13 @@ module Allure
 
       # Get exception status detail
       # @param [Exception] exception
+      # @param [Hash] options
+      # @option options [Boolean] :known
+      # @option options [Boolean] :muted
+      # @option options [Boolean] :flaky
       # @return [Allure::StatusDetails]
-      def status_details(exception)
-        StatusDetails.new(message: exception&.message, trace: exception&.backtrace&.join("\n"))
+      def status_details(exception, **options)
+        StatusDetails.new(message: exception&.message, trace: exception&.backtrace&.join("\n"), **options)
       end
 
       # Allure attachment object
@@ -190,15 +194,18 @@ module Allure
 
       # Allure global error object
       # @param [Number] timestamp
+      # @param [StandardError] :exception
       # @param [Hash] options
       # @option options [Boolean] :known
       # @option options [Boolean] :muted
       # @option options [Boolean] :flaky
-      # @option options [String] :message
-      # @option options [String] :trace
       # @return [Allure::GlobalError]
-      def prepare_global_error(timestamp: self.timestamp, **options)
-        GlobalError.new(timestamp: timestamp, **options)
+      def prepare_global_error(timestamp: self.timestamp, exception: nil, **options)
+        GlobalError.new(
+          timestamp: timestamp,
+          status: status(exception),
+          **status_details(exception, **options).to_hash.transform_keys(&:to_sym)
+        )
       end
 
       private

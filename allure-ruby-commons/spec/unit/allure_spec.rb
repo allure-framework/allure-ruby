@@ -131,7 +131,9 @@ describe Allure do
     end
 
     it "adds global error" do
-      allure.add_global_error(message: "Global failure", trace: "trace line")
+      exception = RSpec::Expectations::ExpectationNotMetError.new("Global failure")
+      exception.set_backtrace(["trace line"])
+      allure.add_global_error(exception: exception, known: true, muted: true, flaky: true)
 
       expect(file_writer).not_to have_received(:write_globals)
       lifecycle.write_globals
@@ -143,6 +145,10 @@ describe Allure do
           expect(globals.attachments).to eq([])
           expect(error.message).to eq("Global failure")
           expect(error.trace).to eq("trace line")
+          expect(error.status).to eq(Allure::Status::FAILED)
+          expect(error.known).to be(true)
+          expect(error.muted).to be(true)
+          expect(error.flaky).to be(true)
           expect(error.timestamp).to be_a(Integer)
         end
       end
