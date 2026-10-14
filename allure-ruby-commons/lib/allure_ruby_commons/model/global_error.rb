@@ -12,12 +12,13 @@ module Allure
     # @option options [Boolean] :flaky
     # @option options [String] :message
     # @option options [String] :trace
-    def initialize(timestamp:, **options)
+    def initialize(timestamp:, status: nil, **options)
       super(**options)
 
+      @status = status
       @timestamp = timestamp
     end
 
-    attr_accessor :timestamp
+    attr_accessor :timestamp, :status
   end
 end

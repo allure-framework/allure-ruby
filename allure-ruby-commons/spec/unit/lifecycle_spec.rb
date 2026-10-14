@@ -116,7 +116,9 @@ describe Allure::AllureLifecycle do
 
   describe "#add_global_error" do
     it "buffers a run-level error without an active test" do
-      lifecycle.add_global_error(message: "Global failure", trace: "trace line")
+      exception = StandardError.new("Global failure")
+      exception.set_backtrace(["trace line"])
+      lifecycle.add_global_error(exception: exception)
 
       expect(file_writer).not_to have_received(:write_globals)
       lifecycle.write_globals
@@ -129,6 +131,7 @@ describe Allure::AllureLifecycle do
           expect(globals.errors.length).to eq(1)
           expect(error.message).to eq("Global failure")
           expect(error.trace).to eq("trace line")
+          expect(error.status).to eq(Allure::Status::BROKEN)
           expect(error.timestamp).to be_a(Integer)
         end
       end
@@ -139,8 +142,8 @@ describe Allure::AllureLifecycle do
     it "writes all accumulated globals in one chunk" do
       lifecycle.add_global_attachment(name: "First attachment", source: "first", type: Allure::ContentType::TXT)
       lifecycle.add_global_attachment(name: "Second attachment", source: "second", type: Allure::ContentType::TXT)
-      lifecycle.add_global_error(message: "First failure")
-      lifecycle.add_global_error(message: "Second failure")
+      lifecycle.add_global_error(exception: StandardError.new("First failure"))
+      lifecycle.add_global_error(exception: RSpec::Expectations::ExpectationNotMetError.new("Second failure"))
 
       expect(file_writer).not_to have_received(:write_globals)
       lifecycle.write_globals
@@ -149,6 +152,7 @@ describe Allure::AllureLifecycle do
         aggregate_failures do
           expect(globals.attachments.map(&:name)).to eq(["First attachment", "Second attachment"])
           expect(globals.errors.map(&:message)).to eq(["First failure", "Second failure"])
+          expect(globals.errors.map(&:status)).to eq([Allure::Status::BROKEN, Allure::Status::FAILED])
         end
       end
     end

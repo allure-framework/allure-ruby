@@ -4,6 +4,9 @@ changelog:
       - 'pr:invalid'
       - 'pr:tests'
   categories:
+    - title: '💥 Breaking changes'
+      labels:
+        - 'pr:breaking change'
     - title: '🚀 New Features'
       labels:
         - 'pr:new feature'
