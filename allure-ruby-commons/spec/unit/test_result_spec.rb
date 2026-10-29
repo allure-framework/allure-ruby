@@ -146,6 +146,24 @@ describe "AllureLifecycle::TestCaseResult" do
     end
   end
 
+  context "with preconditions and expected results" do
+    it "serializes fields supplied at initialization" do
+      result = Allure::TestResult.new(
+        precondition: "User is logged in",
+        precondition_html: "<p>User is logged in</p>",
+        expected_result: "Dashboard is displayed",
+        expected_result_html: "<p>Dashboard is displayed</p>"
+      )
+
+      expect(result.to_hash).to include(
+        "precondition" => "User is logged in",
+        "preconditionHtml" => "<p>User is logged in</p>",
+        "expectedResult" => "Dashboard is displayed",
+        "expectedResultHtml" => "<p>Dashboard is displayed</p>"
+      )
+    end
+  end
+
   context "with allure environment" do
     let(:environment) { "test" }
 

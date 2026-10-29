@@ -12,6 +12,10 @@ module Allure
     # @option options [Array<String>] :title_path
     # @option options [String] :description
     # @option options [String] :description_html
+    # @option options [String] :precondition
+    # @option options [String] :precondition_html
+    # @option options [String] :expected_result
+    # @option options [String] :expected_result_html
     # @option options [String] :status ('broken')
     # @option options [String] :stage ('scheduled')
     # @option options [Allure::StatusDetails] :status_details
@@ -28,6 +32,10 @@ module Allure
       @history_id = history_id
       @full_name = options[:full_name] || "Unnamed"
       @title_path = options[:title_path]
+      @precondition = options[:precondition]
+      @precondition_html = options[:precondition_html]
+      @expected_result = options[:expected_result]
+      @expected_result_html = options[:expected_result_html]
       @labels = options[:labels] || []
       @links = options[:links] || []
       @parameters << Parameter.new("environment", environment) if environment
@@ -36,6 +44,10 @@ module Allure
     attr_accessor :uuid,
                   :full_name,
                   :title_path,
+                  :precondition,
+                  :precondition_html,
+                  :expected_result,
+                  :expected_result_html,
                   :labels,
                   :links
 
