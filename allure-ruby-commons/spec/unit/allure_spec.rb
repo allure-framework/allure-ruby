@@ -91,6 +91,21 @@ describe Allure do
     end
   end
 
+  context "with precondition and expected result helpers" do
+    [
+      [:add_precondition, "precondition", "User is logged in"],
+      [:precondition_html, "preconditionHtml", "<p>User is logged in</p>"],
+      [:add_expected_result, "expectedResult", "Dashboard is displayed"],
+      [:expected_result_html, "expectedResultHtml", "<p>Dashboard is displayed</p>"]
+    ].each do |method, key, value|
+      it "sets test case #{key}" do
+        allure.public_send(method, value)
+
+        expect(@test_case.to_hash[key]).to eq(value)
+      end
+    end
+  end
+
   context "with parameter helpers" do
     it "adds test parameter" do
       allure.parameter("name", "value", excluded: true, mode: Allure::Parameter::MASKED)

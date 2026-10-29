@@ -115,6 +115,42 @@ module Allure
     end
   end
 
+  # Add precondition to current test case
+  # @param [String] precondition
+  # @return [void]
+  def add_precondition(precondition)
+    lifecycle.update_test_case do |test_case|
+      test_case.precondition = precondition
+    end
+  end
+
+  # Add html precondition to current test case
+  # @param [String] precondition_html
+  # @return [void]
+  def precondition_html(precondition_html)
+    lifecycle.update_test_case do |test_case|
+      test_case.precondition_html = precondition_html
+    end
+  end
+
+  # Add expected result to current test case
+  # @param [String] expected_result
+  # @return [void]
+  def add_expected_result(expected_result)
+    lifecycle.update_test_case do |test_case|
+      test_case.expected_result = expected_result
+    end
+  end
+
+  # Add html expected result to current test case
+  # @param [String] expected_result_html
+  # @return [void]
+  def expected_result_html(expected_result_html)
+    lifecycle.update_test_case do |test_case|
+      test_case.expected_result_html = expected_result_html
+    end
+  end
+
   # Add parameter to current test case
   # @param [String] name
   # @param [String] value
