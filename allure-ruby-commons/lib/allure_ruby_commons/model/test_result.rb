@@ -9,6 +9,7 @@ module Allure
     # @param [Hash] options
     # @option options [String] :name
     # @option options [String] :full_name
+    # @option options [String] :test_case_id
     # @option options [Array<String>] :title_path
     # @option options [String] :description
     # @option options [String] :description_html
@@ -31,6 +32,7 @@ module Allure
       @uuid = uuid
       @history_id = history_id
       @full_name = options[:full_name] || "Unnamed"
+      @test_case_id = options[:test_case_id]
       @title_path = options[:title_path]
       @precondition = options[:precondition]
       @precondition_html = options[:precondition_html]
@@ -43,6 +45,7 @@ module Allure
 
     attr_accessor :uuid,
                   :full_name,
+                  :test_case_id,
                   :title_path,
                   :precondition,
                   :precondition_html,

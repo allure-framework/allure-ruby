@@ -19,6 +19,12 @@ module AllureCucumber
       @id ||= Digest::MD5.hexdigest(test_case.inspect)
     end
 
+    # Stable scenario identity shared by all rows of an outline
+    # @return [String]
+    def test_case_id
+      @test_case_id ||= Allure::ResultUtils.test_case_id(location_file, scenario.name)
+    end
+
     # Feature name scenario belongs to
     # @return [String]
     def feature_name

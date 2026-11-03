@@ -132,6 +132,32 @@ describe "AllureLifecycle::TestCaseResult" do
     end
   end
 
+  context "test case id" do
+    it "serializes an ID supplied at initialization" do
+      result = Allure::TestResult.new(test_case_id: "stable-test-id")
+
+      serialized = result.to_hash
+
+      expect(serialized).to include("testCaseId" => "stable-test-id")
+    end
+
+    it "serializes an ID updated through the accessor" do
+      result = Allure::TestResult.new
+
+      result.test_case_id = "updated-test-id"
+
+      expect(result.to_hash).to include("testCaseId" => "updated-test-id")
+    end
+
+    it "omits an unspecified ID" do
+      result = Allure::TestResult.new
+
+      serialized = result.to_hash
+
+      expect(serialized).not_to have_key("testCaseId")
+    end
+  end
+
   context "title path" do
     let(:environment) { nil }
     let(:title_path) { ["spec/test_spec.rb", "Suite", "Nested Suite"] }

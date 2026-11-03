@@ -44,6 +44,7 @@ describe "example_started" do
           expect(arg.name).to eq(spec)
           expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
           expect(arg.full_name).to eq("#{suite} #{spec}")
+          expect(arg.test_case_id).to eq(Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}"))
           expect(arg.title_path).to eq(["#{test_tmp_dir}/spec/test_spec.rb", suite])
           expect(arg.links).to be_empty
           expect(arg.parameters).to be_empty

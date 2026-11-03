@@ -64,6 +64,34 @@ describe Allure::ResultUtils do
     expect(utils.issue_link("issue", "http://jira.com/123", "{}")).to eq(Allure::Link.new("issue", "issue", "http://jira.com/123"))
   end
 
+  describe ".test_case_id" do
+    it "hashes the normalized relative file and full name" do
+      paths = [
+        "spec/test_spec.rb",
+        "./spec/test_spec.rb",
+        "spec/nested/../test_spec.rb",
+        File.expand_path("spec/test_spec.rb")
+      ]
+      expected = Digest::MD5.hexdigest("spec/test_spec.rb#Suite example")
+
+      ids = paths.map { |path| utils.test_case_id(path, "Suite example") }
+
+      expect(ids).to all(eq(expected))
+    end
+
+    it "distinguishes directories and full names" do
+      inputs = [
+        ["spec/api/test_spec.rb", "Suite example"],
+        ["spec/ui/test_spec.rb", "Suite example"],
+        ["spec/api/test_spec.rb", "Suite another example"]
+      ]
+
+      ids = inputs.map { |file, name| utils.test_case_id(file, name) }
+
+      expect(ids.uniq.size).to eq(inputs.size)
+    end
+  end
+
   describe ".prepare_global_error" do
     it "builds a broken global error from an exception" do
       error.set_backtrace(["first trace line", "second trace line"])
