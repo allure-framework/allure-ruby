@@ -9,7 +9,7 @@ describe Allure::TestPlan, :aggregate_failures do
     described_class.instance_variable_set(:@test_ids, nil)
     described_class.instance_variable_set(:@test_names, nil)
 
-    :@test_plan_path.tap do |var|
+    %i[@test_plan_path @test_plan].each do |var|
       described_class.send(:remove_instance_variable, var) if described_class.instance_variable_defined?(var)
     end
   end
@@ -30,7 +30,7 @@ describe Allure::TestPlan, :aggregate_failures do
   context "handles" do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/malformed/testplan.json" }
 
-    it "malformed testplan.json" do
+    it "malformed testplan.json", :focus do
       expect(described_class.test_ids).to eq(nil)
       expect(described_class.test_names).to eq(nil)
     end

@@ -22,13 +22,34 @@ module Allure
         @test_names ||= tests&.map { |test| test[:selector] }
       end
 
+      # Test case ids of muted tests
+      #
+      # @return [Array]
+      def muted_test_ids
+        @muted_test_ids ||= muted_tests&.map { |test| test[:testCaseId] }
+      end
+
       private
+
+      # Parsed test plan object
+      #
+      # @return [Hash]
+      def test_plan
+        @test_plan ||= load_json(test_plan_path)
+      end
 
       # Tests to execute from allure testplan.json
       #
       # @return [Array<Hash>]
       def tests
-        @tests ||= load_json(test_plan_path)&.fetch(:tests) if test_plan_path
+        @tests ||= test_plan&.fetch(:tests, nil) if test_plan_path
+      end
+
+      # Tests to skip from allure testplan.json
+      #
+      # @return [Array<Hash>]
+      def muted_tests
+        @muted_tests ||= test_plan&.fetch(:mutedTests, nil) if test_plan_path
       end
 
       # Fetch test plan path
