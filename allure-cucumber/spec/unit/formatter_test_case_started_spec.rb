@@ -43,6 +43,10 @@ describe "on_test_case_started" do
     end
 
     it "are added to allure test case" do
+      allow(Allure::TestPlan).to receive(:muted_tests?).and_return(false)
+      allow(AllureCucumber::Scenario).to receive(:new).and_call_original
+      expect_any_instance_of(AllureCucumber::CucumberFormatter).not_to receive(:Around)
+
       run_cucumber_cli(<<~FEATURE)
         Feature: #{feature}
 
@@ -63,6 +67,7 @@ describe "on_test_case_started" do
           expect(arg.labels).to match_array(labels)
         end
       end
+      expect(AllureCucumber::Scenario).to have_received(:new).once
     end
   end
 

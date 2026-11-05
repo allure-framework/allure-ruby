@@ -75,7 +75,7 @@ module AllureCucumber
     def on_test_case_started(event)
       test_case = event.test_case
       result = cucumber_model.test_result(test_case)
-      result.status_details.muted = true if cucumber_model.muted?(test_case)
+      result.status_details.muted = true if Allure::TestPlan.muted?(result.test_case_id)
 
       lifecycle.start_test_container(Allure::TestResultContainer.new(name: test_case.name))
       lifecycle.start_test_case(result)
@@ -125,6 +125,8 @@ module AllureCucumber
     # Skip matched scenarios through Cucumber's public hook DSL.
     # @return [void]
     def register_muting_hook
+      return unless Allure::TestPlan.muted_tests?
+
       model = cucumber_model
       Around do |scenario, run|
         skip_this_scenario("Skipped by Allure test plan") if model.muted?(scenario)

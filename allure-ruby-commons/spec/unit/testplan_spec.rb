@@ -27,6 +27,7 @@ describe Allure::TestPlan, :aggregate_failures do
       expect(described_class.test_ids).to eq(test_ids)
       expect(described_class.test_names).to eq(test_names)
       expect(described_class.muted?("muted-id")).to be(false)
+      expect(described_class.muted_tests?).to be(false)
     end
   end
 
@@ -61,6 +62,7 @@ describe Allure::TestPlan, :aggregate_failures do
       expect(matched).to be(true)
       expect(unmatched).to be(false)
       expect(missing).to be(false)
+      expect(described_class.muted_tests?).to be(true)
     end
   end
 
@@ -71,6 +73,7 @@ describe Allure::TestPlan, :aggregate_failures do
       muted = described_class.muted?("muted-id")
 
       expect(muted).to be(false)
+      expect(described_class.muted_tests?).to be(false)
     end
   end
 

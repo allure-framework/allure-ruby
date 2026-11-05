@@ -32,6 +32,13 @@ module Allure
         muted_test_ids.include?(test_case_id)
       end
 
+      # Whether the test plan contains any muted identities
+      #
+      # @return [Boolean]
+      def muted_tests?
+        !muted_test_ids.empty?
+      end
+
       private
 
       # Muted test case ids
