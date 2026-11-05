@@ -78,7 +78,14 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
     # @return [void]
     def example_started(example_notification)
-      lifecycle.start_test_case(test_result(example_notification.example))
+      example = example_notification.example
+      result = test_result(example)
+      if Allure::TestPlan.muted_test_ids&.include?(result.test_case_id)
+        result.status_details.muted = true
+        example.metadata[:skip] = "Skipped by Allure test plan"
+      end
+
+      lifecycle.start_test_case(result)
     end
 
     # Finishes example

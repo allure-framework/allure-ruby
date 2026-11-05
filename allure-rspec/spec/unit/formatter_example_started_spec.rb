@@ -21,6 +21,25 @@ describe "example_started" do
     ]
   end
 
+  context "with muted tests" do
+    let(:muted_id) { Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}") }
+
+    before do
+      allow(Allure::TestPlan).to receive(:muted_test_ids).and_return([muted_id])
+    end
+    it "adds skip metadata to the matching example" do
+      run_rspec(<<~SPEC)
+        describe "#{suite}" do
+          it "#{spec}" do
+          end
+        end
+      SPEC
+
+      example = RSpec.world.example_groups.first.examples.first
+      expect(example.metadata[:skip]).to eq("Skipped by Allure test plan")
+    end
+  end
+
   context "default parameters" do
     it "are added to allure test case" do
       run_rspec(<<~SPEC)

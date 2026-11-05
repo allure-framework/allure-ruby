@@ -12,21 +12,21 @@ module Allure
       #
       # @return [Array]
       def test_ids
-        @test_ids ||= tests&.map { |test| test[:id] }
+        @test_ids ||= tests&.filter_map { |test| test[:id] }
       end
 
       # Test names of executable tests
       #
       # @return [Array]
       def test_names
-        @test_names ||= tests&.map { |test| test[:selector] }
+        @test_names ||= tests&.filter_map { |test| test[:selector] }
       end
 
       # Test case ids of muted tests
       #
       # @return [Array]
       def muted_test_ids
-        @muted_test_ids ||= muted_tests&.map { |test| test[:testCaseId] }
+        @muted_test_ids ||= muted_tests&.filter_map { |test| test[:testCaseId] }
       end
 
       private

@@ -3,7 +3,9 @@
 require "cucumber/cli/main"
 
 class MockKernel
-  def exit(status); end
+  def exit(status)
+    status
+  end
 end
 
 class CucumberHelper

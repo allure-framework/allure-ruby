@@ -60,6 +60,6 @@ RSpec.shared_context("rspec runner") do
     allow(RSpec).to receive(:configuration).and_return(configuration)
     allow(RSpec).to receive(:world).and_return(world)
 
-    Thread.new { RspecRunner.new(test_tmp_dir).run(spec) }.join
+    Thread.new { RspecRunner.new(test_tmp_dir).run(spec) }.value
   end
 end
