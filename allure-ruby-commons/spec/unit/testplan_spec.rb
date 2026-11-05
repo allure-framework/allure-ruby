@@ -26,7 +26,7 @@ describe Allure::TestPlan, :aggregate_failures do
     it "correct testplan.json" do
       expect(described_class.test_ids).to eq(test_ids)
       expect(described_class.test_names).to eq(test_names)
-      expect(described_class.muted_test_ids).to be_nil
+      expect(described_class.muted?("muted-id")).to be(false)
     end
   end
 
@@ -51,18 +51,26 @@ describe Allure::TestPlan, :aggregate_failures do
   context "with partial entries" do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/partial/testplan.json" }
 
-    it "reads muted IDs and ignores absent IDs and selectors" do
+    it "matches muted identities and ignores absent IDs and selectors" do
+      matched = described_class.muted?("muted-id")
+      unmatched = described_class.muted?("other-id")
+      missing = described_class.muted?(nil)
+
       expect(described_class.test_ids).to eq(["id only"])
       expect(described_class.test_names).to eq(["selector only"])
-      expect(described_class.muted_test_ids).to eq(["muted-id"])
+      expect(matched).to be(true)
+      expect(unmatched).to be(false)
+      expect(missing).to be(false)
     end
   end
 
   context "without a plan" do
     let(:path) { nil }
 
-    it "has no muted IDs" do
-      expect(described_class.muted_test_ids).to be_nil
+    it "does not mute tests" do
+      muted = described_class.muted?("muted-id")
+
+      expect(muted).to be(false)
     end
   end
 

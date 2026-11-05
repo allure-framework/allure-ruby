@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "set"
+
 module Allure
   class TestPlan
     extend JsonHelper
@@ -22,14 +24,22 @@ module Allure
         @test_names ||= tests&.filter_map { |test| test[:selector] }
       end
 
-      # Test case ids of muted tests
+      # Whether a test case identity is muted
       #
-      # @return [Array]
-      def muted_test_ids
-        @muted_test_ids ||= muted_tests&.filter_map { |test| test[:testCaseId] }
+      # @param [String] test_case_id
+      # @return [Boolean]
+      def muted?(test_case_id)
+        muted_test_ids.include?(test_case_id)
       end
 
       private
+
+      # Muted test case ids
+      #
+      # @return [Set]
+      def muted_test_ids
+        @muted_test_ids ||= Set.new(muted_tests&.filter_map { |test| test[:testCaseId] }).freeze
+      end
 
       # Parsed test plan object
       #

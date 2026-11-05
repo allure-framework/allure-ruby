@@ -35,9 +35,9 @@ module AllureCucumber
 
     # Match a scenario or outline against the test plan's muted identities.
     # @param [Cucumber::Core::Test::Case, Cucumber::RunningTestCase::TestCase] test_case
-    # @return [Boolean, nil]
+    # @return [Boolean]
     def muted?(test_case)
-      Allure::TestPlan.muted_test_ids&.include?(Scenario.new(test_case, ast_lookup).test_case_id)
+      Allure::TestPlan.muted?(Scenario.new(test_case, ast_lookup).test_case_id)
     end
 
     # Convert to allure step result

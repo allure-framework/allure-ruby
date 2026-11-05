@@ -21,7 +21,8 @@ describe "on_test_run_finished" do
     let(:muted_id) { Digest::MD5.hexdigest("#{test_tmp_dir}/features/test.feature#Muted scenario") }
 
     before do
-      allow(Allure::TestPlan).to receive(:muted_test_ids).and_return([muted_id])
+      allow(Allure::TestPlan).to receive(:muted?).and_call_original
+      allow(Allure::TestPlan).to receive(:muted?).with(muted_id).and_return(true)
       allow(Allure::AllureLifecycle).to receive(:new).and_call_original
     end
 
