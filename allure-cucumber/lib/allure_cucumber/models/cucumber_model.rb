@@ -26,12 +26,10 @@ module AllureCucumber
         description_html: scenario.description,
         history_id: scenario.id,
         full_name: scenario.name,
+        test_case_id: scenario.test_case_id,
         title_path: scenario.title_path,
-        labels: parser.labels,
-        links: parser.links,
-        parameters: parser.parameters,
-        status_details: parser.status_details,
-        environment: config.environment
+        environment: config.environment,
+        **test_result_metadata(parser)
       )
     end
 
@@ -69,6 +67,15 @@ module AllureCucumber
     private
 
     attr_reader :ast_lookup, :config
+
+    def test_result_metadata(parser)
+      {
+        labels: parser.labels,
+        links: parser.links,
+        parameters: parser.parameters,
+        status_details: parser.status_details
+      }
+    end
 
     # @param [Step] step
     # @return [Array<Allure::Attachment>]

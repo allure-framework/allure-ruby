@@ -123,6 +123,7 @@ module AllureRspec
         description_html: "Location - #{strip_relative(parser.location)}",
         history_id: example.id,
         full_name: example.full_description,
+        test_case_id: Allure::ResultUtils.test_case_id(example.metadata[:rerun_file_path], example.full_description),
         title_path: parser.title_path,
         labels: parser.labels,
         links: parser.links,

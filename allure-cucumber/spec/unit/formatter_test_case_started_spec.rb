@@ -56,6 +56,7 @@ describe "on_test_case_started" do
           expect(arg.name).to eq(scenario)
           expect(arg.description).to eq("Simple scenario description")
           expect(arg.full_name).to eq(scenario)
+          expect(arg.test_case_id).to eq(Digest::MD5.hexdigest("#{test_tmp_dir}/features/test.feature##{scenario}"))
           expect(arg.title_path).to eq(["#{test_tmp_dir}/features/test.feature", feature])
           expect(arg.links).to be_empty
           expect(arg.parameters).to be_empty
@@ -63,6 +64,27 @@ describe "on_test_case_started" do
         end
       end
     end
+  end
+
+  it "distinguishes identical scenario names in different feature files" do
+    source = <<~FEATURE
+      Feature: Shared feature
+
+      Scenario: Same scenario
+        Given a is 5
+    FEATURE
+    expected = [
+      Digest::MD5.hexdigest("#{test_tmp_dir}/api/features/test.feature#Same scenario"),
+      Digest::MD5.hexdigest("#{test_tmp_dir}/ui/features/test.feature#Same scenario")
+    ]
+    results = []
+    allow(lifecycle).to receive(:start_test_case) { |result| results << result }
+
+    %w[api ui].each do |directory|
+      Thread.new { CucumberHelper.new("#{test_tmp_dir}/#{directory}").execute(source) }.join
+    end
+
+    expect(results.map(&:test_case_id)).to contain_exactly(*expected)
   end
 
   context "with allure environment" do
@@ -211,6 +233,8 @@ describe "on_test_case_started" do
         expect(lifecycle).to(have_received(:start_test_case).twice) { |arg| examples.push(arg) }
         expect(examples[0].name).to include("Add a to b, Examples (#1)")
         expect(examples[1].name).to include("Add a to b, Examples (#2)")
+        expected_id = Digest::MD5.hexdigest("#{test_tmp_dir}/features/test.feature#Add a to b")
+        expect(examples.map(&:test_case_id)).to all(eq(expected_id))
         expect(examples[0].parameters).to contain_exactly(
           Allure::Parameter.new("num_a", "5"),
           Allure::Parameter.new("num_b", "10"),

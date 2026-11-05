@@ -53,15 +53,13 @@ end
 RSpec.shared_context("rspec runner") do
   let!(:test_tmp_dir) { |e| "tmp/#{e.full_description.tr(' ', '_')}" }
 
-  before do
+  def run_rspec(spec)
     configuration = RSpec::Core::Configuration.new
     world = RSpec::Core::World.new(configuration)
 
     allow(RSpec).to receive(:configuration).and_return(configuration)
     allow(RSpec).to receive(:world).and_return(world)
-  end
 
-  def run_rspec(spec)
     Thread.new { RspecRunner.new(test_tmp_dir).run(spec) }.join
   end
 end
