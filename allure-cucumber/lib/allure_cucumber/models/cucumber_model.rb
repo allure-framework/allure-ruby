@@ -25,12 +25,29 @@ module AllureCucumber
         description: scenario.description,
         description_html: scenario.description,
         history_id: scenario.id,
-        full_name: scenario.name,
+        full_name: scenario.full_name,
         test_case_id: scenario.test_case_id,
         title_path: scenario.title_path,
         environment: config.environment,
         **test_result_metadata(parser)
-      )
+      ).tap do |result|
+        result.status_details.muted = true if muted_scenario?(scenario)
+      end
+    end
+
+    # Match a scenario or outline against exact reported full-name selectors.
+    # @param [Cucumber::Core::Test::Case] test_case
+    # @param [Set<String>] selectors
+    # @return [Boolean]
+    def selected?(test_case, selectors)
+      selectors.include?(Scenario.new(test_case, ast_lookup).full_name)
+    end
+
+    # Match a scenario or outline against the test plan's muted identities.
+    # @param [Cucumber::Core::Test::Case, Cucumber::RunningTestCase::TestCase] test_case
+    # @return [Boolean]
+    def muted?(test_case)
+      muted_scenario?(Scenario.new(test_case, ast_lookup))
     end
 
     # Convert to allure step result
@@ -67,6 +84,14 @@ module AllureCucumber
     private
 
     attr_reader :ast_lookup, :config
+
+    # @param [Scenario] scenario
+    # @return [Boolean]
+    def muted_scenario?(scenario)
+      Allure::TestPlan.muted?(
+        allure_id: scenario.allure_id, selector: scenario.full_name, test_case_id: scenario.test_case_id
+      )
+    end
 
     def test_result_metadata(parser)
       {

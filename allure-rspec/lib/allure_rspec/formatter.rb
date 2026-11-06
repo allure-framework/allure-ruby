@@ -34,7 +34,7 @@ module AllureRspec
       names = Allure::TestPlan.test_names
 
       config.filter_run_when_matching(*ids.map { |id| { allure_id: id } }) if ids
-      config.full_description = names if names
+      config.filter_run_including(rerun_file_path: Utils.full_name_filter(names.to_set)) if names
     end
 
     def initialize(output)
@@ -78,7 +78,16 @@ module AllureRspec
     # @param [RSpec::Core::Notifications::ExampleNotification] example_notification
     # @return [void]
     def example_started(example_notification)
-      lifecycle.start_test_case(test_result(example_notification.example))
+      example = example_notification.example
+      result = test_result(example)
+      if Allure::TestPlan.muted?(
+        allure_id: example.metadata[:allure_id], selector: result.full_name, test_case_id: result.test_case_id
+      )
+        result.status_details.muted = true
+        example.metadata[:skip] = "Skipped by Allure test plan"
+      end
+
+      lifecycle.start_test_case(result)
     end
 
     # Finishes example
@@ -116,14 +125,15 @@ module AllureRspec
     # @return [Allure::TestResult]
     def test_result(example)
       parser = RspecMetadataParser.new(example, allure_config)
+      full_name = Allure::ResultUtils.full_name(example.metadata[:rerun_file_path], example.full_description)
 
       Allure::TestResult.new(
         name: example.description,
         description: "Location - #{strip_relative(parser.location)}",
         description_html: "Location - #{strip_relative(parser.location)}",
         history_id: example.id,
-        full_name: example.full_description,
-        test_case_id: Allure::ResultUtils.test_case_id(example.metadata[:rerun_file_path], example.full_description),
+        full_name: full_name,
+        test_case_id: Digest::MD5.hexdigest(full_name),
         title_path: parser.title_path,
         labels: parser.labels,
         links: parser.links,

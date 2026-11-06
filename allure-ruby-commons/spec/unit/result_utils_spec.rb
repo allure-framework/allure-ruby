@@ -64,31 +64,37 @@ describe Allure::ResultUtils do
     expect(utils.issue_link("issue", "http://jira.com/123", "{}")).to eq(Allure::Link.new("issue", "issue", "http://jira.com/123"))
   end
 
-  describe ".test_case_id" do
-    it "hashes the normalized relative file and full name" do
+  describe ".full_name" do
+    it "combines the normalized relative file and test name" do
       paths = [
         "spec/test_spec.rb",
         "./spec/test_spec.rb",
         "spec/nested/../test_spec.rb",
         File.expand_path("spec/test_spec.rb")
       ]
-      expected = Digest::MD5.hexdigest("spec/test_spec.rb#Suite example")
+      expected = "spec/test_spec.rb#Suite example"
 
-      ids = paths.map { |path| utils.test_case_id(path, "Suite example") }
+      full_names = paths.map { |path| utils.full_name(path, "Suite example") }
 
-      expect(ids).to all(eq(expected))
+      expect(full_names).to all(eq(expected))
     end
 
-    it "distinguishes directories and full names" do
+    it "distinguishes directories and test names" do
       inputs = [
         ["spec/api/test_spec.rb", "Suite example"],
         ["spec/ui/test_spec.rb", "Suite example"],
         ["spec/api/test_spec.rb", "Suite another example"]
       ]
 
-      ids = inputs.map { |file, name| utils.test_case_id(file, name) }
+      expected = [
+        "spec/api/test_spec.rb#Suite example",
+        "spec/ui/test_spec.rb#Suite example",
+        "spec/api/test_spec.rb#Suite another example"
+      ]
 
-      expect(ids.uniq.size).to eq(inputs.size)
+      full_names = inputs.map { |file, name| utils.full_name(file, name) }
+
+      expect(full_names).to eq(expected)
     end
   end
 

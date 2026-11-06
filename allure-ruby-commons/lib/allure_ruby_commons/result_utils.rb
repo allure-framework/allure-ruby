@@ -34,9 +34,10 @@ module Allure
       # @param [String] file_path
       # @param [String] full_name
       # @return [String]
-      def test_case_id(file_path, full_name)
+      def full_name(file_path, full_name)
         relative_path = Pathname.new(File.expand_path(file_path)).relative_path_from(Pathname.pwd).to_s
-        Digest::MD5.hexdigest("#{relative_path}##{full_name}")
+
+        "#{relative_path}##{full_name}"
       end
 
       # @param [Time] time

@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 require "cucumber/core"
+require "cucumber/glue/dsl"
+
+require_relative "test_plan_filter"
 
 module AllureCucumber
   # Main formatter class. Translates cucumber event to allure lifecycle
   class CucumberFormatter
+    include Cucumber::Glue::Dsl
+
     # @return [Hash] hook handler methods
     HOOK_HANDLERS = {
       "Before hook" => :start_prepare_fixture,
@@ -27,7 +32,7 @@ module AllureCucumber
       @cucumber_model ||= AllureCucumberModel.new(config, allure_config)
 
       names = Allure::TestPlan.test_names
-      config.name_regexps.push(*names.map { |name| /#{name}/ }) if names
+      config.filters << TestPlanFilter.new(cucumber_model, names.to_set) if names
 
       config.on_event(:test_run_started) { |event| on_test_run_started(event) }
       config.on_event(:test_run_finished) { |event| on_test_run_finished(event) }
@@ -37,6 +42,7 @@ module AllureCucumber
       config.on_event(:test_case_finished) { |event| on_test_case_finished(event) }
 
       register_test_run_hook_finished(config)
+      register_muting_hook
     end
 
     # Clean test result directory before starting run
@@ -69,8 +75,11 @@ module AllureCucumber
     # @param [Cucumber::Events::TestCaseStarted] event
     # @return [void]
     def on_test_case_started(event)
-      lifecycle.start_test_container(Allure::TestResultContainer.new(name: event.test_case.name))
-      lifecycle.start_test_case(cucumber_model.test_result(event.test_case))
+      test_case = event.test_case
+      result = cucumber_model.test_result(test_case)
+
+      lifecycle.start_test_container(Allure::TestResultContainer.new(name: test_case.name))
+      lifecycle.start_test_case(result)
     end
 
     # Handle test step started event
@@ -113,6 +122,18 @@ module AllureCucumber
     private
 
     attr_reader :lifecycle, :cucumber_model
+
+    # Skip matched scenarios through Cucumber's public hook DSL.
+    # @return [void]
+    def register_muting_hook
+      return unless Allure::TestPlan.muted_tests?
+
+      model = cucumber_model
+      Around do |scenario, run|
+        skip_this_scenario("Skipped by Allure test plan") if model.muted?(scenario)
+        run.call
+      end
+    end
 
     # Register global hook finished event
     # @param [Cucumber::Configuration] config
