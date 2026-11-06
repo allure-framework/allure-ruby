@@ -25,18 +25,31 @@ describe "example_started" do
     let(:muted_id) { Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}") }
 
     before do
-      allow(Allure::TestPlan).to receive(:muted?).with(muted_id).and_return(true)
+      allow(Allure::TestPlan).to receive(:muted?).and_call_original
+      allow(Allure::TestPlan).to receive(:muted?).with(anything, allure_id: 123).and_return(true)
+      allow(Allure::TestPlan).to receive(:muted?).with(muted_id, allure_id: 456).and_return(true)
     end
-    it "adds skip metadata to the matching example" do
+
+    it "adds skip metadata to examples matching either identity" do
       run_rspec(<<~SPEC)
         describe "#{suite}" do
-          it "#{spec}" do
+          it "Explicit ID", allure_id: 123 do
+            raise "Muted body should not run"
+          end
+
+          it "#{spec}", allure_id: 456 do
+            raise "Muted body should not run"
+          end
+
+          it "Unmatched", allure_id: 456 do
           end
         end
       SPEC
 
-      example = RSpec.world.example_groups.first.examples.first
-      expect(example.metadata[:skip]).to eq("Skipped by Allure test plan")
+      examples = RSpec.world.example_groups.first.examples
+      expect(examples.map { |example| example.metadata[:skip] }).to eq(
+        ["Skipped by Allure test plan", "Skipped by Allure test plan", nil]
+      )
     end
   end
 

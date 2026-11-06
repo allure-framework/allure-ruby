@@ -24,11 +24,14 @@ module Allure
         @test_names ||= tests&.filter_map { |test| test[:selector] }
       end
 
-      # Whether a test case identity is muted
+      # Match an Allure ID first, falling back to the generated test case identity
       #
       # @param [String] test_case_id
+      # @param [String, Integer, nil] allure_id
       # @return [Boolean]
-      def muted?(test_case_id)
+      def muted?(test_case_id, allure_id: nil)
+        return true if allure_id && muted_allure_ids.include?(allure_id.to_s)
+
         muted_test_ids.include?(test_case_id)
       end
 
@@ -36,10 +39,17 @@ module Allure
       #
       # @return [Boolean]
       def muted_tests?
-        !muted_test_ids.empty?
+        muted_allure_ids.any? || muted_test_ids.any?
       end
 
       private
+
+      # Muted explicit Allure ids
+      #
+      # @return [Set]
+      def muted_allure_ids
+        @muted_allure_ids ||= Set.new(muted_tests&.filter_map { |test| test[:id]&.to_s }).freeze
+      end
 
       # Muted test case ids
       #

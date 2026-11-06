@@ -75,7 +75,6 @@ module AllureCucumber
     def on_test_case_started(event)
       test_case = event.test_case
       result = cucumber_model.test_result(test_case)
-      result.status_details.muted = true if Allure::TestPlan.muted?(result.test_case_id)
 
       lifecycle.start_test_container(Allure::TestResultContainer.new(name: test_case.name))
       lifecycle.start_test_case(result)

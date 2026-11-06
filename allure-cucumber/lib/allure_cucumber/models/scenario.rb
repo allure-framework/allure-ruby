@@ -25,6 +25,12 @@ module AllureCucumber
       @test_case_id ||= Allure::ResultUtils.test_case_id(location_file, scenario.name)
     end
 
+    # Explicit Allure ID from scenario or inherited tags
+    # @return [String, nil]
+    def allure_id
+      @allure_id ||= tags.find { |tag| tag.start_with?("@allure_id:") }&.delete_prefix("@allure_id:")
+    end
+
     # Feature name scenario belongs to
     # @return [String]
     def feature_name

@@ -30,14 +30,16 @@ module AllureCucumber
         title_path: scenario.title_path,
         environment: config.environment,
         **test_result_metadata(parser)
-      )
+      ).tap do |result|
+        result.status_details.muted = true if muted_scenario?(scenario)
+      end
     end
 
     # Match a scenario or outline against the test plan's muted identities.
     # @param [Cucumber::Core::Test::Case, Cucumber::RunningTestCase::TestCase] test_case
     # @return [Boolean]
     def muted?(test_case)
-      Allure::TestPlan.muted?(Scenario.new(test_case, ast_lookup).test_case_id)
+      muted_scenario?(Scenario.new(test_case, ast_lookup))
     end
 
     # Convert to allure step result
@@ -74,6 +76,12 @@ module AllureCucumber
     private
 
     attr_reader :ast_lookup, :config
+
+    # @param [Scenario] scenario
+    # @return [Boolean]
+    def muted_scenario?(scenario)
+      Allure::TestPlan.muted?(scenario.test_case_id, allure_id: scenario.allure_id)
+    end
 
     def test_result_metadata(parser)
       {

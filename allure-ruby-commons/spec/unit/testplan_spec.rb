@@ -10,6 +10,7 @@ describe Allure::TestPlan, :aggregate_failures do
     described_class.instance_variable_set(:@test_names, nil)
     described_class.instance_variable_set(:@muted_tests, nil)
     described_class.instance_variable_set(:@muted_test_ids, nil)
+    described_class.instance_variable_set(:@muted_allure_ids, nil)
 
     %i[@test_plan_path @test_plan].each do |var|
       described_class.send(:remove_instance_variable, var) if described_class.instance_variable_defined?(var)
@@ -56,13 +57,31 @@ describe Allure::TestPlan, :aggregate_failures do
       matched = described_class.muted?("muted-id")
       unmatched = described_class.muted?("other-id")
       missing = described_class.muted?(nil)
+      matched_by_allure_id = described_class.muted?("other-id", allure_id: "123")
+      fallback = described_class.muted?("muted-id", allure_id: 456)
+      unmatched_ids = described_class.muted?("other-id", allure_id: 456)
 
       expect(described_class.test_ids).to eq(["id only"])
       expect(described_class.test_names).to eq(["selector only"])
       expect(matched).to be(true)
       expect(unmatched).to be(false)
       expect(missing).to be(false)
+      expect(matched_by_allure_id).to be(true)
+      expect(fallback).to be(true)
+      expect(unmatched_ids).to be(false)
       expect(described_class.muted_tests?).to be(true)
+    end
+  end
+
+  context "with only muted Allure IDs" do
+    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/ids_only/testplan.json" }
+
+    it "activates muting without generated identities" do
+      available = described_class.muted_tests?
+      matched = described_class.muted?("other-id", allure_id: 123)
+
+      expect(available).to be(true)
+      expect(matched).to be(true)
     end
   end
 
