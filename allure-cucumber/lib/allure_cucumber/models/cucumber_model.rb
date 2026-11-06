@@ -35,6 +35,14 @@ module AllureCucumber
       end
     end
 
+    # Match a scenario or outline against exact reported full-name selectors.
+    # @param [Cucumber::Core::Test::Case] test_case
+    # @param [Set<String>] selectors
+    # @return [Boolean]
+    def selected?(test_case, selectors)
+      selectors.include?(Scenario.new(test_case, ast_lookup).full_name)
+    end
+
     # Match a scenario or outline against the test plan's muted identities.
     # @param [Cucumber::Core::Test::Case, Cucumber::RunningTestCase::TestCase] test_case
     # @return [Boolean]
