@@ -24,13 +24,15 @@ module Allure
         @test_names ||= tests&.filter_map { |test| test[:selector] }
       end
 
-      # Match an Allure ID first, falling back to the generated test case identity
+      # Match an Allure ID first, falling back to the selector and generated identity
       #
-      # @param [String] test_case_id
       # @param [String, Integer, nil] allure_id
+      # @param [String, nil] selector file-qualified full name
+      # @param [String] test_case_id
       # @return [Boolean]
-      def muted?(test_case_id, allure_id: nil)
+      def muted?(allure_id:, selector:, test_case_id:)
         return true if allure_id && muted_allure_ids.include?(allure_id.to_s)
+        return true if muted_selectors.include?(selector)
 
         muted_test_ids.include?(test_case_id)
       end
@@ -39,7 +41,7 @@ module Allure
       #
       # @return [Boolean]
       def muted_tests?
-        muted_allure_ids.any? || muted_test_ids.any?
+        muted_allure_ids.any? || muted_test_ids.any? || muted_selectors.any?
       end
 
       private
@@ -56,6 +58,13 @@ module Allure
       # @return [Set]
       def muted_test_ids
         @muted_test_ids ||= Set.new(muted_tests&.filter_map { |test| test[:testCaseId] }).freeze
+      end
+
+      # Muted file-qualified full-name selectors
+      #
+      # @return [Set]
+      def muted_selectors
+        @muted_selectors ||= Set.new(muted_tests&.filter_map { |test| test[:selector] }).freeze
       end
 
       # Parsed test plan object

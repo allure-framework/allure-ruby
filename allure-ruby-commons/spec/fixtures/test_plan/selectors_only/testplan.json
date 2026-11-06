@@ -1,0 +1,4 @@
+{
+  "version": "1.0",
+  "mutedTests": [{"selector": "spec/test_spec.rb#Suite [case]"}]
+}

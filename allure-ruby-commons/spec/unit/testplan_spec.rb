@@ -11,6 +11,7 @@ describe Allure::TestPlan, :aggregate_failures do
     described_class.instance_variable_set(:@muted_tests, nil)
     described_class.instance_variable_set(:@muted_test_ids, nil)
     described_class.instance_variable_set(:@muted_allure_ids, nil)
+    described_class.instance_variable_set(:@muted_selectors, nil)
 
     %i[@test_plan_path @test_plan].each do |var|
       described_class.send(:remove_instance_variable, var) if described_class.instance_variable_defined?(var)
@@ -27,7 +28,7 @@ describe Allure::TestPlan, :aggregate_failures do
     it "correct testplan.json" do
       expect(described_class.test_ids).to eq(test_ids)
       expect(described_class.test_names).to eq(test_names)
-      expect(described_class.muted?("muted-id")).to be(false)
+      expect(described_class.muted?(allure_id: nil, selector: nil, test_case_id: "muted-id")).to be(false)
       expect(described_class.muted_tests?).to be(false)
     end
   end
@@ -54,12 +55,12 @@ describe Allure::TestPlan, :aggregate_failures do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/partial/testplan.json" }
 
     it "matches muted identities and ignores absent IDs and selectors" do
-      matched = described_class.muted?("muted-id")
-      unmatched = described_class.muted?("other-id")
-      missing = described_class.muted?(nil)
-      matched_by_allure_id = described_class.muted?("other-id", allure_id: "123")
-      fallback = described_class.muted?("muted-id", allure_id: 456)
-      unmatched_ids = described_class.muted?("other-id", allure_id: 456)
+      matched = described_class.muted?(allure_id: nil, selector: nil, test_case_id: "muted-id")
+      unmatched = described_class.muted?(allure_id: nil, selector: nil, test_case_id: "other-id")
+      missing = described_class.muted?(allure_id: nil, selector: nil, test_case_id: nil)
+      matched_by_allure_id = described_class.muted?(allure_id: "123", selector: nil, test_case_id: "other-id")
+      fallback = described_class.muted?(allure_id: 456, selector: nil, test_case_id: "muted-id")
+      unmatched_ids = described_class.muted?(allure_id: 456, selector: nil, test_case_id: "other-id")
 
       expect(described_class.test_ids).to eq(["id only"])
       expect(described_class.test_names).to eq(["selector only"])
@@ -78,10 +79,32 @@ describe Allure::TestPlan, :aggregate_failures do
 
     it "activates muting without generated identities" do
       available = described_class.muted_tests?
-      matched = described_class.muted?("other-id", allure_id: 123)
+      matched = described_class.muted?(allure_id: 123, selector: nil, test_case_id: "other-id")
 
       expect(available).to be(true)
       expect(matched).to be(true)
+    end
+  end
+
+  context "with only muted selectors" do
+    let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/selectors_only/testplan.json" }
+
+    it "activates muting and matches exact full names when IDs do not match" do
+      available = described_class.muted_tests?
+      matched = described_class.muted?(
+        allure_id: 456, selector: "spec/test_spec.rb#Suite [case]", test_case_id: "other-id"
+      )
+      other_file = described_class.muted?(
+        allure_id: nil, selector: "spec/other_spec.rb#Suite [case]", test_case_id: "other-id"
+      )
+      regex_like = described_class.muted?(
+        allure_id: nil, selector: "spec/test_spec.rb#Suite c", test_case_id: "other-id"
+      )
+
+      expect(available).to be(true)
+      expect(matched).to be(true)
+      expect(other_file).to be(false)
+      expect(regex_like).to be(false)
     end
   end
 
@@ -89,7 +112,7 @@ describe Allure::TestPlan, :aggregate_failures do
     let(:path) { nil }
 
     it "does not mute tests" do
-      muted = described_class.muted?("muted-id")
+      muted = described_class.muted?(allure_id: nil, selector: nil, test_case_id: "muted-id")
 
       expect(muted).to be(false)
       expect(described_class.muted_tests?).to be(false)

@@ -88,7 +88,9 @@ module AllureCucumber
     # @param [Scenario] scenario
     # @return [Boolean]
     def muted_scenario?(scenario)
-      Allure::TestPlan.muted?(scenario.test_case_id, allure_id: scenario.allure_id)
+      Allure::TestPlan.muted?(
+        allure_id: scenario.allure_id, selector: scenario.full_name, test_case_id: scenario.test_case_id
+      )
     end
 
     def test_result_metadata(parser)
