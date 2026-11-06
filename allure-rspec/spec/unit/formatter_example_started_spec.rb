@@ -75,7 +75,7 @@ describe "example_started" do
         aggregate_failures "Should have correct args" do
           expect(arg.name).to eq(spec)
           expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
-          expect(arg.full_name).to eq("#{suite} #{spec}")
+          expect(arg.full_name).to eq("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}")
           expect(arg.test_case_id).to eq(Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}"))
           expect(arg.title_path).to eq(["#{test_tmp_dir}/spec/test_spec.rb", suite])
           expect(arg.links).to be_empty
@@ -103,6 +103,7 @@ describe "example_started" do
         expect(lifecycle).to have_received(:start_test_case).once do |arg|
           aggregate_failures "Should have correct args" do
             expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:8")
+            expect(arg.full_name).to eq("#{test_tmp_dir}/spec/test_spec.rb##{suite} behaves like shared #{spec}")
           end
         end
       end

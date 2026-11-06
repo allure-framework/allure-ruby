@@ -123,14 +123,15 @@ module AllureRspec
     # @return [Allure::TestResult]
     def test_result(example)
       parser = RspecMetadataParser.new(example, allure_config)
+      full_name = Allure::ResultUtils.full_name(example.metadata[:rerun_file_path], example.full_description)
 
       Allure::TestResult.new(
         name: example.description,
         description: "Location - #{strip_relative(parser.location)}",
         description_html: "Location - #{strip_relative(parser.location)}",
         history_id: example.id,
-        full_name: example.full_description,
-        test_case_id: Allure::ResultUtils.test_case_id(example.metadata[:rerun_file_path], example.full_description),
+        full_name: full_name,
+        test_case_id: Digest::MD5.hexdigest(full_name),
         title_path: parser.title_path,
         labels: parser.labels,
         links: parser.links,

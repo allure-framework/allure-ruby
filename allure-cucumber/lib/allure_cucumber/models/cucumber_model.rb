@@ -25,7 +25,7 @@ module AllureCucumber
         description: scenario.description,
         description_html: scenario.description,
         history_id: scenario.id,
-        full_name: scenario.name,
+        full_name: scenario.full_name,
         test_case_id: scenario.test_case_id,
         title_path: scenario.title_path,
         environment: config.environment,

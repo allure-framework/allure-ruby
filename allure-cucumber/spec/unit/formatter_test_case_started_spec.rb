@@ -59,7 +59,7 @@ describe "on_test_case_started" do
         aggregate_failures "Should have correct args" do
           expect(arg.name).to eq(scenario)
           expect(arg.description).to eq("Simple scenario description")
-          expect(arg.full_name).to eq(scenario)
+          expect(arg.full_name).to eq("#{test_tmp_dir}/features/test.feature##{scenario}")
           expect(arg.test_case_id).to eq(Digest::MD5.hexdigest("#{test_tmp_dir}/features/test.feature##{scenario}"))
           expect(arg.title_path).to eq(["#{test_tmp_dir}/features/test.feature", feature])
           expect(arg.links).to be_empty
@@ -238,6 +238,7 @@ describe "on_test_case_started" do
         expect(lifecycle).to(have_received(:start_test_case).twice) { |arg| examples.push(arg) }
         expect(examples[0].name).to include("Add a to b, Examples (#1)")
         expect(examples[1].name).to include("Add a to b, Examples (#2)")
+        expect(examples.map(&:full_name)).to all(eq("#{test_tmp_dir}/features/test.feature#Add a to b"))
         expected_id = Digest::MD5.hexdigest("#{test_tmp_dir}/features/test.feature#Add a to b")
         expect(examples.map(&:test_case_id)).to all(eq(expected_id))
         expect(examples[0].parameters).to contain_exactly(
