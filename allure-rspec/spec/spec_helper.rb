@@ -20,6 +20,8 @@ RSpec.configure do |config|
     example.epic("allure-rspec")
     example.parameter("ruby", ENV["RUBY_VERSION"])
     example.parameter("oj", ENV["WITH_OJ_GEM"])
+
+    ENV.delete("ALLURE_TESTPLAN_PATH")
   end
 end
 

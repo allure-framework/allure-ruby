@@ -22,6 +22,10 @@ RSpec.configure do |config|
     example.parameter("ruby", ENV["RUBY_VERSION"])
     example.parameter("oj", ENV["WITH_OJ_GEM"])
   end
+
+  config.around do |example|
+    ClimateControl.modify(ALLURE_TESTPLAN_PATH: nil) { example.run }
+  end
 end
 
 RSpec.shared_context("lifecycle mocks") do
