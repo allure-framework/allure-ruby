@@ -33,8 +33,8 @@ module AllureRspec
       ids = Allure::TestPlan.test_ids
       names = Allure::TestPlan.test_names
 
-      config.filter_run_when_matching(*ids.map { |id| { allure_id: id } }) if ids
-      config.filter_run_including(rerun_file_path: Utils.full_name_filter(names.to_set)) if names
+      config.filter_run_when_matching(*ids.map { |id| { allure_id: id } }) if ids&.any?
+      config.filter_run_including(rerun_file_path: Utils.full_name_filter(names.to_set)) if names&.any?
     end
 
     def initialize(output)
