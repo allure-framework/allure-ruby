@@ -28,6 +28,18 @@ describe AllureRspec do
     expect(AllureRspec.configuration.tms_tag).to eq("TMS")
   end
 
+  it "matches selectors against exact file-qualified full names" do
+    filter = AllureRspec::Utils.full_name_filter(["spec/test_spec.rb#Suite [case]"])
+
+    matches = [
+      filter.call("./spec/test_spec.rb", full_description: "Suite [case]"),
+      filter.call("spec/other_spec.rb", full_description: "Suite [case]"),
+      filter.call("spec/test_spec.rb", full_description: "Suite c")
+    ]
+
+    expect(matches).to eq([true, false, false])
+  end
+
   context "with global labels" do
     include_context "rspec runner"
 

@@ -21,6 +21,50 @@ describe "example_started" do
     ]
   end
 
+  context "with muted tests" do
+    let(:muted_id) { Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}") }
+    let(:muted_selector) { "#{test_tmp_dir}/spec/test_spec.rb##{suite} Selector" }
+
+    before do
+      allow(Allure::TestPlan).to receive(:muted?).and_call_original
+      allow(Allure::TestPlan).to receive(:muted?).with(
+        allure_id: 123, selector: anything, test_case_id: anything
+      ).and_return(true)
+      allow(Allure::TestPlan).to receive(:muted?).with(
+        allure_id: 456, selector: anything, test_case_id: muted_id
+      ).and_return(true)
+      allow(Allure::TestPlan).to receive(:muted?).with(
+        allure_id: 456, selector: muted_selector, test_case_id: anything
+      ).and_return(true)
+    end
+
+    it "adds skip metadata to examples matching any muted identity" do
+      run_rspec(<<~SPEC)
+        describe "#{suite}" do
+          it "Explicit ID", allure_id: 123 do
+            raise "Muted body should not run"
+          end
+
+          it "#{spec}", allure_id: 456 do
+            raise "Muted body should not run"
+          end
+
+          it "Selector", allure_id: 456 do
+            raise "Muted body should not run"
+          end
+
+          it "Unmatched", allure_id: 456 do
+          end
+        end
+      SPEC
+
+      examples = RSpec.world.example_groups.first.examples
+      expect(examples.map { |example| example.metadata[:skip] }).to eq(
+        ["Skipped by Allure test plan", "Skipped by Allure test plan", "Skipped by Allure test plan", nil]
+      )
+    end
+  end
+
   context "default parameters" do
     it "are added to allure test case" do
       run_rspec(<<~SPEC)
@@ -43,7 +87,7 @@ describe "example_started" do
         aggregate_failures "Should have correct args" do
           expect(arg.name).to eq(spec)
           expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:10")
-          expect(arg.full_name).to eq("#{suite} #{spec}")
+          expect(arg.full_name).to eq("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}")
           expect(arg.test_case_id).to eq(Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}"))
           expect(arg.title_path).to eq(["#{test_tmp_dir}/spec/test_spec.rb", suite])
           expect(arg.links).to be_empty
@@ -71,6 +115,7 @@ describe "example_started" do
         expect(lifecycle).to have_received(:start_test_case).once do |arg|
           aggregate_failures "Should have correct args" do
             expect(arg.description).to eq("Location - #{test_tmp_dir}/spec/test_spec.rb:8")
+            expect(arg.full_name).to eq("#{test_tmp_dir}/spec/test_spec.rb##{suite} behaves like shared #{spec}")
           end
         end
       end
