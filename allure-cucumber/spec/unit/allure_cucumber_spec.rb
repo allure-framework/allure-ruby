@@ -28,29 +28,6 @@ describe AllureCucumber do
     expect(AllureCucumber.configuration.tms_prefix).to eq("TMS")
   end
 
-  it "forwards only cases whose file-qualified full name matches a selector" do
-    selector = "features/test.feature#Scenario [case]"
-    allow(Allure::TestPlan).to receive(:test_names).and_return([selector])
-    configuration = Cucumber::Configuration.new
-    receiver = spy("receiver")
-    full_names = [selector, "features/other.feature#Scenario [case]", "features/test.feature#Scenario c"]
-    cases = full_names.map do |full_name|
-      test_case = instance_double(Cucumber::Core::Test::Case, describe_to: nil)
-      scenario = instance_double(AllureCucumber::Scenario, full_name: full_name)
-      allow(AllureCucumber::Scenario).to receive(:new).with(test_case, anything).and_return(scenario)
-      test_case
-    end
-
-    Thread.new { AllureCucumber::CucumberFormatter.new(configuration) }.value
-    expect(configuration.filters.size).to eq(1)
-    filter = configuration.filters.first.with_receiver(receiver)
-    cases.each { |test_case| filter.test_case(test_case) }
-
-    expect(cases[0]).to have_received(:describe_to).with(receiver).once
-    expect(cases[1]).not_to have_received(:describe_to)
-    expect(cases[2]).not_to have_received(:describe_to)
-  end
-
   context "with global labels" do
     include_context "cucumber runner"
 

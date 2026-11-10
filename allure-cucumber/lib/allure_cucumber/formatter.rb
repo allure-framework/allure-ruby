@@ -32,7 +32,7 @@ module AllureCucumber
       @cucumber_model ||= AllureCucumberModel.new(config, allure_config)
 
       names = Allure::TestPlan.test_names
-      config.filters << TestPlanFilter.new(cucumber_model, names.to_set) if names
+      config.filters << TestPlanFilter.new(cucumber_model, names.to_set) if names&.any?
 
       config.on_event(:test_run_started) { |event| on_test_run_started(event) }
       config.on_event(:test_run_finished) { |event| on_test_run_finished(event) }
