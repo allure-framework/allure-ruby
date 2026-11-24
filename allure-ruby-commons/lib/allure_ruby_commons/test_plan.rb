@@ -30,41 +30,41 @@ module Allure
       # @param [String, nil] selector file-qualified full name
       # @param [String] test_case_id
       # @return [Boolean]
-      def muted?(allure_id:, selector:, test_case_id:)
-        return true if allure_id && muted_allure_ids.include?(allure_id.to_s)
-        return true if muted_selectors.include?(selector)
+      def excluded?(allure_id:, selector:, test_case_id:)
+        return true if allure_id && excluded_allure_ids.include?(allure_id.to_s)
+        return true if excluded_selectors.include?(selector)
 
-        muted_test_ids.include?(test_case_id)
+        excluded_test_ids.include?(test_case_id)
       end
 
-      # Whether the test plan contains any muted identities
+      # Whether the test plan contains any excluded identities
       #
       # @return [Boolean]
-      def muted_tests?
-        muted_allure_ids.any? || muted_test_ids.any? || muted_selectors.any?
+      def excluded_tests?
+        excluded_allure_ids.any? || excluded_test_ids.any? || excluded_selectors.any?
       end
 
       private
 
-      # Muted explicit Allure ids
+      # Excluded explicit Allure ids
       #
       # @return [Set]
-      def muted_allure_ids
-        @muted_allure_ids ||= Set.new(muted_tests&.filter_map { |test| test[:id]&.to_s }).freeze
+      def excluded_allure_ids
+        @excluded_allure_ids ||= Set.new(excluded_tests&.filter_map { |test| test[:id]&.to_s }).freeze
       end
 
-      # Muted test case ids
+      # Excluded test case ids
       #
       # @return [Set]
-      def muted_test_ids
-        @muted_test_ids ||= Set.new(muted_tests&.filter_map { |test| test[:testCaseId] }).freeze
+      def excluded_test_ids
+        @excluded_test_ids ||= Set.new(excluded_tests&.filter_map { |test| test[:testCaseId] }).freeze
       end
 
-      # Muted file-qualified full-name selectors
+      # Excluded file-qualified full-name selectors
       #
       # @return [Set]
-      def muted_selectors
-        @muted_selectors ||= Set.new(muted_tests&.filter_map { |test| test[:selector] }).freeze
+      def excluded_selectors
+        @excluded_selectors ||= Set.new(excluded_tests&.filter_map { |test| test[:selector] }).freeze
       end
 
       # Parsed test plan object
@@ -84,8 +84,8 @@ module Allure
       # Tests to skip from allure testplan.json
       #
       # @return [Array<Hash>]
-      def muted_tests
-        @muted_tests ||= test_plan&.fetch(:mutedTests, nil) if test_plan_path
+      def excluded_tests
+        @excluded_tests ||= test_plan&.fetch(:excludedTests, nil) if test_plan_path
       end
 
       # Fetch test plan path

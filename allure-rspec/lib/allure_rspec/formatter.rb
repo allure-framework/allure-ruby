@@ -80,7 +80,7 @@ module AllureRspec
     def example_started(example_notification)
       example = example_notification.example
       result = test_result(example)
-      if Allure::TestPlan.muted?(
+      if Allure::TestPlan.excluded?(
         allure_id: example.metadata[:allure_id], selector: result.full_name, test_case_id: result.test_case_id
       )
         result.status_details.muted = true

@@ -42,7 +42,7 @@ module AllureCucumber
       config.on_event(:test_case_finished) { |event| on_test_case_finished(event) }
 
       register_test_run_hook_finished(config)
-      register_muting_hook
+      register_exclusion_hook
     end
 
     # Clean test result directory before starting run
@@ -125,12 +125,12 @@ module AllureCucumber
 
     # Skip matched scenarios through Cucumber's public hook DSL.
     # @return [void]
-    def register_muting_hook
-      return unless Allure::TestPlan.muted_tests?
+    def register_exclusion_hook
+      return unless Allure::TestPlan.excluded_tests?
 
       model = cucumber_model
       Around do |scenario, run|
-        skip_this_scenario("Skipped by Allure test plan") if model.muted?(scenario)
+        skip_this_scenario("Skipped by Allure test plan") if model.excluded?(scenario)
         run.call
       end
     end

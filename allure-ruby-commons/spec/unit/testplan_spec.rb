@@ -16,8 +16,8 @@ describe Allure::TestPlan, :aggregate_failures do
     it "correct testplan.json" do
       expect(test_plan.test_ids).to eq(test_ids)
       expect(test_plan.test_names).to eq(test_names)
-      expect(test_plan.muted?(allure_id: nil, selector: nil, test_case_id: "muted-id")).to be(false)
-      expect(test_plan.muted_tests?).to be(false)
+      expect(test_plan.excluded?(allure_id: nil, selector: nil, test_case_id: "excluded-id")).to be(false)
+      expect(test_plan.excluded_tests?).to be(false)
     end
   end
 
@@ -42,13 +42,13 @@ describe Allure::TestPlan, :aggregate_failures do
   context "with partial entries" do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/partial/testplan.json" }
 
-    it "matches muted identities and ignores absent IDs and selectors" do
-      matched = test_plan.muted?(allure_id: nil, selector: nil, test_case_id: "muted-id")
-      unmatched = test_plan.muted?(allure_id: nil, selector: nil, test_case_id: "other-id")
-      missing = test_plan.muted?(allure_id: nil, selector: nil, test_case_id: nil)
-      matched_by_allure_id = test_plan.muted?(allure_id: "123", selector: nil, test_case_id: "other-id")
-      fallback = test_plan.muted?(allure_id: 456, selector: nil, test_case_id: "muted-id")
-      unmatched_ids = test_plan.muted?(allure_id: 456, selector: nil, test_case_id: "other-id")
+    it "matches excluded identities and ignores absent IDs and selectors" do
+      matched = test_plan.excluded?(allure_id: nil, selector: nil, test_case_id: "excluded-id")
+      unmatched = test_plan.excluded?(allure_id: nil, selector: nil, test_case_id: "other-id")
+      missing = test_plan.excluded?(allure_id: nil, selector: nil, test_case_id: nil)
+      matched_by_allure_id = test_plan.excluded?(allure_id: "123", selector: nil, test_case_id: "other-id")
+      fallback = test_plan.excluded?(allure_id: 456, selector: nil, test_case_id: "excluded-id")
+      unmatched_ids = test_plan.excluded?(allure_id: 456, selector: nil, test_case_id: "other-id")
 
       expect(test_plan.test_ids).to eq(["id only"])
       expect(test_plan.test_names).to eq(["selector only"])
@@ -58,34 +58,34 @@ describe Allure::TestPlan, :aggregate_failures do
       expect(matched_by_allure_id).to be(true)
       expect(fallback).to be(true)
       expect(unmatched_ids).to be(false)
-      expect(test_plan.muted_tests?).to be(true)
+      expect(test_plan.excluded_tests?).to be(true)
     end
   end
 
-  context "with only muted Allure IDs" do
+  context "with only excluded Allure IDs" do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/ids_only/testplan.json" }
 
-    it "activates muting without generated identities" do
-      available = test_plan.muted_tests?
-      matched = test_plan.muted?(allure_id: 123, selector: nil, test_case_id: "other-id")
+    it "detects exclusions without generated identities" do
+      available = test_plan.excluded_tests?
+      matched = test_plan.excluded?(allure_id: 123, selector: nil, test_case_id: "other-id")
 
       expect(available).to be(true)
       expect(matched).to be(true)
     end
   end
 
-  context "with only muted selectors" do
+  context "with only excluded selectors" do
     let(:path) { "#{Dir.pwd}/spec/fixtures/test_plan/selectors_only/testplan.json" }
 
-    it "activates muting and matches exact full names when IDs do not match" do
-      available = test_plan.muted_tests?
-      matched = test_plan.muted?(
+    it "detects exclusions and matches exact full names when IDs do not match" do
+      available = test_plan.excluded_tests?
+      matched = test_plan.excluded?(
         allure_id: 456, selector: "spec/test_spec.rb#Suite [case]", test_case_id: "other-id"
       )
-      other_file = test_plan.muted?(
+      other_file = test_plan.excluded?(
         allure_id: nil, selector: "spec/other_spec.rb#Suite [case]", test_case_id: "other-id"
       )
-      regex_like = test_plan.muted?(
+      regex_like = test_plan.excluded?(
         allure_id: nil, selector: "spec/test_spec.rb#Suite c", test_case_id: "other-id"
       )
 
@@ -99,11 +99,11 @@ describe Allure::TestPlan, :aggregate_failures do
   context "without a plan" do
     let(:path) { nil }
 
-    it "does not mute tests" do
-      muted = test_plan.muted?(allure_id: nil, selector: nil, test_case_id: "muted-id")
+    it "does not exclude tests" do
+      excluded = test_plan.excluded?(allure_id: nil, selector: nil, test_case_id: "excluded-id")
 
-      expect(muted).to be(false)
-      expect(test_plan.muted_tests?).to be(false)
+      expect(excluded).to be(false)
+      expect(test_plan.excluded_tests?).to be(false)
     end
   end
 
