@@ -31,7 +31,7 @@ module AllureCucumber
         environment: config.environment,
         **test_result_metadata(parser)
       ).tap do |result|
-        result.status_details.muted = true if muted_scenario?(scenario)
+        result.status_details.muted = true if excluded_scenario?(scenario)
       end
     end
 
@@ -43,11 +43,11 @@ module AllureCucumber
       selectors.include?(Scenario.new(test_case, ast_lookup).full_name)
     end
 
-    # Match a scenario or outline against the test plan's muted identities.
+    # Match a scenario or outline against the test plan's excluded identities.
     # @param [Cucumber::Core::Test::Case, Cucumber::RunningTestCase::TestCase] test_case
     # @return [Boolean]
-    def muted?(test_case)
-      muted_scenario?(Scenario.new(test_case, ast_lookup))
+    def excluded?(test_case)
+      excluded_scenario?(Scenario.new(test_case, ast_lookup))
     end
 
     # Convert to allure step result
@@ -87,8 +87,8 @@ module AllureCucumber
 
     # @param [Scenario] scenario
     # @return [Boolean]
-    def muted_scenario?(scenario)
-      Allure::TestPlan.muted?(
+    def excluded_scenario?(scenario)
+      Allure::TestPlan.excluded?(
         allure_id: scenario.allure_id, selector: scenario.full_name, test_case_id: scenario.test_case_id
       )
     end

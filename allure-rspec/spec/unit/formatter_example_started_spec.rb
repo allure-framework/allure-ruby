@@ -21,36 +21,36 @@ describe "example_started" do
     ]
   end
 
-  context "with muted tests" do
-    let(:muted_id) { Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}") }
-    let(:muted_selector) { "#{test_tmp_dir}/spec/test_spec.rb##{suite} Selector" }
+  context "with excluded tests" do
+    let(:excluded_id) { Digest::MD5.hexdigest("#{test_tmp_dir}/spec/test_spec.rb##{suite} #{spec}") }
+    let(:excluded_selector) { "#{test_tmp_dir}/spec/test_spec.rb##{suite} Selector" }
 
     before do
-      allow(Allure::TestPlan).to receive(:muted?).and_call_original
-      allow(Allure::TestPlan).to receive(:muted?).with(
+      allow(Allure::TestPlan).to receive(:excluded?).and_call_original
+      allow(Allure::TestPlan).to receive(:excluded?).with(
         allure_id: 123, selector: anything, test_case_id: anything
       ).and_return(true)
-      allow(Allure::TestPlan).to receive(:muted?).with(
-        allure_id: 456, selector: anything, test_case_id: muted_id
+      allow(Allure::TestPlan).to receive(:excluded?).with(
+        allure_id: 456, selector: anything, test_case_id: excluded_id
       ).and_return(true)
-      allow(Allure::TestPlan).to receive(:muted?).with(
-        allure_id: 456, selector: muted_selector, test_case_id: anything
+      allow(Allure::TestPlan).to receive(:excluded?).with(
+        allure_id: 456, selector: excluded_selector, test_case_id: anything
       ).and_return(true)
     end
 
-    it "adds skip metadata to examples matching any muted identity" do
+    it "adds skip metadata to examples matching any excluded identity" do
       run_rspec(<<~SPEC)
         describe "#{suite}" do
           it "Explicit ID", allure_id: 123 do
-            raise "Muted body should not run"
+            raise "Excluded body should not run"
           end
 
           it "#{spec}", allure_id: 456 do
-            raise "Muted body should not run"
+            raise "Excluded body should not run"
           end
 
           it "Selector", allure_id: 456 do
-            raise "Muted body should not run"
+            raise "Excluded body should not run"
           end
 
           it "Unmatched", allure_id: 456 do

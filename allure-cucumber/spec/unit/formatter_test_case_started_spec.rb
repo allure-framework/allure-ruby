@@ -43,7 +43,7 @@ describe "on_test_case_started" do
     end
 
     it "are added to allure test case" do
-      allow(Allure::TestPlan).to receive(:muted_tests?).and_return(false)
+      allow(Allure::TestPlan).to receive(:excluded_tests?).and_return(false)
       allow(AllureCucumber::Scenario).to receive(:new).and_call_original
       expect_any_instance_of(AllureCucumber::CucumberFormatter).not_to receive(:Around)
 

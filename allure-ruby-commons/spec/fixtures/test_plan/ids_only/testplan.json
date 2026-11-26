@@ -1,4 +1,4 @@
 {
   "version": "1.0",
-  "mutedTests": [{"id": 123}]
+  "excludedTests": [{"id": 123}]
 }
